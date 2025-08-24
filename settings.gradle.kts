@@ -1,0 +1,11 @@
+rootProject.name = "Neko"
+
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+include("api")
+include("core")
