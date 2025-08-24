@@ -11,8 +11,8 @@ public interface PackManager extends ManagerBase, Reloadable {
 
     @NotNull File getFile(@NotNull String path);
 
-    default @NotNull File getFile(@NotNull Key key) {
-        return getFile("assets/" + key.namespace() + "/" + key.value());
+    default @NotNull File getFile(@NotNull Key key, @NotNull String extension) {
+        return getFile("assets/" + key.namespace() + "/" + key.value() + "." + extension);
     }
 
     @NotNull File getGeneratedFile(@NotNull String path);
