@@ -36,15 +36,14 @@ object PackManagerImpl : PackManager {
             preset.close()
         }
 
-        pack().thenRun {
-            LOGGER.info("Successfully generated resourcepack")
-        }
+        pack()
+        LOGGER.info("Successfully generated resourcepack")
     }
 
     override fun end() {
     }
 
-    override fun pack(): CompletableFuture<Void> = CompletableFuture.runAsync {
+    override fun pack() {
         // TODO : Multi-threading packaging
 
         if(GENERATED_FOLDER.exists())

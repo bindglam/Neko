@@ -4,10 +4,9 @@ import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.concurrent.CompletableFuture;
 
 public interface PackManager extends ManagerBase, Reloadable {
-    CompletableFuture<Void> pack();
+    void pack();
 
     @NotNull File getFile(@NotNull String path);
 
