@@ -25,6 +25,8 @@ class NekoPlugin : Neko, JavaPlugin() {
     override fun onEnable() {
         NekoProvider.register(this)
 
+        saveDefaultConfig()
+
         managers.forEach { it.start() }
     }
 

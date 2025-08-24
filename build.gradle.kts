@@ -15,6 +15,10 @@ val mcVersionString = property("minecraft_version").toString()
 tasks {
     runServer {
         version(mcVersionString)
+
+        downloadPlugins {
+            hangar("BetterModel", "1.11.2")
+        }
     }
 
     jar {

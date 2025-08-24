@@ -13,7 +13,6 @@ import net.lingala.zip4j.ZipFile
 import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.util.concurrent.CompletableFuture
 import java.util.stream.Collectors
 
 object PackManagerImpl : PackManager {
@@ -46,20 +45,39 @@ object PackManagerImpl : PackManager {
     override fun pack() {
         // TODO : Multi-threading packaging
 
-        if(GENERATED_FOLDER.exists())
-            GENERATED_FOLDER.deleteRecursively()
         GENERATED_ZIP.deleteOnExit()
 
-        FileUtils.copyDirectory(RESOURCEPACK_FOLDER, GENERATED_FOLDER)
+        mergeResourcePacks()
 
         BuiltInRegistries.ITEMS.entrySet().forEach { entry ->
             createItemFile(entry.value)
         }
 
         ZipFile(GENERATED_ZIP).apply {
-            addFolder(File(GENERATED_FOLDER, "assets"))
-            addFile(File(GENERATED_FOLDER, "pack.mcmeta"))
+            GENERATED_FOLDER.listFiles().forEach {
+                if(it.isDirectory)
+                    addFolder(it)
+                else
+                    addFile(it)
+            }
         }
+    }
+
+    private fun mergeResourcePacks() {
+        val mergeAfterPacking = NekoProvider.neko().plugin().config.getBoolean("pack.merge-resource-packs.merge-after-packing")
+
+        if(mergeAfterPacking)
+            FileUtils.copyDirectory(RESOURCEPACK_FOLDER, GENERATED_FOLDER)
+
+        NekoProvider.neko().plugin().config.getStringList("pack.merge-resource-packs.packs").forEach { path ->
+            File("plugins/", path).also {
+                if(it.exists())
+                    FileUtils.copyDirectory(it, GENERATED_FOLDER)
+            }
+        }
+
+        if(!mergeAfterPacking)
+            FileUtils.copyDirectory(RESOURCEPACK_FOLDER, GENERATED_FOLDER)
     }
 
     private fun createItemFile(item: CustomItem) {
