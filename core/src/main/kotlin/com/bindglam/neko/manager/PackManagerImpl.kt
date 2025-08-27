@@ -5,12 +5,13 @@ import com.bindglam.neko.api.item.CustomItem
 import com.bindglam.neko.api.manager.PackManager
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.pack.ItemData
+import com.bindglam.neko.pack.PackFile
+import com.bindglam.neko.pack.PackZipper
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.plugin
+import com.bindglam.neko.utils.toPackPath
 import com.google.gson.Gson
 import net.kyori.adventure.key.Key
-import net.lingala.zip4j.ZipFile
-import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.stream.Collectors
@@ -19,8 +20,7 @@ object PackManagerImpl : PackManager {
     private val LOGGER = LoggerFactory.getLogger(PackManager::class.java)
 
     private val RESOURCEPACK_FOLDER = File("plugins/Neko/resourcepack")
-    private val GENERATED_FOLDER = File("plugins/Neko/generated")
-    private val GENERATED_ZIP = File("plugins/Neko/generated.zip")
+    private val BUILD_ZIP = File("plugins/Neko/build.zip")
 
     private val GSON = Gson()
 
@@ -36,59 +36,56 @@ object PackManagerImpl : PackManager {
         }
 
         pack()
-        LOGGER.info("Successfully generated resourcepack")
     }
 
     override fun end() {
     }
 
     override fun pack() {
-        // TODO : Multi-threading packaging
+        BUILD_ZIP.deleteOnExit()
 
-        GENERATED_ZIP.deleteOnExit()
+        val startMillis = System.currentTimeMillis()
 
-        mergeResourcePacks()
+        val zipper = PackZipper(BUILD_ZIP)
 
         BuiltInRegistries.ITEMS.entrySet().forEach { entry ->
-            createItemFile(entry.value)
+            createItemFile(entry.value, zipper)
         }
 
-        ZipFile(GENERATED_ZIP).apply {
-            GENERATED_FOLDER.listFiles().forEach {
-                if(it.isDirectory)
-                    addFolder(it)
-                else
-                    addFile(it)
-            }
+        mergeResourcePacks(zipper)
+
+        zipper.build {
+            LOGGER.info("Successfully generated resourcepack (${System.currentTimeMillis() - startMillis}ms)")
         }
     }
 
-    private fun mergeResourcePacks() {
+    private fun mergeResourcePacks(zipper: PackZipper) {
         val mergeAfterPacking = NekoProvider.neko().plugin().config.getBoolean("pack.merge-resource-packs.merge-after-packing")
+        val mergePacks = NekoProvider.neko().plugin().config.getStringList("pack.merge-resource-packs.packs")
 
-        if(mergeAfterPacking)
-            FileUtils.copyDirectory(RESOURCEPACK_FOLDER, GENERATED_FOLDER)
-
-        NekoProvider.neko().plugin().config.getStringList("pack.merge-resource-packs.packs").forEach { path ->
-            File("plugins/", path).also {
-                if(it.exists())
-                    FileUtils.copyDirectory(it, GENERATED_FOLDER)
+        if(!mergeAfterPacking) {
+            mergePacks.map { File("plugins/${it}") }.forEach { pack ->
+                zipper.addDirectory(pack)
             }
         }
 
-        if(!mergeAfterPacking)
-            FileUtils.copyDirectory(RESOURCEPACK_FOLDER, GENERATED_FOLDER)
+        zipper.addDirectory(RESOURCEPACK_FOLDER)
+
+        if(mergeAfterPacking) {
+            mergePacks.map { File("plugins/${it}") }.forEach { pack ->
+                zipper.addDirectory(pack)
+            }
+        }
     }
 
-    private fun createItemFile(item: CustomItem) {
+    private fun createItemFile(item: CustomItem, zipper: PackZipper) {
         val modelPath = item.properties().itemModel ?: return
 
-        val writer = getGeneratedFile(Key.key(item.key().namespace(), "items/${item.key().value()}"), "json").also { it.createIfNotExists() }
-            .bufferedWriter()
-        writer.write(GSON.toJson(ItemData(ItemData.Model(ItemData.Type.MODEL, modelPath.asString()))))
-        writer.close()
+        val bytes = GSON.toJson(ItemData(ItemData.Model(ItemData.Type.MODEL, modelPath.asString()))).toByteArray()
+
+        val filePath = Key.key(item.key().namespace(), "items/${item.key().value()}").toPackPath("json")
+        zipper.addFile(filePath, PackFile({ bytes }, bytes.size.toLong()))
     }
 
     override fun getFile(path: String): File = File(RESOURCEPACK_FOLDER, path)
-    override fun getGeneratedFile(path: String): File = File(GENERATED_FOLDER, path)
 }

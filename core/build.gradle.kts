@@ -7,8 +7,6 @@ repositories {
 }
 
 dependencies {
-    compileOnly("commons-io:commons-io:2.20.0")
-    compileOnly("net.lingala.zip4j:zip4j:2.11.5")
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:10.1.2")
     implementation(project(":api"))
 }

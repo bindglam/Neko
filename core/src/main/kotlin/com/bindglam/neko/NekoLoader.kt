@@ -14,8 +14,6 @@ class NekoLoader : PluginLoader {
     override fun classloader(classpathBuilder: PluginClasspathBuilder) {
         classpathBuilder.addLibrary(MavenLibraryResolver().apply {
             addRepository(RemoteRepository.Builder("central", "default", MavenLibraryResolver.MAVEN_CENTRAL_DEFAULT_MIRROR).build())
-            addDependency(Dependency(DefaultArtifact("net.lingala.zip4j:zip4j:2.11.5"), null))
-            addDependency(Dependency(DefaultArtifact("commons-io:commons-io:2.20.0"), null))
         })
     }
 }
