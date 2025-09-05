@@ -17,7 +17,7 @@ tasks {
         version(mcVersionString)
 
         downloadPlugins {
-            hangar("BetterModel", "1.11.2")
+            hangar("BetterModel", "1.11.4")
         }
     }
 
