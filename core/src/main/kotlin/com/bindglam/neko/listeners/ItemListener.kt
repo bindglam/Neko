@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 
 class ItemListener : Listener {
     @EventHandler
-    fun PlayerInteractEvent.onInteract() {
+    fun PlayerInteractEvent.tryPlaceCustomBlock() {
         item ?: return
         interactionPoint ?: return
 

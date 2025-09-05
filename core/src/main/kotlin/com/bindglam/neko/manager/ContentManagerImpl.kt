@@ -12,6 +12,7 @@ import com.bindglam.neko.content.item.block.mechanism.NoteBlockMechanismFactory
 import com.bindglam.neko.utils.NamespacedKeyDataType
 import com.bindglam.neko.utils.listFilesRecursively
 import com.bindglam.neko.utils.plugin
+import de.tr7zw.changeme.nbtapi.NBT
 import net.kyori.adventure.key.Key
 import org.bukkit.NamespacedKey
 import org.bukkit.block.BlockState
@@ -73,9 +74,12 @@ object ContentManagerImpl : ContentManager {
     override fun customItem(key: Key): CustomItem? = BuiltInRegistries.ITEMS.getOrNull(key)
 
     override fun customItem(itemStack: ItemStack): CustomItem? {
-        itemStack.persistentDataContainer.also {
-            return if(!it.has(CustomItemImpl.CUSTOM_ITEM_KEY)) null else customItem(it.get(CustomItemImpl.CUSTOM_ITEM_KEY, NamespacedKeyDataType)!!)
-        }
+        val nbt = NBT.readNbt(itemStack)
+
+        if(!nbt.hasTag(CustomItemImpl.ITEM_KEY_TAG))
+            return null
+
+        return customItem(Key.key(nbt.getString(CustomItemImpl.ITEM_KEY_TAG)))
     }
 
     override fun customBlock(key: Key): CustomBlock? = BuiltInRegistries.BLOCKS.getOrNull(key)

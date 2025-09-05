@@ -15,12 +15,11 @@ import net.kyori.adventure.key.Key
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Note
-import org.bukkit.block.Block
 import org.bukkit.block.BlockState
 import org.bukkit.block.data.type.NoteBlock
 import org.bukkit.configuration.file.YamlConfiguration
 
-class NoteBlockMechanism(private val block: CustomBlock) : Mechanism, Packable {
+class NoteBlockMechanism(private val customBlock: CustomBlock) : Mechanism, Packable {
     companion object {
         private const val MAX_NOTE = 24
 
@@ -40,12 +39,12 @@ class NoteBlockMechanism(private val block: CustomBlock) : Mechanism, Packable {
         NekoProvider.neko().cacheManager().getCache("blocks.yml") ?: NekoProvider.neko().cacheManager().saveCache("blocks.yml") {}
         val blockCache = YamlConfiguration.loadConfiguration(NekoProvider.neko().cacheManager().getCache("blocks.yml")!!)
 
-        if(blockCache.get("${block.key().asString()}.instrument") == null) {
+        if(blockCache.get("${customBlock.key().asString()}.instrument") == null) {
             instrument = VanillaInstruments.entries[blockCache.getInt("note-block.next-instrument")]
             note = blockCache.getInt("note-block.next-note").toByte()
 
-            blockCache.set("${block.key().asString()}.instrument", instrument)
-            blockCache.set("${block.key().asString()}.note", note)
+            blockCache.set("${customBlock.key().asString()}.instrument", instrument)
+            blockCache.set("${customBlock.key().asString()}.note", note)
 
             if (note >= MAX_NOTE) {
                 blockCache.set("note-block.next-instrument", instrument.ordinal + 1)
@@ -55,8 +54,8 @@ class NoteBlockMechanism(private val block: CustomBlock) : Mechanism, Packable {
                 blockCache.set("note-block.next-note", note + 1)
             }
         } else {
-            instrument = VanillaInstruments.entries[blockCache.getInt("${block.key().asString()}.instrument")]
-            note = blockCache.getInt("${block.key().asString()}.note").toByte()
+            instrument = VanillaInstruments.entries[blockCache.getInt("${customBlock.key().asString()}.instrument")]
+            note = blockCache.getInt("${customBlock.key().asString()}.note").toByte()
         }
 
         NekoProvider.neko().cacheManager().saveCache("blocks.yml") { file -> blockCache.save(file) }
@@ -70,7 +69,7 @@ class NoteBlockMechanism(private val block: CustomBlock) : Mechanism, Packable {
         else
             BlockStateData(hashMapOf())
 
-        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note}"] = Variant(block.blockProperties().blockModel().asString())
+        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note}"] = Variant(customBlock.blockProperties().blockModel().asString())
 
         GSON.toJson(blockStateData).toByteArray().also {
             zipper.addFile(BLOCKSTATE_FILE, PackFile({ it }, it.size.toLong()))

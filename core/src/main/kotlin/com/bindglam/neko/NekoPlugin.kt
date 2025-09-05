@@ -11,6 +11,7 @@ import com.bindglam.neko.manager.CacheManagerImpl
 import com.bindglam.neko.manager.CommandManagerImpl
 import com.bindglam.neko.manager.ContentManagerImpl
 import com.bindglam.neko.manager.PackManagerImpl
+import de.tr7zw.changeme.nbtapi.NBT
 import org.bukkit.plugin.java.JavaPlugin
 
 class NekoPlugin : Neko, JavaPlugin() {
@@ -24,6 +25,12 @@ class NekoPlugin : Neko, JavaPlugin() {
     }
 
     override fun onEnable() {
+        if(!NBT.preloadApi()) {
+            logger.severe("Failed to load NBT-API! Disable the plugin...")
+            server.pluginManager.disablePlugin(this)
+            return
+        }
+
         NekoProvider.register(this)
 
         saveDefaultConfig()
