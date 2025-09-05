@@ -5,12 +5,15 @@ import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.manager.CacheManager
 import com.bindglam.neko.api.manager.ContentManager
 import com.bindglam.neko.api.manager.PackManager
+import com.bindglam.neko.api.manager.PlayerNetworkManager
 import com.bindglam.neko.api.manager.Reloadable
 import com.bindglam.neko.listeners.ItemListener
+import com.bindglam.neko.listeners.PlayerJoinQuitListener
 import com.bindglam.neko.manager.CacheManagerImpl
 import com.bindglam.neko.manager.CommandManagerImpl
 import com.bindglam.neko.manager.ContentManagerImpl
 import com.bindglam.neko.manager.PackManagerImpl
+import com.bindglam.neko.manager.PlayerNetworkManagerImpl
 import de.tr7zw.changeme.nbtapi.NBT
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -20,7 +23,8 @@ class NekoPlugin : Neko, JavaPlugin() {
             CommandManagerImpl,
             CacheManagerImpl,
             ContentManagerImpl,
-            PackManagerImpl
+            PackManagerImpl,
+            PlayerNetworkManagerImpl
         )
     }
 
@@ -36,6 +40,7 @@ class NekoPlugin : Neko, JavaPlugin() {
         saveDefaultConfig()
 
         server.pluginManager.registerEvents(ItemListener(), this)
+        server.pluginManager.registerEvents(PlayerJoinQuitListener(), this)
 
         managers.forEach { it.start() }
     }
@@ -61,4 +66,5 @@ class NekoPlugin : Neko, JavaPlugin() {
     override fun cacheManager(): CacheManager = CacheManagerImpl
     override fun contentManager(): ContentManager = ContentManagerImpl
     override fun packManager(): PackManager = PackManagerImpl
+    override fun playerNetworkManager(): PlayerNetworkManager = PlayerNetworkManagerImpl
 }

@@ -13,6 +13,7 @@ dependencies {
     implementation("de.tr7zw:item-nbt-api:2.15.2")
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:10.1.2")
     implementation(project(":api"))
+    implementation(project(":nms"))
 }
 
 paperPluginYaml {
