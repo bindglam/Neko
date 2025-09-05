@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -48,5 +49,10 @@ public class ScalableRegistry<T> implements Registry<T> {
         });
 
         isLocked = false;
+    }
+
+    @Override
+    public @NotNull Iterator<T> iterator() {
+        return map.values().iterator();
     }
 }

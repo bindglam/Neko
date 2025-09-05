@@ -1,4 +1,4 @@
-package com.bindglam.neko.api.item;
+package com.bindglam.neko.api.content.item;
 
 import org.bukkit.inventory.ItemStack;
 

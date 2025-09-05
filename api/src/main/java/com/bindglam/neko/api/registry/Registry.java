@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public interface Registry<T> {
+public interface Registry<T> extends Iterable<T> {
     @Nullable
     T getOrNull(Key key);
 

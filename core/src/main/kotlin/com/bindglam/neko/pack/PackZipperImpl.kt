@@ -1,6 +1,7 @@
 package com.bindglam.neko.pack
 
-import com.bindglam.neko.manager.PackManagerImpl
+import com.bindglam.neko.api.pack.PackFile
+import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.getRelativePath
 import com.bindglam.neko.utils.listFilesRecursively
@@ -8,26 +9,21 @@ import com.bindglam.neko.utils.parallelIOThreadPool
 import com.bindglam.neko.utils.toPackFile
 import java.io.File
 import java.io.FileOutputStream
-import java.nio.file.Files
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-class PackZipper(private val buildFile: File) {
+class PackZipperImpl(private val buildFile: File) : PackZipper {
     private val parallelThreadPool = parallelIOThreadPool()
 
     private val folders = hashSetOf<String>()
     private val entries = hashMapOf<String, PackFile>()
 
-    fun addFile(name: String, file: PackFile) {
+    override fun addFile(name: String, file: PackFile) {
         entries[name] = file
     }
 
-    fun addFile(file: File) {
-        addFile(file.name, file.toPackFile())
-    }
-
-    fun addDirectory(folder: File) {
+    override fun addDirectory(folder: File) {
         folder.listFilesRecursively().forEach {
             if(it.parentFile.path != folder.path)
                 folders.add(it.parentFile.getRelativePath(folder.path, "/"))
@@ -36,7 +32,9 @@ class PackZipper(private val buildFile: File) {
         }
     }
 
-    fun build(onDone: Runnable) {
+    override fun file(path: String): PackFile? = entries[path]
+
+    override fun build(onDone: Runnable) {
         buildFile.createIfNotExists()
 
         ZipOutputStream(FileOutputStream(buildFile)).apply {
@@ -49,7 +47,7 @@ class PackZipper(private val buildFile: File) {
             var cnt = AtomicInteger()
 
             parallelThreadPool.forEachParallel(entries.entries.toList(), { it.value.size }) { entry ->
-                val bytes = entry.value.bytes()
+                val bytes = entry.value.bytes.get()
 
                 synchronized(zipStream) {
                     zipStream.putNextEntry(ZipEntry(entry.key))

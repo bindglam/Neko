@@ -1,6 +1,6 @@
 package com.bindglam.neko.utils
 
-import com.bindglam.neko.pack.PackFile
+import com.bindglam.neko.api.pack.PackFile
 import java.io.File
 import java.nio.file.Files
 

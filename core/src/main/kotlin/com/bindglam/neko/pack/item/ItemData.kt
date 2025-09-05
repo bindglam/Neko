@@ -1,4 +1,4 @@
-package com.bindglam.neko.pack
+package com.bindglam.neko.pack.item
 
 import com.google.gson.annotations.SerializedName
 

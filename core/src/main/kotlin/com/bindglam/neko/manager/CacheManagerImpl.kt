@@ -1,9 +1,11 @@
 package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.manager.CacheManager
+import com.bindglam.neko.utils.createIfNotExists
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.InputStream
+import java.util.function.Consumer
 
 object CacheManagerImpl : CacheManager {
     private val LOGGER = LoggerFactory.getLogger(CacheManager::class.java)
@@ -18,7 +20,11 @@ object CacheManagerImpl : CacheManager {
     override fun end() {
     }
 
-    override fun getCache(path: String): InputStream? {
-        File(CACHE_FOLDER, path).also { return if(it.exists()) it.inputStream() else null }
+    override fun getCache(path: String): File? {
+        File(CACHE_FOLDER, path).also { return if(it.exists()) it else null }
+    }
+
+    override fun saveCache(path: String, consumer: Consumer<File>) {
+        consumer.accept(File(CACHE_FOLDER, path).apply { createIfNotExists() })
     }
 }

@@ -1,27 +1,18 @@
-package com.bindglam.neko.api.item;
+package com.bindglam.neko.api.config;
 
-import com.bindglam.neko.api.config.Configurable;
+import com.bindglam.neko.api.content.item.CustomItemProperties;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Objects;
 
-public record CustomItemProperties(
-        @NotNull ItemType itemType,
-        @Nullable Component displayName,
-        @Nullable List<Component> lore,
-        @Nullable Key itemModel
-) {
-    public static @NotNull CustomItemProperties fromConfig(@NotNull ConfigurationSection config) {
+public class CustomItemPropertiesConfigurable implements Configurable<CustomItemProperties, ConfigurationSection> {
+    @Override
+    public @Nullable CustomItemProperties load(@Nullable ConfigurationSection config) {
+        if(config == null) return null;
+
         return new CustomItemProperties(
                 Objects.requireNonNull(RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM).get(Objects.requireNonNull(Configurable.KEY.load(config.getString("type")))), "itemType cannot be null"),
                 Configurable.COMPONENT.load(config.getString("display-name")),

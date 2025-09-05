@@ -1,12 +1,12 @@
 package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.api.item.CustomItem
+import com.bindglam.neko.api.content.item.CustomItem
 import com.bindglam.neko.api.manager.PackManager
+import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.registry.BuiltInRegistries
-import com.bindglam.neko.pack.ItemData
-import com.bindglam.neko.pack.PackFile
-import com.bindglam.neko.pack.PackZipper
+import com.bindglam.neko.pack.item.ItemData
+import com.bindglam.neko.pack.PackZipperImpl
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.plugin
 import com.bindglam.neko.utils.toPackPath
@@ -46,10 +46,14 @@ object PackManagerImpl : PackManager {
 
         val startMillis = System.currentTimeMillis()
 
-        val zipper = PackZipper(BUILD_ZIP)
+        val zipper = PackZipperImpl(BUILD_ZIP)
 
         BuiltInRegistries.ITEMS.entrySet().forEach { entry ->
-            createItemFile(entry.value, zipper)
+            entry.value.pack(zipper)
+        }
+
+        BuiltInRegistries.BLOCKS.entrySet().forEach { entry ->
+            entry.value.pack(zipper)
         }
 
         mergeResourcePacks(zipper)
@@ -59,7 +63,7 @@ object PackManagerImpl : PackManager {
         }
     }
 
-    private fun mergeResourcePacks(zipper: PackZipper) {
+    private fun mergeResourcePacks(zipper: PackZipperImpl) {
         val mergeAfterPacking = NekoProvider.neko().plugin().config.getBoolean("pack.merge-resource-packs.merge-after-packing")
         val mergePacks = NekoProvider.neko().plugin().config.getStringList("pack.merge-resource-packs.packs")
 
@@ -76,15 +80,6 @@ object PackManagerImpl : PackManager {
                 zipper.addDirectory(pack)
             }
         }
-    }
-
-    private fun createItemFile(item: CustomItem, zipper: PackZipper) {
-        val modelPath = item.properties().itemModel ?: return
-
-        val bytes = GSON.toJson(ItemData(ItemData.Model(ItemData.Type.MODEL, modelPath.asString()))).toByteArray()
-
-        val filePath = Key.key(item.key().namespace(), "items/${item.key().value()}").toPackPath("json")
-        zipper.addFile(filePath, PackFile({ bytes }, bytes.size.toLong()))
     }
 
     override fun getFile(path: String): File = File(RESOURCEPACK_FOLDER, path)

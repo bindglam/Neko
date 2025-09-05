@@ -6,6 +6,7 @@ import com.bindglam.neko.api.manager.CacheManager
 import com.bindglam.neko.api.manager.ContentManager
 import com.bindglam.neko.api.manager.PackManager
 import com.bindglam.neko.api.manager.Reloadable
+import com.bindglam.neko.listeners.ItemListener
 import com.bindglam.neko.manager.CacheManagerImpl
 import com.bindglam.neko.manager.CommandManagerImpl
 import com.bindglam.neko.manager.ContentManagerImpl
@@ -26,6 +27,8 @@ class NekoPlugin : Neko, JavaPlugin() {
         NekoProvider.register(this)
 
         saveDefaultConfig()
+
+        server.pluginManager.registerEvents(ItemListener(), this)
 
         managers.forEach { it.start() }
     }
