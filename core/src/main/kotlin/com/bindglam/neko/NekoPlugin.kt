@@ -42,7 +42,11 @@ class NekoPlugin : Neko, JavaPlugin() {
         server.pluginManager.registerEvents(ItemListener(), this)
         server.pluginManager.registerEvents(PlayerJoinQuitListener(), this)
 
-        managers.forEach { it.start() }
+        try {
+            managers.forEach { it.start() }
+        } catch (e: Exception) {
+            slF4JLogger.error("Failed to load", e)
+        }
     }
 
     override fun onDisable() {
