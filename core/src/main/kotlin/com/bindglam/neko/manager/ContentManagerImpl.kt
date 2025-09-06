@@ -14,6 +14,7 @@ import com.bindglam.neko.utils.listFilesRecursively
 import com.bindglam.neko.utils.plugin
 import de.tr7zw.changeme.nbtapi.NBT
 import net.kyori.adventure.key.Key
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.block.BlockState
 import org.bukkit.configuration.file.YamlConfiguration
@@ -74,6 +75,9 @@ object ContentManagerImpl : ContentManager {
     override fun customItem(key: Key): CustomItem? = BuiltInRegistries.ITEMS.getOrNull(key)
 
     override fun customItem(itemStack: ItemStack): CustomItem? {
+        if(itemStack.amount == 0 || itemStack.type == Material.AIR)
+            return null
+
         val nbt = NBT.readNbt(itemStack)
 
         if(!nbt.hasTag(CustomItemImpl.ITEM_KEY_TAG))
