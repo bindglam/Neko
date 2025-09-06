@@ -65,5 +65,5 @@ class ItemListener : Listener {
 
     private fun Block.isInteractable(): Boolean = NekoProvider.neko().contentManager().customBlock(this) == null && type.isInteractable
 
-    private fun Player.canPlaceBlock(location: Location): Boolean = (location.block.type.isReplaceable) && !location.block.boundingBox.contains(boundingBox)
+    private fun Player.canPlaceBlock(location: Location): Boolean = location.block.type.isReplaceable && !location.block.boundingBox.contains(boundingBox)
 }
