@@ -43,7 +43,7 @@ class NoteBlockMechanism(private val customBlock: CustomBlock) : Mechanism, Pack
             instrument = VanillaInstruments.entries[blockCache.getInt("note-block.next-instrument")]
             note = blockCache.getInt("note-block.next-note").toByte()
 
-            blockCache.set("${customBlock.key().asString()}.instrument", instrument)
+            blockCache.set("${customBlock.key().asString()}.instrument", instrument.ordinal)
             blockCache.set("${customBlock.key().asString()}.note", note)
 
             if (note >= MAX_NOTE) {
@@ -53,7 +53,7 @@ class NoteBlockMechanism(private val customBlock: CustomBlock) : Mechanism, Pack
                 if(VanillaInstruments.entries[instrument.ordinal + 1] == VanillaInstruments.HARP)
                     blockCache.set("note-block.next-note", 1)
             } else {
-                blockCache.set("note-block.next-instrument", instrument)
+                blockCache.set("note-block.next-instrument", instrument.ordinal)
                 blockCache.set("note-block.next-note", note + 1)
             }
         } else {
