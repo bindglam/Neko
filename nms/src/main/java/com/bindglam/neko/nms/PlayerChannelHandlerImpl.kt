@@ -1,6 +1,7 @@
 package com.bindglam.neko.nms
 
 import com.bindglam.neko.api.NekoProvider
+import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.api.nms.PlayerChannelHandler
 import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
@@ -12,6 +13,10 @@ import net.minecraft.network.protocol.game.ServerGamePacketListener
 import net.minecraft.network.protocol.game.ServerboundInteractPacket
 import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket
 import org.bukkit.Bukkit
+import org.bukkit.Tag
+import org.bukkit.block.Block
+import org.bukkit.block.BlockState
+import org.bukkit.block.TileState
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -39,23 +44,6 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
     private fun <T : ServerGamePacketListener> Packet<in T>.handle(): Packet<in T>? {
         when (this) {
             is ServerboundUseItemOnPacket -> {
-                val location = hitResult.blockPos.toLocation(player.world)
-                val customBlock = NekoProvider.neko().contentManager().customBlock(location.block)
-
-                if(customBlock != null) {
-                    val itemStack = player.inventory.itemInMainHand
-
-                    if(itemStack.type.isBlock) {
-                        val loc = location.clone().add(hitResult.direction.unitVec3.x, hitResult.direction.unitVec3.y, hitResult.direction.unitVec3.z)
-
-                        // TODO : Custom Block
-                        Bukkit.getScheduler().runTask(NekoProvider.neko() as JavaPlugin) { task ->
-                            loc.block.type = itemStack.type
-                        }
-
-                        return null
-                    }
-                }
             }
         }
         return this

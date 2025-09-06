@@ -49,6 +49,9 @@ class NoteBlockMechanism(private val customBlock: CustomBlock) : Mechanism, Pack
             if (note >= MAX_NOTE) {
                 blockCache.set("note-block.next-instrument", instrument.ordinal + 1)
                 blockCache.set("note-block.next-note", 0)
+
+                if(VanillaInstruments.entries[instrument.ordinal + 1] == VanillaInstruments.HARP)
+                    blockCache.set("note-block.next-note", 1)
             } else {
                 blockCache.set("note-block.next-instrument", instrument)
                 blockCache.set("note-block.next-note", note + 1)
