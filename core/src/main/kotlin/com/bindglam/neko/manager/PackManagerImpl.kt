@@ -22,8 +22,6 @@ object PackManagerImpl : PackManager {
     private val RESOURCEPACK_FOLDER = File("plugins/Neko/resourcepack")
     private val BUILD_ZIP = File("plugins/Neko/build.zip")
 
-    private val GSON = Gson()
-
     override fun start() {
         if(!RESOURCEPACK_FOLDER.exists()) {
             RESOURCEPACK_FOLDER.mkdirs()
