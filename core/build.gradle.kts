@@ -15,13 +15,14 @@ dependencies {
         implementation(project(":nms:${it.name}"))
     }
 
-    implementation("com.github.ben-manes.caffeine:caffeine:3.2.2")
+    compileOnly("com.github.ben-manes.caffeine:caffeine:3.2.2")
 }
 
 paperPluginYaml {
     name = rootProject.name
     version = rootProject.version.toString()
     main = "$group.NekoPlugin"
+    loader = "$group.NekoLoader"
     apiVersion = "1.21"
     author = "Bindglam"
 }
