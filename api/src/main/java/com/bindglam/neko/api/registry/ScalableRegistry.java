@@ -46,6 +46,11 @@ public class ScalableRegistry<T> implements Registry<T> {
             public void register(Key key, T value) {
                 map.put(key, value);
             }
+
+            @Override
+            public void clear() {
+                map.clear();
+            }
         });
 
         isLocked = false;

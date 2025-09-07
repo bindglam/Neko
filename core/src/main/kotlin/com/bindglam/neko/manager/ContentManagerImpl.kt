@@ -1,7 +1,6 @@
 package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.api.config.Configurable
 import com.bindglam.neko.api.content.item.CustomItem
 import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.api.manager.ContentManager
@@ -11,7 +10,6 @@ import com.bindglam.neko.content.item.block.CustomBlockImpl
 import com.bindglam.neko.content.item.block.mechanism.NoteBlockMechanismFactory
 import com.bindglam.neko.utils.CUSTOM_BLOCK_PROPERTIES_CONFIGURABLE
 import com.bindglam.neko.utils.CUSTOM_ITEM_PROPERTIES_CONFIGURABLE
-import com.bindglam.neko.utils.NamespacedKeyDataType
 import com.bindglam.neko.utils.listFilesRecursively
 import com.bindglam.neko.utils.plugin
 import de.tr7zw.changeme.nbtapi.NBT
@@ -40,7 +38,11 @@ object ContentManagerImpl : ContentManager {
         var cnt = 0
 
         BuiltInRegistries.ITEMS.lock { itemRegistry ->
+            itemRegistry.clear()
+
             BuiltInRegistries.BLOCKS.lock { blockRegistry ->
+                blockRegistry.clear()
+
                 CONTENTS_FOLDER.listFilesRecursively().forEach { file ->
                     YamlConfiguration.loadConfiguration(file).apply {
                         getKeys(false).stream().map { NamespacedKey.fromString(it)!! }.forEach { key ->
