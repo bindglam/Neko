@@ -56,9 +56,8 @@ class PlayerListener : Listener {
             MiningHelper.removeProgress(player)
 
             val event = BlockBreakEvent(block, player)
-            event.callEvent()
 
-            if(!event.isCancelled) {
+            if(event.callEvent()) {
                 Particle.BLOCK.builder()
                     .location(block.location)
                     .offset(0.5, 0.5, 0.5)

@@ -76,9 +76,8 @@ class ItemListener : Listener {
         swingHand(hand)
 
         val event = BlockPlaceEvent(location.block, location.block.state, placedAgainst, item, this, true, hand)
-        event.callEvent()
 
-        if(event.isCancelled || !event.canBuild()) {
+        if(!event.callEvent() || !event.canBuild()) {
             location.block.blockData = prevBlockData
             return
         }

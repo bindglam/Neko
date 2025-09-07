@@ -18,6 +18,8 @@ tasks {
 
         downloadPlugins {
             hangar("BetterModel", "1.11.4")
+            modrinth("fastasyncworldedit", "2.13.1")
+            modrinth("worldguard", "7.0.14")
         }
     }
 
