@@ -9,6 +9,7 @@ import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys
 import org.bukkit.FluidCollisionMode
+import org.bukkit.GameEvent
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.Particle
@@ -71,6 +72,8 @@ class PlayerListener : Listener {
                 if(blockBreakSpeedData.isCorrectTool) {
                     dropItems(block, customBlock)
                 }
+
+                block.world.sendGameEvent(player, GameEvent.BLOCK_DESTROY, block.location.toVector())
             }
         }
     }
