@@ -2,9 +2,10 @@
 kotlin = "2.2.0"
 lombok = "1.18.38"
 
-resourceFactory = "1.3.0"
+resourceFactory = "1.3.1"
 runTask = "2.3.1"
 shadow = "9.0.2"
+paperweight = "2.0.0-beta.18"
 
 [libraries]
 kotlinJvm = { group = "org.jetbrains.kotlin.jvm", name = "org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlin" }
@@ -14,3 +15,4 @@ lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" 
 resourceFactory-paper = { id = "xyz.jpenilla.resource-factory-paper-convention", version.ref = "resourceFactory" }
 runTask-paper = { id = "xyz.jpenilla.run-paper", version.ref = "runTask" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }

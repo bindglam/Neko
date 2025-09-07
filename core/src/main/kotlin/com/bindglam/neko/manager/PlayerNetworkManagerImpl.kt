@@ -1,8 +1,8 @@
 package com.bindglam.neko.manager
 
+import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.manager.PlayerNetworkManager
 import com.bindglam.neko.api.nms.PlayerChannelHandler
-import com.bindglam.neko.nms.PlayerChannelHandlerImpl
 import org.bukkit.entity.Player
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -17,7 +17,7 @@ object PlayerNetworkManagerImpl : PlayerNetworkManager {
     }
 
     override fun inject(player: Player) {
-        channelHandlers.computeIfAbsent(player.uniqueId) { PlayerChannelHandlerImpl(player) }
+        channelHandlers.computeIfAbsent(player.uniqueId) { NekoProvider.neko().nms().createChannelHandler(player) }
     }
 
     override fun eject(player: Player) {

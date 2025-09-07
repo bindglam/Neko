@@ -1,4 +1,4 @@
-package com.bindglam.neko.nms
+package com.bindglam.neko.nms.v1_21_R5
 
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.Packet
@@ -13,7 +13,7 @@ val Player.handle: ServerPlayer
 
 fun Player.sendPacket(packet: List<Packet<*>>) {
     val connection = handle.connection
-    packet.forEach { connection.sendPacket(it) }
+    packet.forEach { connection.send(it) }
 }
 
 fun BlockPos.toLocation(world: World?) = Location(world, x.toDouble(), y.toDouble(), z.toDouble())

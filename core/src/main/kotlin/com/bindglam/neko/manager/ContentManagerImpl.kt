@@ -9,6 +9,8 @@ import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.content.item.CustomItemImpl
 import com.bindglam.neko.content.item.block.CustomBlockImpl
 import com.bindglam.neko.content.item.block.mechanism.NoteBlockMechanismFactory
+import com.bindglam.neko.utils.CUSTOM_BLOCK_PROPERTIES_CONFIGURABLE
+import com.bindglam.neko.utils.CUSTOM_ITEM_PROPERTIES_CONFIGURABLE
 import com.bindglam.neko.utils.NamespacedKeyDataType
 import com.bindglam.neko.utils.listFilesRecursively
 import com.bindglam.neko.utils.plugin
@@ -46,13 +48,13 @@ object ContentManagerImpl : ContentManager {
 
                             when(config.getString("type")) {
                                 "item" -> {
-                                    CustomItemImpl(key, Configurable.CUSTOM_ITEM_PROPERTIES.load(config.getConfigurationSection("properties.item")!!)!!).also {
+                                    CustomItemImpl(key, CUSTOM_ITEM_PROPERTIES_CONFIGURABLE.load(config.getConfigurationSection("properties.item")!!)!!).also {
                                         itemRegistry.register(key, it)
                                     }
                                 }
 
                                 "block" -> {
-                                    CustomBlockImpl(key, Configurable.CUSTOM_ITEM_PROPERTIES.load(config.getConfigurationSection("properties.item")!!)!!, Configurable.CUSTOM_BLOCK_PROPERTIES.load(config.getConfigurationSection("properties.block")!!)!!).also {
+                                    CustomBlockImpl(key, CUSTOM_ITEM_PROPERTIES_CONFIGURABLE.load(config.getConfigurationSection("properties.item")!!)!!, CUSTOM_BLOCK_PROPERTIES_CONFIGURABLE.load(config.getConfigurationSection("properties.block")!!)!!).also {
                                         itemRegistry.register(key, it)
                                         blockRegistry.register(key, it)
                                     }

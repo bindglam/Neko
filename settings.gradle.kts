@@ -9,4 +9,4 @@ pluginManagement {
 
 include("api")
 include("core")
-include("nms")
+include("nms:1_21_R5")
