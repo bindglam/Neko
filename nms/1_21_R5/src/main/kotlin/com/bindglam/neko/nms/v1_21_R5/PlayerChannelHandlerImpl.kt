@@ -42,8 +42,6 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
     }
 
     private fun <T : ClientGamePacketListener> Packet<in T>.handleClientbound(): Packet<in T>? {
-        when (this) {
-        }
         return this
     }
 
