@@ -5,6 +5,7 @@ import com.bindglam.neko.api.content.item.block.CustomBlockProperties
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.utils.ITEM_TYPE_CONFIGURABLE
 import com.bindglam.neko.utils.KEY_CONFIGURABLE
+import com.bindglam.neko.utils.getFactory
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 
@@ -17,7 +18,7 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
 
     override fun load(config: ConfigurationSection?): CustomBlockProperties? = config?.let { CustomBlockProperties(
         KEY_CONFIGURABLE.load(config.getString("block-model"))!!,
-        BuiltInRegistries.MECHANISMS.get(KEY_CONFIGURABLE.load(config.getString("mechanism"))),
+        BuiltInRegistries.MECHANISMS.getFactory(KEY_CONFIGURABLE.load(config.getString("mechanism")))!!,
         config.getDouble("hardness").toFloat(),
         CORRECT_TOOLS_CONFIGURABLE.load(config.getConfigurationSection("correct-tools")),
         DROPS_CONFIGURABLE.load(config.getConfigurationSection("drops"))

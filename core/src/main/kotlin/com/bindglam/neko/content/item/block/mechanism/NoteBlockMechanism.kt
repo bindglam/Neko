@@ -2,27 +2,30 @@ package com.bindglam.neko.content.item.block.mechanism
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.item.block.CustomBlock
-import com.bindglam.neko.api.content.item.block.mechanism.Mechanism
+import com.bindglam.neko.api.content.item.block.mechanism.BlockMechanism
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.api.pack.Packable
 import com.bindglam.neko.pack.block.BlockStateData
 import com.bindglam.neko.pack.block.BlockStateData.Variant
 import com.bindglam.neko.pack.block.VanillaInstruments
+import com.bindglam.neko.utils.plugin
 import com.bindglam.neko.utils.toPackPath
 import com.google.gson.Gson
 import net.kyori.adventure.key.Key
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.Note
 import org.bukkit.block.BlockState
 import org.bukkit.block.data.type.NoteBlock
 import org.bukkit.configuration.file.YamlConfiguration
 
-class NoteBlockMechanism(private val customBlock: CustomBlock) : Mechanism, Packable {
+class NoteBlockMechanism(private val customBlock: CustomBlock) : BlockMechanism, Packable {
     companion object {
-        private const val MAX_NOTE = 24
+        val KEY = NamespacedKey(NekoProvider.neko().plugin(), "note-block")
 
+        private const val MAX_NOTE = 24
         private val BLOCKSTATE_FILE = Key.key("minecraft:blockstates/note_block").toPackPath("json")
 
         private val GSON = Gson()

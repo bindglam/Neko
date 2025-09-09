@@ -2,7 +2,7 @@ package com.bindglam.neko.api.registry;
 
 import com.bindglam.neko.api.content.item.CustomItem;
 import com.bindglam.neko.api.content.item.block.CustomBlock;
-import com.bindglam.neko.api.content.item.block.mechanism.MechanismFactory;
+import com.bindglam.neko.api.content.MechanismFactory;
 
 public interface BuiltInRegistries {
     Registry<CustomItem> ITEMS = empty();
