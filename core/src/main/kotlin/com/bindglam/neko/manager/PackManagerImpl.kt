@@ -1,17 +1,11 @@
 package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.api.content.item.CustomItem
 import com.bindglam.neko.api.manager.PackManager
-import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.registry.BuiltInRegistries
-import com.bindglam.neko.pack.item.ItemData
 import com.bindglam.neko.pack.PackZipperImpl
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.plugin
-import com.bindglam.neko.utils.toPackPath
-import com.google.gson.Gson
-import net.kyori.adventure.key.Key
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.stream.Collectors
@@ -26,11 +20,11 @@ object PackManagerImpl : PackManager {
         if(!RESOURCEPACK_FOLDER.exists()) {
             RESOURCEPACK_FOLDER.mkdirs()
 
-            val writer = File(RESOURCEPACK_FOLDER, "pack.mcmeta").apply { createIfNotExists() }.bufferedWriter()
-            val preset = NekoProvider.neko().plugin().getResource("pack.mcmeta")!!.bufferedReader()
-            writer.write(preset.lines().collect(Collectors.joining(System.lineSeparator())))
-            writer.close()
-            preset.close()
+            File(RESOURCEPACK_FOLDER, "pack.mcmeta").apply { createIfNotExists() }.bufferedWriter().use { writer ->
+                NekoProvider.neko().plugin().getResource("pack.mcmeta")!!.bufferedReader().use { preset ->
+                    writer.write(preset.lines().collect(Collectors.joining(System.lineSeparator())))
+                }
+            }
         }
 
         pack()

@@ -38,11 +38,7 @@ object ContentManagerImpl : ContentManager {
         var cnt = 0
 
         BuiltInRegistries.ITEMS.lock { itemRegistry ->
-            itemRegistry.clear()
-
             BuiltInRegistries.BLOCKS.lock { blockRegistry ->
-                blockRegistry.clear()
-
                 CONTENTS_FOLDER.listFilesRecursively().forEach { file ->
                     YamlConfiguration.loadConfiguration(file).apply {
                         getKeys(false).stream().map { NamespacedKey.fromString(it)!! }.forEach { key ->
@@ -74,6 +70,8 @@ object ContentManagerImpl : ContentManager {
     }
 
     override fun end() {
+        BuiltInRegistries.ITEMS.lock { itemRegistry -> itemRegistry.clear() }
+        BuiltInRegistries.BLOCKS.lock { blockRegistry -> blockRegistry.clear() }
     }
 
     override fun customItem(key: Key): CustomItem? = BuiltInRegistries.ITEMS.getOrNull(key)
