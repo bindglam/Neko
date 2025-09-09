@@ -24,28 +24,16 @@ public record CustomBlockProperties(
             @Nullable List<ItemType> items
     ) {
         public boolean isCorrectTool(ItemStack itemStack) {
-            boolean isInTags = false;
-            boolean isInItemTypes = false;
-
             if(tags != null) {
-                for (Tag<Material> tag : tags) {
-                    if(tag.isTagged(itemStack.getType())) {
-                        isInTags = true;
-                        break;
-                    }
-                }
+                if(tags.stream().anyMatch((tag) -> tag.isTagged(itemStack.getType())))
+                    return true;
             }
 
             if(items != null) {
-                for(ItemType type : items) {
-                    if(itemStack.getType().asItemType() == type) {
-                        isInItemTypes = true;
-                        break;
-                    }
-                }
+                return items.stream().anyMatch((type) -> itemStack.getType().asItemType() == type);
             }
 
-            return isInTags || isInItemTypes;
+            return false;
         }
     }
 

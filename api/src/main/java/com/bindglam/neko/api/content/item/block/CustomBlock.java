@@ -7,6 +7,5 @@ import org.jetbrains.annotations.NotNull;
 public interface CustomBlock extends CustomItem {
     @NotNull CustomBlockProperties blockProperties();
 
-    @NotNull
-    Mechanism mechanism();
+    @NotNull Mechanism mechanism();
 }
