@@ -19,15 +19,6 @@ import java.util.function.Consumer
 
 class ItemListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    fun PlayerInteractEvent.tryUseCustomBlock() {
-        clickedBlock ?: return
-
-        NekoProvider.neko().contentManager().customBlock(clickedBlock!!) ?: return
-
-        isCancelled = true
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun PlayerInteractEvent.tryPlaceBlockOnCustomBlock() {
         clickedBlock ?: return
         item ?: return
