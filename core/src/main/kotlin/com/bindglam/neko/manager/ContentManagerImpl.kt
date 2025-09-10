@@ -5,16 +5,14 @@ import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.api.manager.ContentManager
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.content.item.CustomItemImpl
-import com.bindglam.neko.content.item.block.CustomBlockImpl
+import com.bindglam.neko.content.item.CustomItemLoader
+import com.bindglam.neko.content.item.block.CustomBlockLoader
 import com.bindglam.neko.content.item.block.mechanism.NoteBlockMechanism
 import com.bindglam.neko.content.item.block.mechanism.NoteBlockMechanismFactory
-import com.bindglam.neko.utils.CUSTOM_BLOCK_PROPERTIES_CONFIGURABLE
-import com.bindglam.neko.utils.CUSTOM_ITEM_PROPERTIES_CONFIGURABLE
 import com.bindglam.neko.utils.listFilesRecursively
 import de.tr7zw.changeme.nbtapi.NBT
 import net.kyori.adventure.key.Key
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
 import org.bukkit.block.BlockState
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.inventory.ItemStack
@@ -26,41 +24,24 @@ object ContentManagerImpl : ContentManager {
 
     private val CONTENTS_FOLDER = File("plugins/Neko/contents")
 
+    private val CONTENT_LOADERS = listOf(CustomItemLoader(), CustomBlockLoader())
+
     override fun start() {
-        BuiltInRegistries.MECHANISMS.lock { event ->
-            event.register(NoteBlockMechanism.KEY, NoteBlockMechanismFactory())
-        }
+        BuiltInRegistries.MECHANISMS.register(NoteBlockMechanism.KEY, NoteBlockMechanismFactory())
 
         if(!CONTENTS_FOLDER.exists())
             CONTENTS_FOLDER.mkdirs()
 
         var cnt = 0
 
-        BuiltInRegistries.ITEMS.lock { itemRegistry ->
-            BuiltInRegistries.BLOCKS.lock { blockRegistry ->
-                CONTENTS_FOLDER.listFilesRecursively().forEach { file ->
-                    YamlConfiguration.loadConfiguration(file).apply {
-                        getKeys(false).stream().map { NamespacedKey.fromString(it)!! }.forEach { key ->
-                            val config = getConfigurationSection(key.asString())!!
+        CONTENTS_FOLDER.listFilesRecursively().forEach { file ->
+            YamlConfiguration.loadConfiguration(file).apply {
+                getKeys(false).stream().map { Key.key(it) }.forEach { key ->
+                    val config = getConfigurationSection(key.asString())!!
 
-                            when(config.getString("type")) {
-                                "item" -> {
-                                    CustomItemImpl(key, CUSTOM_ITEM_PROPERTIES_CONFIGURABLE.load(config.getConfigurationSection("properties.item")!!)!!).also {
-                                        itemRegistry.register(key, it)
-                                    }
-                                }
+                    CONTENT_LOADERS.find { it.id() == config.getString("type")!! }!!.load(key, config)
 
-                                "block" -> {
-                                    CustomBlockImpl(key, CUSTOM_ITEM_PROPERTIES_CONFIGURABLE.load(config.getConfigurationSection("properties.item")!!)!!, CUSTOM_BLOCK_PROPERTIES_CONFIGURABLE.load(config.getConfigurationSection("properties.block")!!)!!).also {
-                                        itemRegistry.register(key, it)
-                                        blockRegistry.register(key, it)
-                                    }
-                                }
-                            }
-
-                            cnt++
-                        }
-                    }
+                    cnt++
                 }
             }
         }
@@ -69,8 +50,8 @@ object ContentManagerImpl : ContentManager {
     }
 
     override fun end() {
-        BuiltInRegistries.ITEMS.lock { itemRegistry -> itemRegistry.clear() }
-        BuiltInRegistries.BLOCKS.lock { blockRegistry -> blockRegistry.clear() }
+        BuiltInRegistries.ITEMS.clear()
+        BuiltInRegistries.BLOCKS.clear()
     }
 
     override fun customItem(key: Key): CustomItem? = BuiltInRegistries.ITEMS.getOrNull(key)

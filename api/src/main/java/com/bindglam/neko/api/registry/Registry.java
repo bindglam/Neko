@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Consumer;
 
 public interface Registry<T> extends Iterable<T> {
     @Nullable
@@ -22,5 +21,7 @@ public interface Registry<T> extends Iterable<T> {
     @Unmodifiable
     Set<Map.Entry<Key, T>> entrySet();
 
-    void lock(Consumer<RegistryEvent<T>> consumer);
+    void register(Key key, T value);
+
+    void clear();
 }

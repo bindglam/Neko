@@ -1,6 +1,6 @@
 package com.bindglam.neko.api.content.item.block;
 
-import com.bindglam.neko.api.content.MechanismFactory;
+import com.bindglam.neko.api.content.item.block.mechanism.MechanismFactory;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public record CustomBlockProperties(
         @NotNull Key blockModel,
-        @NotNull MechanismFactory<CustomBlock> mechanismFactory,
+        @NotNull MechanismFactory mechanismFactory,
         float hardness,
         @Nullable CorrectTools correctTools,
         @Nullable Drops drops

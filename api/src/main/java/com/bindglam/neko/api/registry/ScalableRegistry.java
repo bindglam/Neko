@@ -10,50 +10,30 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 
 @ApiStatus.Internal
 public class ScalableRegistry<T> implements Registry<T> {
     private final Map<Key, T> map = new HashMap<>();
 
-    private boolean isLocked = false;
 
     @Override
     public @Nullable T getOrNull(Key key) {
-        if(isLocked)
-            throw new IllegalStateException("Locked");
-
         return map.get(key);
     }
 
     @Override
     public @NotNull @Unmodifiable Set<Map.Entry<Key, T>> entrySet() {
-        if(isLocked)
-            throw new IllegalStateException("Locked");
-
         return map.entrySet();
     }
 
     @Override
-    public void lock(Consumer<RegistryEvent<T>> consumer) {
-        if(isLocked)
-            throw new IllegalStateException("Locked");
+    public synchronized void register(Key key, T value) {
+        map.put(key, value);
+    }
 
-        isLocked = true;
-
-        consumer.accept(new RegistryEvent<>() {
-            @Override
-            public void register(Key key, T value) {
-                map.put(key, value);
-            }
-
-            @Override
-            public void clear() {
-                map.clear();
-            }
-        });
-
-        isLocked = false;
+    @Override
+    public void clear() {
+        map.clear();
     }
 
     @Override
