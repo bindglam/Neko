@@ -2,6 +2,7 @@ package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.Neko
 import com.bindglam.neko.api.NekoProvider
+import com.bindglam.neko.api.content.glyph.GlyphBuilder
 import com.bindglam.neko.api.manager.CommandManager
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.utils.plugin
@@ -49,6 +50,20 @@ object CommandManagerImpl : CommandManager {
 
                         player.inventory.addItem(customItem.itemStack())
                         sender.sendMessage(Component.text("Successfully gave an item").color(NamedTextColor.GREEN))
+                    }),
+                CommandAPICommand("glyph")
+                    .withArguments(NamespacedKeyArgument("key"))
+                    .executes(CommandExecutor { sender, args ->
+                        val key = args["key"] as NamespacedKey
+
+                        val glyph = BuiltInRegistries.GLYPHS.getOrNull(key)
+
+                        if(glyph == null) {
+                            sender.sendMessage(Component.text("Unknown glyph key").color(NamedTextColor.RED))
+                            return@CommandExecutor
+                        }
+
+                        sender.sendMessage(glyph.component(GlyphBuilder(16)))
                     })
             )
             .register()

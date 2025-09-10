@@ -44,9 +44,9 @@ object PackManagerImpl : PackManager {
             entry.value.pack(zipper)
         }
 
-        /*BuiltInRegistries.BLOCKS.entrySet().forEach { entry ->
+        BuiltInRegistries.GLYPHS.entrySet().forEach { entry ->
             entry.value.pack(zipper)
-        }*/
+        }
 
         mergeResourcePacks(zipper)
 

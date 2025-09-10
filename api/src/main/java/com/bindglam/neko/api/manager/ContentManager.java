@@ -1,5 +1,6 @@
 package com.bindglam.neko.api.manager;
 
+import com.bindglam.neko.api.content.glyph.Glyph;
 import com.bindglam.neko.api.content.item.CustomItem;
 import com.bindglam.neko.api.content.item.block.CustomBlock;
 import net.kyori.adventure.key.Key;
@@ -20,4 +21,6 @@ public interface ContentManager extends ManagerBase, Reloadable {
     default @Nullable CustomBlock customBlock(Block block) {
         return customBlock(block.getState());
     }
+
+    @Nullable Glyph glyph(Key key);
 }

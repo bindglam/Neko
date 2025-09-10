@@ -1,9 +1,12 @@
 package com.bindglam.neko.manager
 
+import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.item.CustomItem
 import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.api.manager.ContentManager
 import com.bindglam.neko.api.registry.BuiltInRegistries
+import com.bindglam.neko.content.glyph.GlyphLoader
+import com.bindglam.neko.content.glyph.ShiftGlyph
 import com.bindglam.neko.content.item.CustomItemImpl
 import com.bindglam.neko.content.item.CustomItemLoader
 import com.bindglam.neko.content.item.block.CustomBlockLoader
@@ -24,10 +27,12 @@ object ContentManagerImpl : ContentManager {
 
     private val CONTENTS_FOLDER = File("plugins/Neko/contents")
 
-    private val CONTENT_LOADERS = listOf(CustomItemLoader(), CustomBlockLoader())
+    private val CONTENT_LOADERS = listOf(CustomItemLoader(), CustomBlockLoader(), GlyphLoader())
 
     override fun start() {
         BuiltInRegistries.MECHANISMS.register(NoteBlockMechanism.KEY, NoteBlockMechanismFactory())
+
+        BuiltInRegistries.GLYPHS.register(ShiftGlyph.KEY, ShiftGlyph())
 
         if(!CONTENTS_FOLDER.exists())
             CONTENTS_FOLDER.mkdirs()
@@ -52,6 +57,7 @@ object ContentManagerImpl : ContentManager {
     override fun end() {
         BuiltInRegistries.ITEMS.clear()
         BuiltInRegistries.BLOCKS.clear()
+        BuiltInRegistries.GLYPHS.clear()
     }
 
     override fun customItem(key: Key): CustomItem? = BuiltInRegistries.ITEMS.getOrNull(key)
@@ -75,4 +81,6 @@ object ContentManagerImpl : ContentManager {
             return if(it.isEmpty()) null else it[0]
         }
     }
+
+    override fun glyph(key: Key): Glyph? = BuiltInRegistries.GLYPHS.getOrNull(key)
 }

@@ -1,8 +1,9 @@
-package com.bindglam.neko.config
+package com.bindglam.neko.config.content
 
 import com.bindglam.neko.api.config.Configurable
 import com.bindglam.neko.api.content.item.block.CustomBlockProperties
 import com.bindglam.neko.api.registry.BuiltInRegistries
+import com.bindglam.neko.config.TagConfigurable
 import com.bindglam.neko.utils.ITEM_TYPE_CONFIGURABLE
 import com.bindglam.neko.utils.KEY_CONFIGURABLE
 import org.bukkit.Material

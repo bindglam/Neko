@@ -1,4 +1,4 @@
-package com.bindglam.neko.config
+package com.bindglam.neko.config.content
 
 import com.bindglam.neko.api.config.Configurable
 import com.bindglam.neko.api.content.item.CustomItemProperties
