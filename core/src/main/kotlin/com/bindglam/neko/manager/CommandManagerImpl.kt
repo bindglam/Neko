@@ -10,6 +10,7 @@ import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIBukkitConfig
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.CommandPermission
+import dev.jorel.commandapi.arguments.IntegerArgument
 import dev.jorel.commandapi.arguments.NamespacedKeyArgument
 import dev.jorel.commandapi.arguments.PlayerArgument
 import dev.jorel.commandapi.executors.CommandExecutor
@@ -52,9 +53,10 @@ object CommandManagerImpl : CommandManager {
                         sender.sendMessage(Component.text("Successfully gave an item").color(NamedTextColor.GREEN))
                     }),
                 CommandAPICommand("glyph")
-                    .withArguments(NamespacedKeyArgument("key"))
+                    .withArguments(NamespacedKeyArgument("key"), IntegerArgument("shift").setOptional(true))
                     .executes(CommandExecutor { sender, args ->
                         val key = args["key"] as NamespacedKey
+                        val shift = args["shift"] as Int?
 
                         val glyph = BuiltInRegistries.GLYPHS.getOrNull(key)
 
@@ -63,7 +65,7 @@ object CommandManagerImpl : CommandManager {
                             return@CommandExecutor
                         }
 
-                        sender.sendMessage(glyph.component(GlyphBuilder(16)))
+                        sender.sendMessage(glyph.component(GlyphBuilder(shift ?: 0)))
                     })
             )
             .register()

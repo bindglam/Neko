@@ -7,22 +7,21 @@ import com.bindglam.neko.api.content.glyph.GlyphProperties
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.pack.font.FontData
+import com.bindglam.neko.utils.NULL_KEY
 import com.bindglam.neko.utils.plugin
 import com.bindglam.neko.utils.toPackPath
 import com.google.gson.Gson
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import org.bukkit.NamespacedKey
-import kotlin.math.abs
 
 class ShiftGlyph : Glyph {
     companion object {
-        val KEY = NamespacedKey(NekoProvider.neko().plugin(), "shift")
+        private val CHARACTERS = linkedMapOf(
+            'a' to -1, 'b' to -2, 'c' to -4, 'd' to -8, 'e' to -16, 'f' to -32, 'g' to -64, 'h' to -128,
+            'i' to  1, 'j' to  2, 'k' to  4, 'l' to  8, 'm' to  16, 'n' to  32, 'o' to  64, 'v' to  128
+        )
 
-        private const val LEFT_CHARACTER = 'a'
-        private const val RIGHT_CHARACTER = 'b'
-
-        private val FONT_KEY = NamespacedKey(NekoProvider.neko().plugin(), "shift")
         private val FONT_FILE = NamespacedKey(NekoProvider.neko().plugin(), "font/shift")
 
         private val GSON = Gson()
@@ -37,19 +36,34 @@ class ShiftGlyph : Glyph {
         else
             FontData(arrayListOf())
 
-        val advances = hashMapOf<Char, Int>()
-        advances[LEFT_CHARACTER] = -1
-        advances[RIGHT_CHARACTER] = 1
-
-        data.providers.add(FontData.Space(advances))
+        data.providers.add(FontData.Space(CHARACTERS))
 
         GSON.toJson(data).toByteArray().also {
             zipper.addFile(path, PackFile({ it }, it.size.toLong()))
         }
     }
 
-    override fun component(builder: GlyphBuilder): Component = Component.text((if(builder.offsetX() < 0) LEFT_CHARACTER else RIGHT_CHARACTER).toString().repeat(builder.offsetX())).font(FONT_KEY)
+    override fun component(builder: GlyphBuilder): Component {
+        val result = StringBuilder()
 
-    override fun key(): Key = FONT_KEY
-    override fun properties(): GlyphProperties = GlyphProperties(Key.key("neko:null"), -32768, -10)
+        var leftMove = builder.offsetX()
+
+        val map = LinkedHashMap(CHARACTERS)
+        for (i in 0..<CHARACTERS.size) {
+            val entry = map.pollLastEntry()
+            val ch = entry.key
+            val move = entry.value
+
+            if(leftMove == 0) break
+            if (leftMove / move < 0) continue
+
+            result.append(ch.toString().repeat(leftMove / move))
+            leftMove -= move * (leftMove / move)
+        }
+
+        return Component.text(result.toString()).font(Glyph.SHIFT_GLYPH_KEY)
+    }
+
+    override fun key(): Key = Glyph.SHIFT_GLYPH_KEY
+    override fun properties(): GlyphProperties = GlyphProperties(NULL_KEY, -32768, -10)
 }

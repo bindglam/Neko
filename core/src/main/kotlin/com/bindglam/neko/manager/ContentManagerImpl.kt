@@ -32,7 +32,7 @@ object ContentManagerImpl : ContentManager {
     override fun start() {
         BuiltInRegistries.MECHANISMS.register(NoteBlockMechanism.KEY, NoteBlockMechanismFactory())
 
-        BuiltInRegistries.GLYPHS.register(ShiftGlyph.KEY, ShiftGlyph())
+        BuiltInRegistries.GLYPHS.register(Glyph.SHIFT_GLYPH_KEY, ShiftGlyph())
 
         if(!CONTENTS_FOLDER.exists())
             CONTENTS_FOLDER.mkdirs()

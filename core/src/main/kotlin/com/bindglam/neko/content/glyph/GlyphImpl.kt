@@ -62,7 +62,7 @@ class GlyphImpl(private val key: Key, private val properties: GlyphProperties) :
         }
     }
 
-    override fun component(builder: GlyphBuilder): Component = BuiltInRegistries.GLYPHS.get(ShiftGlyph.KEY).component(builder).append(Component.text(character).font(fontKey))
+    override fun component(builder: GlyphBuilder): Component = BuiltInRegistries.GLYPHS.get(Glyph.SHIFT_GLYPH_KEY).component(builder).append(Component.text(character).font(fontKey))
 
     override fun key(): Key = key
     override fun properties(): GlyphProperties = properties
