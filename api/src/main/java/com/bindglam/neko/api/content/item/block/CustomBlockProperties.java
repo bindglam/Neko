@@ -16,7 +16,8 @@ public record CustomBlockProperties(
         @NotNull MechanismFactory mechanismFactory,
         float hardness,
         @Nullable CorrectTools correctTools,
-        @Nullable Drops drops
+        @Nullable Drops drops,
+        @Nullable Sounds sounds
 ) {
 
     public record CorrectTools(
@@ -46,5 +47,11 @@ public record CustomBlockProperties(
                 float chance
         ) {
         }
+    }
+
+    public record Sounds(
+            @Nullable Key placeSound,
+            @Nullable Key breakSound
+    ) {
     }
 }

@@ -14,6 +14,7 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
         private val CORRECT_TOOLS_CONFIGURABLE = CorrectToolsConfigurable()
         private val DROPS_CONFIGURABLE = DropsConfigurable()
         private val DROP_DATA_CONFIGURABLE = DropsConfigurable.DropDataConfigurable()
+        private val SOUNDS_CONFIGURABLE = SoundsConfigurable()
     }
 
     override fun load(config: ConfigurationSection?): CustomBlockProperties? = config?.let { CustomBlockProperties(
@@ -21,7 +22,8 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
         BuiltInRegistries.MECHANISMS.get(KEY_CONFIGURABLE.load(config.getString("mechanism"))),
         config.getDouble("hardness").toFloat(),
         CORRECT_TOOLS_CONFIGURABLE.load(config.getConfigurationSection("correct-tools")),
-        DROPS_CONFIGURABLE.load(config.getConfigurationSection("drops"))
+        DROPS_CONFIGURABLE.load(config.getConfigurationSection("drops")),
+        SOUNDS_CONFIGURABLE.load(config.getConfigurationSection("sounds"))
     ) }
 
 
@@ -42,5 +44,12 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
                 CustomBlockProperties.Drops.DropData(ITEM_TYPE_CONFIGURABLE.load(config.getString("item")), config.getInt("experience"), config.getDouble("chance", 1.0).toFloat())
             }
         }
+    }
+
+    private class SoundsConfigurable : Configurable<CustomBlockProperties.Sounds, ConfigurationSection> {
+        override fun load(config: ConfigurationSection?): CustomBlockProperties.Sounds? = config?.let { CustomBlockProperties.Sounds(
+            KEY_CONFIGURABLE.load(config.getString("place"))!!,
+            KEY_CONFIGURABLE.load(config.getString("break"))!!
+        ) }
     }
 }

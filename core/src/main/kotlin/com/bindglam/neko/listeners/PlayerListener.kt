@@ -8,6 +8,7 @@ import io.papermc.paper.event.player.PlayerArmSwingEvent
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys
+import net.kyori.adventure.sound.Sound
 import org.bukkit.FluidCollisionMode
 import org.bukkit.GameEvent
 import org.bukkit.GameMode
@@ -67,6 +68,12 @@ class PlayerListener : Listener {
                     .data(block.blockData.clone())
                     .spawn()
                 block.type = Material.AIR
+
+                val breakSound = if(customBlock.blockProperties().sounds() != null && customBlock.blockProperties().sounds()!!.breakSound() != null)
+                    Sound.sound(customBlock.blockProperties().sounds()!!.breakSound()!!, Sound.Source.BLOCK, 1f, 1f)
+                else
+                    Sound.sound(org.bukkit.Sound.BLOCK_METAL_BREAK, Sound.Source.BLOCK, 1f, 1f)
+                block.world.playSound(breakSound, Sound.Emitter.self())
 
                 if(blockBreakSpeedData.isCorrectTool) {
                     dropItems(block, customBlock)

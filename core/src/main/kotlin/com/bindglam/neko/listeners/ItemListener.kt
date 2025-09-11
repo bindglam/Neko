@@ -3,6 +3,7 @@ package com.bindglam.neko.listeners
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.utils.isReplaceable
+import net.kyori.adventure.sound.Sound
 import org.bukkit.GameEvent
 import org.bukkit.GameMode
 import org.bukkit.Location
@@ -33,7 +34,7 @@ class ItemListener : Listener {
         if(player.canPlaceBlock(location)) {
             isCancelled = true
 
-            player.placeBlock(location, { it.block.type = item!!.type }, clickedBlock!!, hand!!)
+            player.placeBlock(location, { it.block.type = item!!.type }, clickedBlock!!, hand!!, Sound.sound(item!!.type.createBlockData().soundGroup.placeSound, Sound.Source.BLOCK, 1f, 1f))
         }
     }
 
@@ -54,11 +55,16 @@ class ItemListener : Listener {
         if(player.canPlaceBlock(location)) {
             isCancelled = true
 
-            player.placeBlock(location, { customBlock.mechanism().place(it) }, clickedBlock!!, hand!!)
+            val placeSound = if(customBlock.blockProperties().sounds() != null && customBlock.blockProperties().sounds()!!.placeSound() != null)
+                Sound.sound(customBlock.blockProperties().sounds()!!.placeSound()!!, Sound.Source.BLOCK, 1f, 1f)
+            else
+                Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f)
+
+            player.placeBlock(location, { customBlock.mechanism().place(it) }, clickedBlock!!, hand!!, placeSound)
         }
     }
 
-    private fun Player.placeBlock(location: Location, placeAction: Consumer<Location>, placedAgainst: Block, hand: EquipmentSlot) {
+    private fun Player.placeBlock(location: Location, placeAction: Consumer<Location>, placedAgainst: Block, hand: EquipmentSlot, placeSound: Sound) {
         val item = inventory.getItem(hand)
 
         val prevBlockData = location.block.blockData.clone()
@@ -72,6 +78,8 @@ class ItemListener : Listener {
             location.block.blockData = prevBlockData
             return
         }
+
+        playSound(placeSound)
 
         if(gameMode != GameMode.CREATIVE)
             item.amount -= 1
