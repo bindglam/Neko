@@ -16,7 +16,7 @@ A powerful and easy-to-use Paper plugin that allows you to create fully custom i
 - **Developer API**: Provides a simple API for other plugins to interact with your custom content.
 
 ## ⛓️ Requirements
-- **Server Version**: Paper (or a fork of Paper) for Minecraft 1.21.4 or higher.
+- **Server Version**: Paper (or a fork of Paper) for Minecraft 1.21.8 or higher.
 
 ## 📥 Installation
 1. Download the latest version of the plugin from the [Releases](https://https://github.com/bindglam/Neko/releases) page.
@@ -25,6 +25,31 @@ A powerful and easy-to-use Paper plugin that allows you to create fully custom i
 4. Restart your server. The plugin will generate its default configuration files.
 
 ## 🧑‍💻 For Developers (API)
+build.gradle.kts
+```kotlin
+repositories {
+    maven { url = uri("https://jitpack.io") }
+}
+
+dependencies {
+    implementation("com.github.bindglam.Neko:api:0.0.1")
+}
+```
+
+Item:
+```java
+BuiltInRegistries.ITEMS.get(Key.key("defaultassets:ruby"));
+```
+
+Block:
+```java
+BuiltInRegistries.BLOCKS.get(Key.key("defaultassets:ruby_block"));
+```
+
+Glyph:
+```java
+BuiltInRegistries.GLYPHS.get(Key.key("defaultassets:ruby_glyph"));
+```
 
 ## 🛠️ Support and Bug Reports
 If you encounter any issues or have a suggestion, please open an issue on our [GitHub Issues](https://github.com/bindglam/Neko/issues) page.
