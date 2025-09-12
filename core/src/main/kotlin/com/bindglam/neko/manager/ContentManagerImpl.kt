@@ -34,21 +34,19 @@ object ContentManagerImpl : ContentManager {
         if(!CONTENTS_FOLDER.exists())
             CONTENTS_FOLDER.mkdirs()
 
-        var cnt = 0
-
         CONTENTS_FOLDER.listFilesRecursively().forEach { file ->
             YamlConfiguration.loadConfiguration(file).apply {
                 getKeys(false).stream().map { Key.key(it) }.forEach { key ->
                     val config = getConfigurationSection(key.asString())!!
 
                     CONTENT_LOADERS.find { it.id() == config.getString("type")!! }!!.load(key, config)
-
-                    cnt++
                 }
             }
         }
 
-        LOGGER.info("$cnt items loaded")
+        LOGGER.info("${BuiltInRegistries.ITEMS.size()} items loaded")
+        LOGGER.info("${BuiltInRegistries.BLOCKS.size()} blocks loaded")
+        LOGGER.info("${BuiltInRegistries.GLYPHS.size()} glyphs loaded")
     }
 
     override fun end() {

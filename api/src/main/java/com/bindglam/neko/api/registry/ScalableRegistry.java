@@ -40,4 +40,9 @@ public class ScalableRegistry<T> implements Registry<T> {
     public @NotNull Iterator<T> iterator() {
         return map.values().iterator();
     }
+
+    @Override
+    public int size() {
+        return map.size();
+    }
 }

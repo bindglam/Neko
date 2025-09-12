@@ -24,4 +24,6 @@ public interface Registry<T> extends Iterable<T> {
     void register(Key key, T value);
 
     void clear();
+
+    int size();
 }
