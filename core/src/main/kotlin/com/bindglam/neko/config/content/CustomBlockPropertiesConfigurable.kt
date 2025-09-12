@@ -13,7 +13,6 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
     companion object {
         private val CORRECT_TOOLS_CONFIGURABLE = CorrectToolsConfigurable()
         private val DROPS_CONFIGURABLE = DropsConfigurable()
-        private val DROP_DATA_CONFIGURABLE = DropsConfigurable.DropDataConfigurable()
         private val SOUNDS_CONFIGURABLE = SoundsConfigurable()
     }
 
@@ -35,6 +34,10 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
     }
 
     private class DropsConfigurable : Configurable<CustomBlockProperties.Drops, ConfigurationSection> {
+        companion object {
+            private val DROP_DATA_CONFIGURABLE = DropDataConfigurable()
+        }
+
         override fun load(config: ConfigurationSection?): CustomBlockProperties.Drops? = config?.let {
             CustomBlockProperties.Drops(config.getKeys(false).map { key -> DROP_DATA_CONFIGURABLE.load(config.getConfigurationSection(key)) })
         }

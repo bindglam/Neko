@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection
 
 class CustomItemPropertiesConfigurable : Configurable<CustomItemProperties, ConfigurationSection> {
     override fun load(config: ConfigurationSection?): CustomItemProperties? = config?.let { CustomItemProperties(
-        ITEM_TYPE_CONFIGURABLE.load(config.getString("type"))!!,
+        ITEM_TYPE_CONFIGURABLE.load(config.getString("type"))!!.itemStack().type.asItemType()!!,
         COMPONENT_CONFIGURABLE.load(config.getString("display-name")),
         Configurable.parseAsList(config.getStringList("lore"), COMPONENT_CONFIGURABLE),
         KEY_CONFIGURABLE.load(config.getString("item-model"))

@@ -9,6 +9,7 @@ import com.bindglam.neko.utils.toPackPath
 import com.google.gson.Gson
 import de.tr7zw.changeme.nbtapi.NBT
 import net.kyori.adventure.key.Key
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 
@@ -43,5 +44,19 @@ open class CustomItemImpl(private val key: NamespacedKey, private val properties
         NBT.modify(this) { nbt ->
             nbt.setString(ITEM_KEY_TAG, key.asString())
         }
+    }
+
+    override fun isSame(other: ItemStack?): Boolean {
+        other ?: return false
+
+        if(other.amount == 0 || other.type == Material.AIR)
+            return false
+
+        val nbt = NBT.readNbt(other)
+
+        if(!nbt.hasTag(ITEM_KEY_TAG))
+            return false
+
+        return key.asString() == nbt.getString(ITEM_KEY_TAG)
     }
 }

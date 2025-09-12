@@ -125,7 +125,7 @@ class PlayerListener : Listener {
                 if(random > data.chance()) return@forEach
 
                 if(data.item() != null) {
-                    dropItem(data.item()!!.createItemStack())
+                    dropItem(data.item()!!.itemStack().clone())
                 }
 
                 if(data.experience() > 0.0f) {
