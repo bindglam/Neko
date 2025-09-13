@@ -10,8 +10,8 @@ import org.bukkit.configuration.ConfigurationSection
 class CustomItemPropertiesConfigurable : Configurable<CustomItemProperties, ConfigurationSection> {
     override fun load(config: ConfigurationSection?): CustomItemProperties? = config?.let { CustomItemProperties(
         ITEM_TYPE_CONFIGURABLE.load(config.getString("type"))!!.itemStack().type.asItemType()!!,
-        config.getRichMessage("display-name"),
+        config.getRichMessage("name"),
         config.getStringList("lore").map { MiniMessage.miniMessage().deserialize(it) },
-        KEY_CONFIGURABLE.load(config.getString("item-model"))
+        KEY_CONFIGURABLE.load(config.getString("model"))
     ) }
 }

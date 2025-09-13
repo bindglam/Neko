@@ -9,9 +9,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public record CustomItemProperties(
-        @NotNull ItemType itemType,
-        @Nullable Component displayName,
+        @NotNull ItemType type,
+        @Nullable Component name,
         @Nullable List<Component> lore,
-        @Nullable Key itemModel
+        @Nullable Key model
 ){
 }

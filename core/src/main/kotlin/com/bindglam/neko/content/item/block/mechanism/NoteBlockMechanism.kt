@@ -75,7 +75,7 @@ class NoteBlockMechanism(private val customBlock: CustomBlock) : Mechanism, Pack
         else
             BlockStateData(hashMapOf())
 
-        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note}"] = Variant(customBlock.blockProperties().blockModel().asString())
+        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note}"] = Variant(customBlock.blockProperties().model().asString())
 
         GSON.toJson(blockStateData).toByteArray().also {
             zipper.addFile(BLOCKSTATE_FILE, PackFile({ it }, it.size.toLong()))

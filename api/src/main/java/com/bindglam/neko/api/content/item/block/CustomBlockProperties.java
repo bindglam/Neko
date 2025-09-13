@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public record CustomBlockProperties(
-        @NotNull Key blockModel,
+        @NotNull Key model,
         @NotNull MechanismFactory mechanismFactory,
         float hardness,
         @Nullable CorrectTools correctTools,
