@@ -54,7 +54,7 @@ BuiltInRegistries.GLYPHS.get(Key.key("defaultassets:ruby_glyph"));
 ## 🛠️ Support and Bug Reports
 If you encounter any issues or have a suggestion, please open an issue on our [GitHub Issues](https://github.com/bindglam/Neko/issues) page.
 
-For general questions and support, join our [Discord Server](https://discord.gg/your-invite-code).
+For general questions and support, join our [Discord Server](https://discord.gg/CZEabRCuK8).
 
 ## 📬 Contributing
 We welcome contributions! If you'd like to contribute, please fork the repository and submit a pull request.
