@@ -17,20 +17,21 @@ import java.net.URI
 class SelfHost : PackHost {
     companion object {
         private val LOGGER = LoggerFactory.getLogger(SelfHost::class.java)
+
+        private const val DEFAULT_HOSTNAME = "localhost"
+        private const val DEFAULT_PORT = 1980
     }
 
     private lateinit var httpServer: HttpServer
 
-    private var hostname: String = "localhost"
-    private var port: Int = 1980
+    private lateinit var uri: URI
 
     override fun start(config: ConfigurationSection) {
-        hostname = config.getString("host", hostname)!!
-        port = config.getInt("port", port)
-
         LOGGER.info("Starting self-host...")
 
-        httpServer = HttpServer.create(InetSocketAddress(port), 0)
+        uri = URI.create("http://${config.getString("host", DEFAULT_HOSTNAME)}:${config.getInt("port", DEFAULT_PORT)}")
+
+        httpServer = HttpServer.create(InetSocketAddress(uri.port), 0)
         httpServer.createContext("/", RequestHandler())
 
         Bukkit.getAsyncScheduler().runNow(NekoProvider.neko().plugin()) {
@@ -46,7 +47,7 @@ class SelfHost : PackHost {
 
     override fun sendPack(player: Player, message: Component) {
         player.sendResourcePacks(ResourcePackRequest.resourcePackRequest().prompt(message).required(true)
-            .packs(ResourcePackInfo.resourcePackInfo(NekoProvider.neko().packManager().packId(), URI.create("http://${hostname}:${port}"), NekoProvider.neko().packManager().packHash())).build())
+            .packs(NekoProvider.neko().packManager().packInfo(uri)).build())
     }
 
     override fun id(): String = "selfhost"

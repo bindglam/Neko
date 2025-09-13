@@ -8,10 +8,13 @@ import com.bindglam.neko.pack.PackZipperImpl
 import com.bindglam.neko.pack.host.selfhost.SelfHost
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.plugin
+import net.kyori.adventure.resource.ResourcePackInfo
+import net.kyori.adventure.resource.ResourcePackInfoLike
 import org.bukkit.configuration.file.YamlConfiguration
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.math.BigInteger
+import java.net.URI
 import java.security.MessageDigest
 import java.util.UUID
 import java.util.stream.Collectors
@@ -22,8 +25,7 @@ object PackManagerImpl : PackManager {
     private val PACK_HOSTS = listOf(SelfHost())
     private val HASH_DIGEST = MessageDigest.getInstance("MD5")
 
-    private var packId = UUID.randomUUID()
-    private var packHash = ""
+    private lateinit var packInfo: ResourcePackInfo.Builder
 
     private var packHost: PackHost? = null
 
@@ -38,16 +40,8 @@ object PackManagerImpl : PackManager {
             }
         }
 
-        val cacheFile = NekoProvider.neko().cacheManager().getCache("pack.yml")
-        if(cacheFile == null) {
-            NekoProvider.neko().cacheManager().saveCache("pack.yml") { YamlConfiguration.loadConfiguration(it).also { it.set("id", packId.toString()) }.save(it) }
-        } else {
-            packId = UUID.fromString(YamlConfiguration.loadConfiguration(cacheFile).getString("id"))
-        }
-
         pack()
-
-        packHash = BigInteger(1, HASH_DIGEST.digest(PackManager.BUILD_ZIP.inputStream().readBytes())).toString(16)
+        buildPackInfo()
 
         NekoProvider.neko().plugin().config.also { config ->
             packHost = PACK_HOSTS.find { config.getBoolean("pack.host.${it.id()}.enabled") }
@@ -101,8 +95,21 @@ object PackManagerImpl : PackManager {
         }
     }
 
+    private fun buildPackInfo() {
+        val packHash = BigInteger(1, HASH_DIGEST.digest(PackManager.BUILD_ZIP.inputStream().readBytes())).toString(16)
+        var packUUID = UUID.randomUUID()
+
+        val cacheFile = NekoProvider.neko().cacheManager().getCache("pack.yml")
+        if(cacheFile == null) {
+            NekoProvider.neko().cacheManager().saveCache("pack.yml") { YamlConfiguration.loadConfiguration(it).also { it.set("id", packUUID.toString()) }.save(it) }
+        } else {
+            packUUID = UUID.fromString(YamlConfiguration.loadConfiguration(cacheFile).getString("id"))
+        }
+
+        packInfo = ResourcePackInfo.resourcePackInfo().id(packUUID).hash(packHash)
+    }
+
     override fun getFile(path: String): File = File(RESOURCEPACK_FOLDER, path)
-    override fun packId(): UUID = packId
-    override fun packHash(): String = packHash
+    override fun packInfo(uri: URI): ResourcePackInfo = packInfo.uri(uri).build()
     override fun packHost(): PackHost? = packHost
 }
