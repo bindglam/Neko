@@ -9,7 +9,6 @@ import com.bindglam.neko.pack.host.selfhost.SelfHost
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.plugin
 import net.kyori.adventure.resource.ResourcePackInfo
-import net.kyori.adventure.resource.ResourcePackInfoLike
 import org.bukkit.configuration.file.YamlConfiguration
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -21,9 +20,11 @@ import java.util.stream.Collectors
 
 object PackManagerImpl : PackManager {
     private val LOGGER = LoggerFactory.getLogger(PackManager::class.java)
+
     private val RESOURCEPACK_FOLDER = File("plugins/Neko/resourcepack")
-    private val PACK_HOSTS = listOf(SelfHost())
     private val HASH_DIGEST = MessageDigest.getInstance("MD5")
+
+    private val PACK_HOSTS = listOf(SelfHost())
 
     private lateinit var packInfo: ResourcePackInfo.Builder
 
