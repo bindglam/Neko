@@ -4,17 +4,9 @@ import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.content.item.block.MiningHelper
 import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.event.player.PlayerArmSwingEvent
-import io.papermc.paper.registry.RegistryAccess
-import io.papermc.paper.registry.RegistryKey
-import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys
 import net.kyori.adventure.sound.Sound
-import org.bukkit.FluidCollisionMode
-import org.bukkit.GameEvent
-import org.bukkit.GameMode
-import org.bukkit.Material
-import org.bukkit.Particle
-import org.bukkit.Tag
+import net.kyori.adventure.text.Component
+import org.bukkit.*
 import org.bukkit.block.Block
 import org.bukkit.entity.ExperienceOrb
 import org.bukkit.entity.Player
@@ -32,6 +24,8 @@ class PlayerListener : Listener {
     @EventHandler
     fun PlayerJoinEvent.onJoin() {
         NekoProvider.neko().playerNetworkManager().inject(player)
+
+        NekoProvider.neko().packManager().packHost()?.sendPack(player, Component.text("리로스팩 테스트"))
     }
 
     @EventHandler
