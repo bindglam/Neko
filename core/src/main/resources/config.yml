@@ -10,3 +10,5 @@ pack:
 
     packs:
       - BetterModel/build
+
+  prompt-message: <white><bold>Neko <yellow>requires resource pack for high-quality gameplay.

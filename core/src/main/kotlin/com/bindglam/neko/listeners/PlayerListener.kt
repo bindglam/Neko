@@ -3,10 +3,11 @@ package com.bindglam.neko.listeners
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.content.item.block.MiningHelper
+import com.bindglam.neko.utils.plugin
 import io.papermc.paper.datacomponent.DataComponentTypes
 import net.kyori.adventure.sound.Sound
-import net.kyori.adventure.text.Component
 import org.bukkit.*
+import org.bukkit.attribute.Attribute
 import org.bukkit.block.Block
 import org.bukkit.entity.ExperienceOrb
 import org.bukkit.entity.Player
@@ -25,7 +26,7 @@ class PlayerListener : Listener {
     fun PlayerJoinEvent.onJoin() {
         NekoProvider.neko().playerNetworkManager().inject(player)
 
-        NekoProvider.neko().packManager().packHost()?.sendPack(player, Component.text("리로스팩 테스트"))
+        NekoProvider.neko().packManager().packHost()?.sendPack(player, NekoProvider.neko().plugin().config.getRichMessage("pack.prompt-message")!!);
     }
 
     @EventHandler
@@ -37,7 +38,8 @@ class PlayerListener : Listener {
     fun PlayerAnimationEvent.tryBreakCustomBlock() {
         if (player.gameMode != GameMode.SURVIVAL) return
 
-        val block = player.getTargetBlockExact(3, FluidCollisionMode.NEVER) ?: return
+        val result = player.rayTraceBlocks(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)?.value ?: 3.0, FluidCollisionMode.NEVER) ?: return
+        val block = result.hitBlock ?: return
         val customBlock = NekoProvider.neko().contentManager().customBlock(block) ?: return
 
         val blockBreakSpeedData = blockBreakSpeed(player, customBlock)
