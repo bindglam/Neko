@@ -23,7 +23,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 
 class NoteBlockMechanism(private val customBlock: CustomBlock) : Mechanism, Packable {
     companion object {
-        val KEY = NamespacedKey(NekoProvider.neko().plugin(), "note-block")
+        val KEY = NamespacedKey(NekoProvider.neko().plugin(), "note_block")
 
         private const val MAX_NOTE = 24
         private val BLOCKSTATE_FILE = Key.key("minecraft:blockstates/note_block").toPackPath("json")
