@@ -20,6 +20,5 @@ class CustomBlockImpl(key: NamespacedKey, itemProperties: CustomItemProperties, 
     }
 
     override fun blockProperties(): CustomBlockProperties = blockProperties
-
     override fun mechanism(): Mechanism = mechanism
 }
