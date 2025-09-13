@@ -14,8 +14,6 @@ dependencies {
     rootProject.project("nms").subprojects.forEach {
         implementation(project(":nms:${it.name}"))
     }
-
-    compileOnly("com.github.ben-manes.caffeine:caffeine:3.2.2")
 }
 
 paperPluginYaml {
