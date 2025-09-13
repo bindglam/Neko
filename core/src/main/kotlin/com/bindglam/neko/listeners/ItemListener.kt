@@ -55,8 +55,8 @@ class ItemListener : Listener {
         if(player.canPlaceBlock(location)) {
             isCancelled = true
 
-            val placeSound = if(customBlock.blockProperties().sounds() != null && customBlock.blockProperties().sounds()!!.placeSound() != null)
-                Sound.sound(customBlock.blockProperties().sounds()!!.placeSound()!!, Sound.Source.BLOCK, 1f, 1f)
+            val placeSound = if(customBlock.blockProperties().sounds() != null)
+                Sound.sound(customBlock.blockProperties().sounds()!!.placeSound(), Sound.Source.BLOCK, 1f, 1f)
             else
                 Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f)
 

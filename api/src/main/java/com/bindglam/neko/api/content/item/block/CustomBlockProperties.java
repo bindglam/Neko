@@ -52,8 +52,8 @@ public record CustomBlockProperties(
     }
 
     public record Sounds(
-            @Nullable Key placeSound,
-            @Nullable Key breakSound
+            @NotNull Key placeSound,
+            @NotNull Key breakSound
     ) {
     }
 }

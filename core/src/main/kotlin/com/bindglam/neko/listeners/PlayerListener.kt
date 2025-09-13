@@ -65,8 +65,8 @@ class PlayerListener : Listener {
                     .spawn()
                 block.type = Material.AIR
 
-                val breakSound = if(customBlock.blockProperties().sounds() != null && customBlock.blockProperties().sounds()!!.breakSound() != null)
-                    Sound.sound(customBlock.blockProperties().sounds()!!.breakSound()!!, Sound.Source.BLOCK, 1f, 1f)
+                val breakSound = if(customBlock.blockProperties().sounds() != null)
+                    Sound.sound(customBlock.blockProperties().sounds()!!.breakSound(), Sound.Source.BLOCK, 1f, 1f)
                 else
                     Sound.sound(org.bukkit.Sound.BLOCK_METAL_BREAK, Sound.Source.BLOCK, 1f, 1f)
                 block.world.playSound(breakSound, Sound.Emitter.self())
