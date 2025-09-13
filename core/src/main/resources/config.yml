@@ -1,4 +1,10 @@
 pack:
+  host:
+    selfhost:
+      enabled: true
+      host: localhost
+      port: 1980
+
   merge-resource-packs:
     merge-after-packing: true
 
