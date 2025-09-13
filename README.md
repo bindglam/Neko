@@ -59,5 +59,8 @@ For general questions and support, join our [Discord Server](https://discord.gg/
 ## 📬 Contributing
 We welcome contributions! If you'd like to contribute, please fork the repository and submit a pull request.
 
+## 🧪 Inspired by
+- [BetterModel](https://github.com/toxicity188/BetterModel) by toxicity188
+
 ## 📃 License
 This project is licensed under the [MIT License](https://github.com/bindglam/Neko/blob/main/LICENSE).
