@@ -54,8 +54,8 @@ class ParallelIOThreadPool : AutoCloseable {
             queue
         }
 
-        runBlocking(pool) {
-            tasks.map { async { it() } }.awaitAll()
+        runBlocking {
+            tasks.map { async(pool) { it() } }.awaitAll()
         }
     }
 }

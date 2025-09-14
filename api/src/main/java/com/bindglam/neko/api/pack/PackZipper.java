@@ -28,5 +28,5 @@ public interface PackZipper {
 
     @Nullable PackFile file(String path);
 
-    void build(Runnable onDone);
+    void build();
 }

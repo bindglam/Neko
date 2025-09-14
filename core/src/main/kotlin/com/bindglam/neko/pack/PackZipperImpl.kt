@@ -34,7 +34,7 @@ class PackZipperImpl(private val buildFile: File) : PackZipper {
 
     override fun file(path: String): PackFile? = entries[path]
 
-    override fun build(onDone: Runnable) {
+    override fun build() {
         buildFile.createIfNotExists()
 
         ZipOutputStream(FileOutputStream(buildFile)).apply {
@@ -44,8 +44,6 @@ class PackZipperImpl(private val buildFile: File) : PackZipper {
                 zipStream.closeEntry()
             }
 
-            var cnt = AtomicInteger()
-
             parallelThreadPool.forEachParallel(entries.entries.toList(), { it.value.size }) { entry ->
                 val bytes = entry.value.bytes.get()
 
@@ -53,10 +51,6 @@ class PackZipperImpl(private val buildFile: File) : PackZipper {
                     zipStream.putNextEntry(ZipEntry(entry.key))
                     zipStream.write(bytes)
                     zipStream.closeEntry()
-
-                    if(cnt.incrementAndGet() >= entries.size) {
-                        onDone.run()
-                    }
                 }
             }
         }
