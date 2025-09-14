@@ -8,7 +8,6 @@ import com.bindglam.neko.api.manager.PackManager
 import com.bindglam.neko.api.manager.PlayerNetworkManager
 import com.bindglam.neko.api.manager.Reloadable
 import com.bindglam.neko.api.nms.NMSHook
-import com.bindglam.neko.listeners.BlockListener
 import com.bindglam.neko.listeners.InventoryListener
 import com.bindglam.neko.listeners.ItemListener
 import com.bindglam.neko.listeners.PlayerListener
@@ -48,7 +47,6 @@ class NekoPlugin : Neko, JavaPlugin() {
 
         server.pluginManager.registerEvents(ItemListener(), this)
         server.pluginManager.registerEvents(PlayerListener(), this)
-        server.pluginManager.registerEvents(BlockListener(), this)
         server.pluginManager.registerEvents(InventoryListener(), this)
 
         val version = MCVersion.parse(Bukkit.getBukkitVersion().substringBefore('-'))
