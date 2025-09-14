@@ -65,7 +65,7 @@ object CommandManagerImpl : CommandManager {
                             return@CommandExecutor
                         }
 
-                        sender.sendMessage(glyph.component(GlyphBuilder(shift ?: 0)))
+                        sender.sendMessage(glyph.component(GlyphBuilder.builder().offsetX(shift ?: 0)))
                     })
             )
             .register()

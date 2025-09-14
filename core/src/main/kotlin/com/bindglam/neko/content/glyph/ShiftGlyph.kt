@@ -65,5 +65,5 @@ class ShiftGlyph : Glyph {
     }
 
     override fun key(): Key = Glyph.SHIFT_GLYPH_KEY
-    override fun properties(): GlyphProperties = GlyphProperties(NULL_KEY, -32768, -10)
+    override fun properties(): GlyphProperties = GlyphProperties.builder().texture(NULL_KEY).offsetY(-32768).scale(-10)
 }

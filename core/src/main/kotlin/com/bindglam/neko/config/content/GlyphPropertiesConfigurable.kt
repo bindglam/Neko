@@ -6,9 +6,9 @@ import com.bindglam.neko.utils.KEY_CONFIGURABLE
 import org.bukkit.configuration.ConfigurationSection
 
 class GlyphPropertiesConfigurable : Configurable<GlyphProperties, ConfigurationSection> {
-    override fun load(config: ConfigurationSection?): GlyphProperties? = config?.let { GlyphProperties(
-        KEY_CONFIGURABLE.load(config.getString("texture"))!!,
-        config.getInt("offset-y"),
-        config.getInt("scale")
-    ) }
+    override fun load(config: ConfigurationSection?): GlyphProperties? = config?.let { GlyphProperties.builder()
+        .texture(KEY_CONFIGURABLE.load(config.getString("texture"))!!)
+        .offsetY(config.getInt("offset-y"))
+        .scale(config.getInt("scale"))
+    }
 }
