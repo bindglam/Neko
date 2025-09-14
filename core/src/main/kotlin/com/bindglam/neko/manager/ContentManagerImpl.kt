@@ -27,9 +27,9 @@ object ContentManagerImpl : ContentManager {
     private val CONTENT_LOADERS = listOf(CustomItemLoader(), CustomBlockLoader(), GlyphLoader())
 
     override fun start() {
-        BuiltInRegistries.MECHANISMS.register(NoteBlockMechanism.KEY, NoteBlockMechanismFactory())
+        registerInternalContents()
 
-        BuiltInRegistries.GLYPHS.register(Glyph.SHIFT_GLYPH_KEY, ShiftGlyph())
+        val startMillis = System.currentTimeMillis()
 
         if(!CONTENTS_FOLDER.exists())
             CONTENTS_FOLDER.mkdirs()
@@ -47,6 +47,13 @@ object ContentManagerImpl : ContentManager {
         LOGGER.info("${BuiltInRegistries.ITEMS.size()} items loaded")
         LOGGER.info("${BuiltInRegistries.BLOCKS.size()} blocks loaded")
         LOGGER.info("${BuiltInRegistries.GLYPHS.size()} glyphs loaded")
+        LOGGER.info("Successfully loaded in ${System.currentTimeMillis() - startMillis}ms")
+    }
+
+    private fun registerInternalContents() {
+        BuiltInRegistries.MECHANISMS.register(NoteBlockMechanism.KEY, NoteBlockMechanismFactory())
+
+        BuiltInRegistries.GLYPHS.register(Glyph.SHIFT_GLYPH_KEY, ShiftGlyph())
     }
 
     override fun end() {
