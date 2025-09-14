@@ -16,14 +16,14 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
         private val SOUNDS_CONFIGURABLE = SoundsConfigurable()
     }
 
-    override fun load(config: ConfigurationSection?): CustomBlockProperties? = config?.let { CustomBlockProperties(
-        KEY_CONFIGURABLE.load(config.getString("model"))!!,
-        BuiltInRegistries.MECHANISMS.get(KEY_CONFIGURABLE.load(config.getString("mechanism"))),
-        config.getDouble("hardness").toFloat(),
-        CORRECT_TOOLS_CONFIGURABLE.load(config.getConfigurationSection("correct-tools")),
-        DROPS_CONFIGURABLE.load(config.getConfigurationSection("drops")),
-        SOUNDS_CONFIGURABLE.load(config.getConfigurationSection("sounds"))
-    ) }
+    override fun load(config: ConfigurationSection?): CustomBlockProperties? = config?.let { CustomBlockProperties.builder()
+        .model(KEY_CONFIGURABLE.load(config.getString("model"))!!)
+        .mechanismFactory(BuiltInRegistries.MECHANISMS.get(KEY_CONFIGURABLE.load(config.getString("mechanism"))))
+        .hardness(config.getDouble("hardness").toFloat())
+        .correctTools(CORRECT_TOOLS_CONFIGURABLE.load(config.getConfigurationSection("correct-tools")))
+        .drops(DROPS_CONFIGURABLE.load(config.getConfigurationSection("drops")))
+        .sounds(SOUNDS_CONFIGURABLE.load(config.getConfigurationSection("sounds")))
+    }
 
 
     private class CorrectToolsConfigurable : Configurable<CustomBlockProperties.CorrectTools, ConfigurationSection> {

@@ -9,10 +9,10 @@ import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemType
 
 class CustomItemPropertiesConfigurable : Configurable<CustomItemProperties, ConfigurationSection> {
-    override fun load(config: ConfigurationSection?): CustomItemProperties? = config?.let { CustomItemProperties(
-        ITEM_TYPE_CONFIGURABLE.load(config.getString("type"))?.itemStack()?.type?.asItemType() ?: ItemType.PAPER,
-        config.getRichMessage("name"),
-        config.getStringList("lore").map { MiniMessage.miniMessage().deserialize(it) },
-        KEY_CONFIGURABLE.load(config.getString("model"))
-    ) }
+    override fun load(config: ConfigurationSection?): CustomItemProperties? = config?.let { CustomItemProperties.builder()
+        .type(ITEM_TYPE_CONFIGURABLE.load(config.getString("type"))?.itemStack()?.type?.asItemType() ?: ItemType.PAPER)
+        .name(config.getRichMessage("name"))
+        .lore(config.getStringList("lore").map { MiniMessage.miniMessage().deserialize(it) })
+        .model(KEY_CONFIGURABLE.load(config.getString("model")))
+    }
 }

@@ -11,16 +11,100 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public record CustomBlockProperties(
-        @NotNull Key model,
-        @NotNull MechanismFactory mechanismFactory,
-        float hardness,
-        @Nullable CorrectTools correctTools,
-        @Nullable Drops drops,
-        @Nullable Sounds sounds
-) {
+public sealed interface CustomBlockProperties {
+    @NotNull Key model();
 
-    public record CorrectTools(
+    @NotNull MechanismFactory mechanismFactory();
+
+    float hardness();
+
+    @Nullable CorrectTools correctTools();
+
+    @Nullable Drops drops();
+
+    @Nullable Sounds sounds();
+
+
+    static Builder builder() {
+        return new Builder();
+    }
+
+    final class Builder implements CustomBlockProperties {
+        private Key model;
+        private MechanismFactory mechanismFactory;
+        private float hardness;
+        private CorrectTools correctTools;
+        private Drops drops;
+        private Sounds sounds;
+
+        private Builder() {
+        }
+
+
+        public Builder model(Key model) {
+            this.model = model;
+            return this;
+        }
+
+        public Builder mechanismFactory(MechanismFactory mechanismFactory) {
+            this.mechanismFactory = mechanismFactory;
+            return this;
+        }
+
+        public Builder hardness(float hardness) {
+            this.hardness = hardness;
+            return this;
+        }
+
+        public Builder correctTools(CorrectTools correctTools) {
+            this.correctTools = correctTools;
+            return this;
+        }
+
+        public Builder drops(Drops drops) {
+            this.drops = drops;
+            return this;
+        }
+
+        public Builder sounds(Sounds sounds) {
+            this.sounds = sounds;
+            return this;
+        }
+
+
+        @Override
+        public @NotNull Key model() {
+            return model;
+        }
+
+        @Override
+        public @NotNull MechanismFactory mechanismFactory() {
+            return mechanismFactory;
+        }
+
+        @Override
+        public float hardness() {
+            return hardness;
+        }
+
+        @Override
+        public @Nullable CorrectTools correctTools() {
+            return correctTools;
+        }
+
+        @Override
+        public @Nullable Drops drops() {
+            return drops;
+        }
+
+        @Override
+        public @Nullable Sounds sounds() {
+            return sounds;
+        }
+    }
+
+
+    record CorrectTools(
             @Nullable List<Tag<Material>> tags,
             @Nullable List<ItemStackHolder> items
     ) {
@@ -40,20 +124,18 @@ public record CustomBlockProperties(
         }
     }
 
-    public record Drops(
+    record Drops(
             @Nullable List<DropData> dataList
     ) {
         public record DropData(
                 @Nullable ItemStackHolder item,
                 int experience,
                 float chance
-        ) {
-        }
+        ) {}
     }
 
-    public record Sounds(
+    record Sounds(
             @NotNull Key placeSound,
             @NotNull Key breakSound
-    ) {
-    }
+    ) {}
 }
