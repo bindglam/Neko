@@ -86,7 +86,8 @@ object PackManagerImpl : PackManager {
 
         if(mergeAfterPacking) {
             mergePacks.map { File("plugins/${it}") }.forEach { pack ->
-                zipper.addDirectory(pack)
+                if(pack.exists())
+                    zipper.addDirectory(pack)
             }
         }
     }
