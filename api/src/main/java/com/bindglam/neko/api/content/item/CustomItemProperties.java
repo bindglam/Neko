@@ -1,7 +1,7 @@
 package com.bindglam.neko.api.content.item;
 
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +15,7 @@ public sealed interface CustomItemProperties {
 
     @Nullable List<Component> lore();
 
-    @Nullable Key model();
+    @Nullable NamespacedKey model();
 
 
     static Builder builder() {
@@ -26,7 +26,7 @@ public sealed interface CustomItemProperties {
         private ItemType type;
         private Component name;
         private List<Component> lore;
-        private Key model;
+        private NamespacedKey model;
 
         private Builder() {
         }
@@ -47,7 +47,7 @@ public sealed interface CustomItemProperties {
             return this;
         }
 
-        public Builder model(Key model) {
+        public Builder model(NamespacedKey model) {
             this.model = model;
             return this;
         }
@@ -69,7 +69,7 @@ public sealed interface CustomItemProperties {
         }
 
         @Override
-        public @Nullable Key model() {
+        public @Nullable NamespacedKey model() {
             return model;
         }
     }

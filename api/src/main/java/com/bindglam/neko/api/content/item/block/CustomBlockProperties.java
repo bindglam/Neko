@@ -4,6 +4,7 @@ import com.bindglam.neko.api.content.item.ItemStackHolder;
 import com.bindglam.neko.api.content.item.block.mechanism.MechanismFactory;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public sealed interface CustomBlockProperties {
-    @NotNull Key model();
+    @NotNull NamespacedKey model();
 
     @NotNull MechanismFactory mechanismFactory();
 
@@ -30,7 +31,7 @@ public sealed interface CustomBlockProperties {
     }
 
     final class Builder implements CustomBlockProperties {
-        private Key model;
+        private NamespacedKey model;
         private MechanismFactory mechanismFactory;
         private float hardness;
         private CorrectTools correctTools;
@@ -41,7 +42,7 @@ public sealed interface CustomBlockProperties {
         }
 
 
-        public Builder model(Key model) {
+        public Builder model(NamespacedKey model) {
             this.model = model;
             return this;
         }
@@ -73,7 +74,7 @@ public sealed interface CustomBlockProperties {
 
 
         @Override
-        public @NotNull Key model() {
+        public @NotNull NamespacedKey model() {
             return model;
         }
 

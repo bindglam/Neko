@@ -1,6 +1,5 @@
 package com.bindglam.neko.api.content.item;
 
-import net.kyori.adventure.key.Key;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -31,8 +30,7 @@ public class CustomItem implements Keyed, ItemStackHolder {
             meta.itemName(properties.name());
             meta.lore(properties.lore());
 
-            Key model = properties.model();
-            if(model != null)
+            if(properties.model() != null)
                 meta.setItemModel(key);
         });
 

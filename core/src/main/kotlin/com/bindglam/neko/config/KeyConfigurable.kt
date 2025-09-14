@@ -2,7 +2,8 @@ package com.bindglam.neko.config
 
 import com.bindglam.neko.api.config.Configurable
 import net.kyori.adventure.key.Key
+import org.bukkit.NamespacedKey
 
-class KeyConfigurable : Configurable<Key, String> {
-    override fun load(value: String?): Key? = value?.let { Key.key(value) }
+class KeyConfigurable : Configurable<NamespacedKey, String> {
+    override fun load(value: String?): NamespacedKey? = value?.let { NamespacedKey.fromString(value) }
 }
