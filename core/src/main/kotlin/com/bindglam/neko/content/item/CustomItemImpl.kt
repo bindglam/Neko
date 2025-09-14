@@ -20,21 +20,7 @@ open class CustomItemImpl(private val key: NamespacedKey, private val properties
         private val GSON = Gson()
     }
 
-    override fun pack(zipper: PackZipper) {
-        val modelPath = properties.model() ?: return
-
-        GSON.toJson(ItemData(ItemData.Model(ItemData.Type.MODEL, modelPath.asString()))).toByteArray().also {
-            val filePath = Key.key(key.namespace(), "items/${key.value()}").toPackPath("json")
-
-            zipper.addFile(filePath, PackFile({ it }, it.size.toLong()))
-        }
-    }
-
-    override fun itemProperties(): CustomItemProperties = properties
-
-    override fun key(): Key = key
-
-    override fun itemStack(): ItemStack = properties.type().createItemStack().apply {
+    private val preMadeItemStack = properties.type().createItemStack().apply {
         itemMeta = itemMeta.apply {
             itemName(properties.name())
             lore(properties.lore())
@@ -43,6 +29,16 @@ open class CustomItemImpl(private val key: NamespacedKey, private val properties
 
         NBT.modify(this) { nbt ->
             nbt.setString(ITEM_KEY_TAG, key.asString())
+        }
+    }
+
+    override fun pack(zipper: PackZipper) {
+        val modelPath = properties.model() ?: return
+
+        GSON.toJson(ItemData(ItemData.Model(ItemData.Type.MODEL, modelPath.asString()))).toByteArray().also {
+            val filePath = Key.key(key.namespace(), "items/${key.value()}").toPackPath("json")
+
+            zipper.addFile(filePath, PackFile({ it }, it.size.toLong()))
         }
     }
 
@@ -59,4 +55,8 @@ open class CustomItemImpl(private val key: NamespacedKey, private val properties
 
         return key.asString() == nbt.getString(ITEM_KEY_TAG)
     }
+
+    override fun itemProperties(): CustomItemProperties = properties
+    override fun key(): Key = key
+    override fun itemStack(): ItemStack = preMadeItemStack.clone()
 }
