@@ -14,6 +14,7 @@ dependencies {
     rootProject.project("nms").subprojects.forEach {
         implementation(project(":nms:${it.name}"))
     }
+    implementation(libs.kotlinxCoroutines)
 }
 
 paperPluginYaml {
