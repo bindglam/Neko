@@ -3,8 +3,8 @@ package com.bindglam.neko.manager
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.manager.PackManager
 import com.bindglam.neko.api.pack.host.PackHost
-import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.pack.PackZipperImpl
+import com.bindglam.neko.pack.PackerApplier
 import com.bindglam.neko.pack.host.selfhost.SelfHost
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.plugin
@@ -15,7 +15,7 @@ import java.io.File
 import java.math.BigInteger
 import java.net.URI
 import java.security.MessageDigest
-import java.util.UUID
+import java.util.*
 import java.util.stream.Collectors
 
 object PackManagerImpl : PackManager {
@@ -42,6 +42,7 @@ object PackManagerImpl : PackManager {
         }
 
         pack()
+
         buildPackInfo()
 
         NekoProvider.neko().plugin().config.also { config ->
@@ -62,13 +63,7 @@ object PackManagerImpl : PackManager {
 
         val zipper = PackZipperImpl(PackManager.BUILD_ZIP)
 
-        BuiltInRegistries.ITEMS.entrySet().forEach { entry ->
-            entry.value.pack(zipper)
-        }
-
-        BuiltInRegistries.GLYPHS.entrySet().forEach { entry ->
-            entry.value.pack(zipper)
-        }
+        PackerApplier.apply(zipper)
 
         mergeResourcePacks(zipper)
 

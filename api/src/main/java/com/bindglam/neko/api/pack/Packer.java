@@ -2,6 +2,6 @@ package com.bindglam.neko.api.pack;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface Packable {
-    void pack(@NotNull PackZipper zipper);
+public interface Packer<T> {
+    void pack(@NotNull PackZipper zipper, T object);
 }
