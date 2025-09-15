@@ -2,10 +2,9 @@ package com.bindglam.neko.content.item.block.mechanism
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.item.block.CustomBlock
-import com.bindglam.neko.api.content.item.block.mechanism.Mechanism
+import com.bindglam.neko.api.content.item.block.mechanism.BlockMechanism
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
-import com.bindglam.neko.api.pack.Packer
 import com.bindglam.neko.pack.block.BlockStateData
 import com.bindglam.neko.pack.block.BlockStateData.Variant
 import com.bindglam.neko.pack.block.VanillaInstruments
@@ -21,7 +20,7 @@ import org.bukkit.block.BlockState
 import org.bukkit.block.data.type.NoteBlock
 import org.bukkit.configuration.file.YamlConfiguration
 
-class NoteBlockMechanism(private val customBlock: CustomBlock) : Mechanism {
+class NoteBlockMechanism(private val customBlock: CustomBlock) : BlockMechanism {
     companion object {
         val KEY = NamespacedKey(NekoProvider.neko().plugin(), "note_block")
 
