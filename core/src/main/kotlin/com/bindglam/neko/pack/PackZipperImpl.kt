@@ -9,14 +9,12 @@ import com.bindglam.neko.utils.parallelIOThreadPool
 import com.bindglam.neko.utils.toPackFile
 import java.io.File
 import java.io.FileOutputStream
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 class PackZipperImpl(private val buildFile: File) : PackZipper {
-    private val parallelThreadPool = parallelIOThreadPool()
+    private val pool = parallelIOThreadPool()
 
-    private val folders = hashSetOf<String>()
     private val entries = hashMapOf<String, PackFile>()
 
     override fun addFile(name: String, file: PackFile) {
@@ -25,9 +23,6 @@ class PackZipperImpl(private val buildFile: File) : PackZipper {
 
     override fun addDirectory(folder: File) {
         folder.listFilesRecursively().forEach {
-            if(it.parentFile.path != folder.path)
-                folders.add(it.parentFile.getRelativePath(folder.path, "/"))
-
             entries[it.getRelativePath(folder.path, "/")] = it.toPackFile()
         }
     }
@@ -39,12 +34,7 @@ class PackZipperImpl(private val buildFile: File) : PackZipper {
 
         ZipOutputStream(FileOutputStream(buildFile)).apply {
         }.use { zipStream ->
-            folders.forEach { path ->
-                zipStream.putNextEntry(ZipEntry("${path}/"))
-                zipStream.closeEntry()
-            }
-
-            parallelThreadPool.forEachParallel(entries.entries.toList(), { it.value.size }) { entry ->
+            pool.forEachParallel(entries.entries.toList(), { it.value.size }) { entry ->
                 val bytes = entry.value.bytes.get()
 
                 synchronized(zipStream) {
@@ -54,5 +44,9 @@ class PackZipperImpl(private val buildFile: File) : PackZipper {
                 }
             }
         }
+    }
+
+    override fun close() {
+        pool.close()
     }
 }

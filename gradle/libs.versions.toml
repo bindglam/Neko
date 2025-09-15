@@ -2,8 +2,6 @@
 kotlin = "2.2.0"
 lombok = "1.18.38"
 
-kotlinxCoroutines = "1.10.2"
-
 resourceFactory = "1.3.1"
 runTask = "2.3.1"
 shadow = "9.0.2"
@@ -12,8 +10,6 @@ paperweight = "2.0.0-beta.18"
 [libraries]
 kotlinJvm = { group = "org.jetbrains.kotlin.jvm", name = "org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlin" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
-
-kotlinxCoroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 
 [plugins]
 resourceFactory-paper = { id = "xyz.jpenilla.resource-factory-paper-convention", version.ref = "resourceFactory" }

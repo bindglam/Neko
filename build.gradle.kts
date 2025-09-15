@@ -39,6 +39,5 @@ tasks {
         }
         prefix("kotlin")
         prefix("dev.jorel.commandapi")
-        prefix("de.tr7zw.changeme.nbtapi")
     }
 }

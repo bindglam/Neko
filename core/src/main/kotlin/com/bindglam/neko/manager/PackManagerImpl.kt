@@ -68,6 +68,7 @@ object PackManagerImpl : PackManager {
         mergeResourcePacks(zipper)
 
         zipper.build()
+        zipper.close()
 
         LOGGER.info("Successfully generated resourcepack (${System.currentTimeMillis() - startMillis}ms)")
     }

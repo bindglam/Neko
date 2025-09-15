@@ -8,13 +8,11 @@ repositories {
 }
 
 dependencies {
-    implementation("de.tr7zw:item-nbt-api:2.15.2")
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:10.1.2")
     implementation(project(":api"))
     rootProject.project("nms").subprojects.forEach {
         implementation(project(":nms:${it.name}"))
     }
-    implementation(libs.kotlinxCoroutines)
 }
 
 paperPluginYaml {

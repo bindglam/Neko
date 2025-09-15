@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public interface PackZipper {
+public interface PackZipper extends AutoCloseable {
     void addFile(String path, PackFile file);
 
     default void addFile(File file) {

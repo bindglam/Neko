@@ -11,10 +11,15 @@ fun File.createIfNotExists() {
         createNewFile()
 }
 
-fun File.listFilesRecursively(): List<File> = ArrayList<File>().apply {
-    listFiles().forEach { file ->
+fun File.listFilesRecursively(): List<File> = arrayListOf<File>().apply {
+    val queue = arrayListOf<File>()
+    queue.addAll(listFiles())
+
+    while(queue.isNotEmpty()) {
+        val file = queue.removeFirst()
+
         if(file.isDirectory)
-            addAll(file.listFilesRecursively())
+            queue.addAll(file.listFiles())
         else
             add(file)
     }

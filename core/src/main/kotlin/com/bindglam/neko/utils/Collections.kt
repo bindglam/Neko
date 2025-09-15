@@ -1,10 +1,8 @@
 package com.bindglam.neko.utils
 
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.newFixedThreadPoolContext
-import kotlinx.coroutines.runBlocking
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 
 // ParallelIOThreadPool By toxicity188
 fun parallelIOThreadPool() = try {
@@ -17,9 +15,13 @@ fun parallelIOThreadPool() = try {
 // ParallelIOThreadPool By toxicity188
 class ParallelIOThreadPool : AutoCloseable {
     private val available = Runtime.getRuntime().availableProcessors() * 2
-
-    @OptIn(DelicateCoroutinesApi::class)
-    private val pool = newFixedThreadPoolContext(available, "Neko-Worker-Dispatcher")
+    private val integer = AtomicInteger()
+    private val pool = Executors.newFixedThreadPool(available) {
+        Thread(it).apply {
+            isDaemon = true
+            name = "Neko-Worker-${integer.andIncrement}"
+        }
+    }
 
     override fun close() {
         pool.close()
@@ -53,9 +55,12 @@ class ParallelIOThreadPool : AutoCloseable {
             }
             queue
         }
-
-        runBlocking {
-            tasks.map { async(pool) { it() } }.awaitAll()
-        }
+        CompletableFuture.allOf(
+            *tasks.map {
+                CompletableFuture.runAsync({
+                    it()
+                }, pool)
+            }.toTypedArray()
+        ).join()
     }
 }
