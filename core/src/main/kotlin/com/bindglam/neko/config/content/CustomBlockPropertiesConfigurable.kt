@@ -1,10 +1,7 @@
 package com.bindglam.neko.config.content
 
 import com.bindglam.neko.api.config.Configurable
-import com.bindglam.neko.api.content.MechanismFactory
-import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.api.content.item.block.CustomBlockProperties
-import com.bindglam.neko.api.content.item.block.mechanism.BlockMechanism
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.config.TagConfigurable
 import com.bindglam.neko.utils.ITEM_TYPE_CONFIGURABLE
@@ -21,7 +18,7 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
 
     override fun load(config: ConfigurationSection?): CustomBlockProperties? = config?.let { CustomBlockProperties.builder()
         .model(KEY_CONFIGURABLE.load(config.getString("model"))!!)
-        .mechanismFactory(BuiltInRegistries.MECHANISMS.get(KEY_CONFIGURABLE.load(config.getString("mechanism"))).`as`(CustomBlock::class.java))
+        .mechanismFactory(BuiltInRegistries.MECHANISMS.get(KEY_CONFIGURABLE.load(config.getString("mechanism"))))
         .hardness(config.getDouble("hardness").toFloat())
         .correctTools(CORRECT_TOOLS_CONFIGURABLE.load(config.getConfigurationSection("correct-tools")))
         .drops(DROPS_CONFIGURABLE.load(config.getConfigurationSection("drops")))

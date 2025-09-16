@@ -1,5 +1,10 @@
 package com.bindglam.neko.api.content.item;
 
+import com.bindglam.neko.api.pack.PackFile;
+import com.bindglam.neko.api.pack.PackZipper;
+import com.bindglam.neko.api.pack.Packable;
+import com.bindglam.neko.api.pack.minecraft.item.ItemData;
+import com.google.gson.Gson;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -8,8 +13,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class CustomItem implements Keyed, ItemStackHolder {
+public class CustomItem implements Keyed, ItemStackHolder, Packable {
     private static final NamespacedKey NEKO_ITEM_PDC_KEY = new NamespacedKey("neko", "item");
+    private static final Gson GSON = new Gson();
 
     private final NamespacedKey key;
     private final CustomItemProperties properties;
@@ -29,9 +35,7 @@ public class CustomItem implements Keyed, ItemStackHolder {
         itemStack.editMeta((meta) -> {
             meta.itemName(properties.name());
             meta.lore(properties.lore());
-
-            if(properties.model() != null)
-                meta.setItemModel(key);
+            meta.setItemModel(key);
         });
 
         itemStack.editPersistentDataContainer((dataContainer) -> {
@@ -40,7 +44,16 @@ public class CustomItem implements Keyed, ItemStackHolder {
     }
 
     @Override
-    public ItemStack itemStack() {
+    public void pack(@NotNull PackZipper zipper) {
+        byte[] data = GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().asString()))).getBytes();
+
+        String filePath = "assets/" + key.namespace() + "/items/" + key.value() + ".json";
+
+        zipper.addFile(filePath, new PackFile(() -> data, data.length));
+    }
+
+    @Override
+    public @NotNull ItemStack itemStack() {
         return itemStack;
     }
 
@@ -54,8 +67,7 @@ public class CustomItem implements Keyed, ItemStackHolder {
         return key;
     }
 
-    @NotNull
-    public CustomItemProperties itemProperties() {
+    public @NotNull CustomItemProperties itemProperties() {
         return properties;
     }
 }

@@ -1,6 +1,6 @@
 package com.bindglam.neko.api.content.item.block;
 
-import com.bindglam.neko.api.content.MechanismFactory;
+import com.bindglam.neko.api.content.item.block.mechanism.BlockMechanismFactory;
 import com.bindglam.neko.api.content.item.ItemStackHolder;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
@@ -15,7 +15,7 @@ import java.util.List;
 public sealed interface CustomBlockProperties {
     @NotNull NamespacedKey model();
 
-    @NotNull MechanismFactory<CustomBlock> mechanismFactory();
+    @NotNull BlockMechanismFactory mechanismFactory();
 
     float hardness();
 
@@ -32,7 +32,7 @@ public sealed interface CustomBlockProperties {
 
     final class Builder implements CustomBlockProperties {
         private NamespacedKey model;
-        private MechanismFactory<CustomBlock> mechanismFactory;
+        private BlockMechanismFactory mechanismFactory;
         private float hardness;
         private CorrectTools correctTools;
         private Drops drops;
@@ -47,7 +47,7 @@ public sealed interface CustomBlockProperties {
             return this;
         }
 
-        public Builder mechanismFactory(MechanismFactory<CustomBlock> mechanismFactory) {
+        public Builder mechanismFactory(BlockMechanismFactory mechanismFactory) {
             this.mechanismFactory = mechanismFactory;
             return this;
         }
@@ -79,7 +79,7 @@ public sealed interface CustomBlockProperties {
         }
 
         @Override
-        public @NotNull MechanismFactory<CustomBlock> mechanismFactory() {
+        public @NotNull BlockMechanismFactory mechanismFactory() {
             return mechanismFactory;
         }
 

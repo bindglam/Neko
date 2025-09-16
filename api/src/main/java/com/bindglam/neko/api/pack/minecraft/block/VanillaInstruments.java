@@ -1,8 +1,12 @@
-package com.bindglam.neko.pack.block
+package com.bindglam.neko.api.pack.minecraft.block;
 
-import org.bukkit.Instrument
+import org.bukkit.Instrument;
+import org.jetbrains.annotations.NotNull;
 
-enum class VanillaInstruments(val bukkit: Instrument) {
+import java.util.HashMap;
+import java.util.Map;
+
+public enum VanillaInstruments {
     BANJO(Instrument.BANJO),
     BASS(Instrument.BASS_GUITAR),
     BELL(Instrument.BELL),
@@ -27,11 +31,23 @@ enum class VanillaInstruments(val bukkit: Instrument) {
     ZOMBIE(Instrument.ZOMBIE),
     ;
 
-    companion object {
-        private val BY_BUKKIT = hashMapOf<Instrument, VanillaInstruments>().apply {
-            VanillaInstruments.entries.forEach { this[it.bukkit] = it }
+    private static final Map<Instrument, VanillaInstruments> BY_BUKKIT = new HashMap<>() {{
+        for (VanillaInstruments instrument : VanillaInstruments.values()) {
+            put(instrument.getBukkit(), instrument);
         }
+    }};
 
-        fun getByBukkit(instrument: Instrument): VanillaInstruments = BY_BUKKIT[instrument]!!
+    final Instrument bukkit;
+
+    VanillaInstruments(Instrument bukkit) {
+        this.bukkit = bukkit;
+    }
+
+    public Instrument getBukkit() {
+        return bukkit;
+    }
+
+    public static @NotNull VanillaInstruments getByBukkit(Instrument instrument) {
+        return BY_BUKKIT.get(instrument);
     }
 }

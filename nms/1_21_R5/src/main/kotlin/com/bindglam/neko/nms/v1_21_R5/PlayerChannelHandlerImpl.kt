@@ -8,14 +8,8 @@ import io.netty.channel.ChannelPromise
 import net.minecraft.network.Connection
 import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientGamePacketListener
-import net.minecraft.network.protocol.game.ClientboundUpdateAttributesPacket
 import net.minecraft.network.protocol.game.ServerGamePacketListener
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket
-import net.minecraft.network.protocol.game.ServerboundSwingPacket
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.entity.ai.attributes.AttributeModifier
-import net.minecraft.world.entity.ai.attributes.Attributes
-import org.bukkit.FluidCollisionMode
 import org.bukkit.GameMode
 import org.bukkit.craftbukkit.util.CraftLocation
 import org.bukkit.entity.Player

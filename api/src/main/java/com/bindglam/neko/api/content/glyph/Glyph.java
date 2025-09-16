@@ -1,7 +1,12 @@
 package com.bindglam.neko.api.content.glyph;
 
 import com.bindglam.neko.api.NekoProvider;
+import com.bindglam.neko.api.pack.PackFile;
+import com.bindglam.neko.api.pack.PackZipper;
+import com.bindglam.neko.api.pack.Packable;
+import com.bindglam.neko.api.pack.minecraft.font.FontData;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
+import com.google.gson.Gson;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
@@ -11,9 +16,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class Glyph implements Keyed {
+public class Glyph implements Keyed, Packable {
+    private static final Gson GSON = new Gson();
+
     public static final NamespacedKey SHIFT_GLYPH_KEY = new NamespacedKey("neko", "shift");
 
     private final NamespacedKey key;
@@ -58,6 +67,24 @@ public class Glyph implements Keyed {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    @Override
+    public void pack(@NotNull PackZipper zipper) {
+        String path = "assets/" + key.namespace() + "/font/default.json";
+
+        PackFile fontFile = zipper.file(path);
+
+        FontData data = new FontData(new ArrayList<>());
+        if(fontFile != null)
+            data = GSON.fromJson(new String(fontFile.bytes().get()), FontData.class);
+
+        // TODO : sprite sheet
+        data.providers().add(new FontData.Bitmap(properties.texture().asString() + ".png", properties.scale(), properties.offsetY(), List.of(character)));
+
+        byte[] output = GSON.toJson(data).getBytes();
+
+        zipper.addFile(path, new PackFile(() -> output, output.length));
     }
 
     @NotNull

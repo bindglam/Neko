@@ -15,7 +15,7 @@ public sealed interface CustomItemProperties {
 
     @Nullable List<Component> lore();
 
-    @Nullable NamespacedKey model();
+    @NotNull NamespacedKey model();
 
 
     static Builder builder() {
@@ -69,7 +69,7 @@ public sealed interface CustomItemProperties {
         }
 
         @Override
-        public @Nullable NamespacedKey model() {
+        public @NotNull NamespacedKey model() {
             return model;
         }
     }

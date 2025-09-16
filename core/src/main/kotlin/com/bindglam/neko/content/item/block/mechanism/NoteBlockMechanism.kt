@@ -5,9 +5,9 @@ import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.api.content.item.block.mechanism.BlockMechanism
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
-import com.bindglam.neko.pack.block.BlockStateData
-import com.bindglam.neko.pack.block.BlockStateData.Variant
-import com.bindglam.neko.pack.block.VanillaInstruments
+import com.bindglam.neko.api.pack.Packable
+import com.bindglam.neko.api.pack.minecraft.block.BlockStateData
+import com.bindglam.neko.api.pack.minecraft.block.VanillaInstruments
 import com.bindglam.neko.utils.plugin
 import com.bindglam.neko.utils.toPackPath
 import com.google.gson.Gson
@@ -20,7 +20,7 @@ import org.bukkit.block.BlockState
 import org.bukkit.block.data.type.NoteBlock
 import org.bukkit.configuration.file.YamlConfiguration
 
-class NoteBlockMechanism(private val customBlock: CustomBlock) : BlockMechanism {
+class NoteBlockMechanism(private val customBlock: CustomBlock) : BlockMechanism, Packable {
     companion object {
         val KEY = NamespacedKey(NekoProvider.neko().plugin(), "note_block")
 
@@ -66,7 +66,7 @@ class NoteBlockMechanism(private val customBlock: CustomBlock) : BlockMechanism 
         NekoProvider.neko().cacheManager().saveCache("blocks.yml") { file -> blockCache.save(file) }
     }
 
-    override fun pack(zipper: PackZipper, customBlock: CustomBlock) {
+    override fun pack(zipper: PackZipper) {
         val data = zipper.file(BLOCKSTATE_FILE)
 
         val blockStateData = if(data != null)
@@ -74,7 +74,7 @@ class NoteBlockMechanism(private val customBlock: CustomBlock) : BlockMechanism 
         else
             BlockStateData(hashMapOf())
 
-        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note}"] = Variant(customBlock.blockProperties().model().asString())
+        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note}"] = BlockStateData.Variant(customBlock.blockProperties().model().asString())
 
         GSON.toJson(blockStateData).toByteArray().also {
             zipper.addFile(BLOCKSTATE_FILE, PackFile({ it }, it.size.toLong()))
