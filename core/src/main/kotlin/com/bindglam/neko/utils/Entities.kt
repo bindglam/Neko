@@ -8,11 +8,15 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.util.BoundingBox
 import java.util.function.Consumer
 
 fun Player.canPlaceBlock(location: Location): Boolean = location.block.type.isReplaceable && !location.block.boundingBox.contains(boundingBox)
 
 fun Player.placeBlock(location: Location, placeAction: Consumer<Location>, placedAgainst: Block, hand: EquipmentSlot, placeSound: Sound) {
+    val blockAABB = BoundingBox.of(location.toCenterLocation(), 0.5, 0.5, 0.5)
+    if(blockAABB.overlaps(boundingBox)) return
+
     val item = inventory.getItem(hand)
 
     val prevBlockData = location.block.blockData.clone()
