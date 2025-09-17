@@ -1,6 +1,7 @@
 package com.bindglam.neko.api.content.glyph;
 
 import com.bindglam.neko.api.NekoProvider;
+import com.bindglam.neko.api.data.Cache;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
@@ -10,15 +11,11 @@ import com.google.gson.Gson;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Glyph implements Keyed, Packable {
     private static final Gson GSON = new Gson();
@@ -42,31 +39,17 @@ public class Glyph implements Keyed, Packable {
     }
 
     private void loadData() {
-        File cacheFile = NekoProvider.neko().cacheManager().getCache("glyphs.yml");
-        if(cacheFile == null) {
-            NekoProvider.neko().cacheManager().saveCache("glyphs.yml", (file) -> {});
-            cacheFile = Objects.requireNonNull(NekoProvider.neko().cacheManager().getCache("glyphs.yml"));
-        }
+        Cache cache = NekoProvider.neko().cacheManager().getCache("glyphs");
 
-        YamlConfiguration glyphCache = YamlConfiguration.loadConfiguration(cacheFile);
+        if(cache.get(key.toString() + ".char") == null) {
+            character = cache.getCharacter("glyph.next-char", 'a');
 
-        if(glyphCache.get(key.toString() + ".char") == null) {
-            character = glyphCache.getString("glyph.next-char", "a").charAt(0);
+            cache.set(key + ".char", character);
 
-            glyphCache.set(key + ".char", character);
-
-            glyphCache.set("glyph.next-char", character+1);
+            cache.set("glyph.next-char", character+1);
         } else {
-            character = glyphCache.getString(key + ".char", "a").charAt(0);
+            character = cache.getCharacter(key + ".char", 'a');
         }
-
-        NekoProvider.neko().cacheManager().saveCache("glyphs.yml", (file) -> {
-            try {
-                glyphCache.save(file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 
     @Override

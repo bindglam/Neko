@@ -97,12 +97,11 @@ object PackManagerImpl : PackManager {
         val packHash = BigInteger(1, HASH_DIGEST.digest(PackManager.BUILD_ZIP.inputStream().readBytes())).toString(16)
         var packUUID = UUID.randomUUID()
 
-        val cacheFile = NekoProvider.neko().cacheManager().getCache("pack.yml")
-        if(cacheFile == null) {
-            NekoProvider.neko().cacheManager().saveCache("pack.yml") { YamlConfiguration.loadConfiguration(it).also { it.set("id", packUUID.toString()) }.save(it) }
-        } else {
-            packUUID = UUID.fromString(YamlConfiguration.loadConfiguration(cacheFile).getString("id"))
-        }
+        val cache = NekoProvider.neko().cacheManager().getCache("pack")
+        if(cache["id"] != null)
+            packUUID = UUID.fromString(cache.getString("id"))
+        else
+            cache["id"] = packUUID.toString()
 
         packInfo = ResourcePackInfo.resourcePackInfo().id(packUUID).hash(packHash)
     }

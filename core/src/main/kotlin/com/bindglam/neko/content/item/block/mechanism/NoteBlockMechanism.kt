@@ -18,7 +18,6 @@ import org.bukkit.NamespacedKey
 import org.bukkit.Note
 import org.bukkit.block.BlockState
 import org.bukkit.block.data.type.NoteBlock
-import org.bukkit.configuration.file.YamlConfiguration
 
 class NoteBlockMechanism(private val customBlock: CustomBlock) : BlockMechanism, Packable {
     companion object {
@@ -38,32 +37,29 @@ class NoteBlockMechanism(private val customBlock: CustomBlock) : BlockMechanism,
     }
 
     private fun loadData() {
-        NekoProvider.neko().cacheManager().getCache("blocks.yml") ?: NekoProvider.neko().cacheManager().saveCache("blocks.yml") {}
-        val blockCache = YamlConfiguration.loadConfiguration(NekoProvider.neko().cacheManager().getCache("blocks.yml")!!)
+        val blockCache = NekoProvider.neko().cacheManager().getCache("blocks")
 
-        if(blockCache.get("${customBlock.key().asString()}.instrument") == null) {
-            instrument = VanillaInstruments.entries[blockCache.getInt("note-block.next-instrument")]
-            note = blockCache.getInt("note-block.next-note").toByte()
+        if(blockCache["${customBlock.key().asString()}.instrument"] == null) {
+            instrument = VanillaInstruments.entries[blockCache.getInteger("note-block.next-instrument", 0)]
+            note = blockCache.getByte("note-block.next-note", 0)
 
-            blockCache.set("${customBlock.key().asString()}.instrument", instrument.ordinal)
-            blockCache.set("${customBlock.key().asString()}.note", note)
+            blockCache["${customBlock.key().asString()}.instrument"] = instrument.ordinal
+            blockCache["${customBlock.key().asString()}.note"] = note
 
             if (note >= MAX_NOTE) {
-                blockCache.set("note-block.next-instrument", instrument.ordinal + 1)
-                blockCache.set("note-block.next-note", 0)
+                blockCache["note-block.next-instrument"] = instrument.ordinal + 1
+                blockCache["note-block.next-note"] = 0
 
                 if(VanillaInstruments.entries[instrument.ordinal + 1] == VanillaInstruments.HARP)
-                    blockCache.set("note-block.next-note", 1)
+                    blockCache["note-block.next-note"] = 1
             } else {
-                blockCache.set("note-block.next-instrument", instrument.ordinal)
-                blockCache.set("note-block.next-note", note + 1)
+                blockCache["note-block.next-instrument"] = instrument.ordinal
+                blockCache["note-block.next-note"] = note + 1
             }
         } else {
-            instrument = VanillaInstruments.entries[blockCache.getInt("${customBlock.key().asString()}.instrument")]
-            note = blockCache.getInt("${customBlock.key().asString()}.note").toByte()
+            instrument = VanillaInstruments.entries[blockCache.getInteger("${customBlock.key().asString()}.instrument", 0)]
+            note = blockCache.getByte("${customBlock.key().asString()}.note", 0)
         }
-
-        NekoProvider.neko().cacheManager().saveCache("blocks.yml") { file -> blockCache.save(file) }
     }
 
     override fun pack(zipper: PackZipper) {
