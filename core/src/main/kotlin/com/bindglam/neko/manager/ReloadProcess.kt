@@ -23,11 +23,11 @@ class ReloadProcess(private val sender: CommandSender) : Process {
         goal = list.size
 
         list.forEach {
+            progress++
             status = "Reloading... ( $progress / $goal )"
 
             it.end(this)
             it.start(this)
-            progress++
 
             bar.name(Component.text(status))
             bar.progress(progress.toFloat() / goal)

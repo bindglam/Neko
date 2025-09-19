@@ -1,6 +1,5 @@
 package com.bindglam.neko.api.pack;
 
-import com.bindglam.neko.api.manager.Process;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -8,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public interface PackZipper {
+public interface PackZipper extends AutoCloseable {
     void addFile(String path, PackFile file);
 
     default void addFile(File file) {
@@ -29,5 +28,5 @@ public interface PackZipper {
 
     @Nullable PackFile file(String path);
 
-    void build(Process process);
+    void build();
 }

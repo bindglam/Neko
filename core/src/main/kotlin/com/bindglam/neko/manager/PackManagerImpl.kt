@@ -41,7 +41,7 @@ object PackManagerImpl : PackManager {
             }
         }
 
-        pack(process)
+        pack()
 
         buildPackInfo()
 
@@ -56,7 +56,7 @@ object PackManagerImpl : PackManager {
         packHost?.end()
     }
 
-    override fun pack(process: Process) {
+    override fun pack() {
         PackManager.BUILD_ZIP.deleteOnExit()
 
         val startMillis = System.currentTimeMillis()
@@ -67,7 +67,8 @@ object PackManagerImpl : PackManager {
 
         mergeResourcePacks(zipper)
 
-        zipper.build(process)
+        zipper.build()
+        zipper.close()
 
         LOGGER.info("Successfully generated resourcepack (${System.currentTimeMillis() - startMillis}ms)")
     }
