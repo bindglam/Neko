@@ -18,7 +18,7 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
 
     override fun load(config: ConfigurationSection?): CustomBlockProperties? = config?.let { CustomBlockProperties.builder()
         .model(KEY_CONFIGURABLE.load(config.getString("model"))!!)
-        .mechanismFactory(BuiltInRegistries.MECHANISMS.get(KEY_CONFIGURABLE.load(config.getString("mechanism"))))
+        .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(KEY_CONFIGURABLE.load(config.getString("renderer"))))
         .hardness(config.getDouble("hardness").toFloat())
         .correctTools(CORRECT_TOOLS_CONFIGURABLE.load(config.getConfigurationSection("correct-tools")))
         .drops(DROPS_CONFIGURABLE.load(config.getConfigurationSection("drops")))

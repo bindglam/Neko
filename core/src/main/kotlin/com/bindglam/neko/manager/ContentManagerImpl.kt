@@ -9,8 +9,8 @@ import com.bindglam.neko.content.glyph.GlyphLoader
 import com.bindglam.neko.content.glyph.ShiftGlyph
 import com.bindglam.neko.content.item.CustomItemLoader
 import com.bindglam.neko.content.item.block.CustomBlockLoader
-import com.bindglam.neko.content.item.block.mechanism.NoteBlockMechanism
-import com.bindglam.neko.content.item.block.mechanism.NoteBlockMechanismFactory
+import com.bindglam.neko.content.item.block.renderer.NoteBlockRenderer
+import com.bindglam.neko.content.item.block.renderer.NoteBlockRendererFactory
 import com.bindglam.neko.utils.listFilesRecursively
 import net.kyori.adventure.key.Key
 import org.bukkit.block.BlockState
@@ -51,7 +51,7 @@ object ContentManagerImpl : ContentManager {
     }
 
     private fun registerInternalContents() {
-        BuiltInRegistries.MECHANISMS.register(NoteBlockMechanism.KEY, NoteBlockMechanismFactory())
+        BuiltInRegistries.BLOCK_RENDERERS.register(NoteBlockRenderer.KEY, NoteBlockRendererFactory())
 
         BuiltInRegistries.GLYPHS.register(Glyph.SHIFT_GLYPH_KEY, ShiftGlyph())
     }
@@ -65,6 +65,6 @@ object ContentManagerImpl : ContentManager {
     override fun customItem(key: Key): CustomItem? = BuiltInRegistries.ITEMS.getOrNull(key)
     override fun customItem(itemStack: ItemStack): CustomItem? = BuiltInRegistries.ITEMS.find { it.isSame(itemStack) }
     override fun customBlock(key: Key): CustomBlock? = BuiltInRegistries.BLOCKS.getOrNull(key)
-    override fun customBlock(block: BlockState): CustomBlock? = BuiltInRegistries.BLOCKS.find { it.mechanism().isSame(block) }
+    override fun customBlock(block: BlockState): CustomBlock? = BuiltInRegistries.BLOCKS.find { it.renderer().isSame(block) }
     override fun glyph(key: Key): Glyph? = BuiltInRegistries.GLYPHS.getOrNull(key)
 }

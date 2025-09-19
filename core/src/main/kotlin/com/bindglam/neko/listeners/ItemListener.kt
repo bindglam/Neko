@@ -55,7 +55,7 @@ class ItemListener : Listener {
             else
                 Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f)
 
-            player.placeBlock(location, { customBlock.mechanism().place(it) }, clickedBlock!!, hand!!, placeSound)
+            player.placeBlock(location, { customBlock.renderer().place(it) }, clickedBlock!!, hand!!, placeSound)
         }
     }
 }

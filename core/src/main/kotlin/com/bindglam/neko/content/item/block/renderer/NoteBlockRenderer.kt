@@ -1,8 +1,8 @@
-package com.bindglam.neko.content.item.block.mechanism
+package com.bindglam.neko.content.item.block.renderer
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.item.block.CustomBlock
-import com.bindglam.neko.api.content.item.block.mechanism.BlockMechanism
+import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.api.pack.Packable
@@ -19,7 +19,7 @@ import org.bukkit.Note
 import org.bukkit.block.BlockState
 import org.bukkit.block.data.type.NoteBlock
 
-class NoteBlockMechanism(private val customBlock: CustomBlock) : BlockMechanism, Packable {
+class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, Packable {
     companion object {
         val KEY = NamespacedKey(NekoProvider.neko().plugin(), "note_block")
 

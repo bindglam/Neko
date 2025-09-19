@@ -2,7 +2,7 @@ package com.bindglam.neko.api.content.item.block;
 
 import com.bindglam.neko.api.content.item.CustomItem;
 import com.bindglam.neko.api.content.item.CustomItemProperties;
-import com.bindglam.neko.api.content.item.block.mechanism.BlockMechanism;
+import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
 import org.bukkit.NamespacedKey;
@@ -11,19 +11,19 @@ import org.jetbrains.annotations.NotNull;
 public class CustomBlock extends CustomItem {
     private final CustomBlockProperties properties;
 
-    private final BlockMechanism mechanism;
+    private final BlockRenderer renderer;
 
     public CustomBlock(NamespacedKey key, CustomItemProperties itemProperties, CustomBlockProperties blockProperties) {
         super(key, itemProperties);
         this.properties = blockProperties;
-        this.mechanism = properties.mechanismFactory().create(this);
+        this.renderer = properties.renderer().create(this);
     }
 
     @Override
     public void pack(@NotNull PackZipper zipper) {
         super.pack(zipper);
 
-        if(mechanism instanceof Packable packable)
+        if(renderer instanceof Packable packable)
             packable.pack(zipper);
     }
 
@@ -33,7 +33,7 @@ public class CustomBlock extends CustomItem {
     }
 
     @NotNull
-    public BlockMechanism mechanism() {
-        return mechanism;
+    public BlockRenderer renderer() {
+        return renderer;
     }
 }
