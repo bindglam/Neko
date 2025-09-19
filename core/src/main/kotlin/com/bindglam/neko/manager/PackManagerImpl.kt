@@ -2,6 +2,7 @@ package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.manager.PackManager
+import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.pack.host.PackHost
 import com.bindglam.neko.pack.PackZipperImpl
 import com.bindglam.neko.pack.PackerApplier
@@ -9,7 +10,6 @@ import com.bindglam.neko.pack.host.selfhost.SelfHost
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.plugin
 import net.kyori.adventure.resource.ResourcePackInfo
-import org.bukkit.configuration.file.YamlConfiguration
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.math.BigInteger
@@ -30,7 +30,7 @@ object PackManagerImpl : PackManager {
 
     private var packHost: PackHost? = null
 
-    override fun start() {
+    override fun start(process: Process) {
         if(!RESOURCEPACK_FOLDER.exists()) {
             RESOURCEPACK_FOLDER.mkdirs()
 
@@ -41,7 +41,7 @@ object PackManagerImpl : PackManager {
             }
         }
 
-        pack()
+        pack(process)
 
         buildPackInfo()
 
@@ -52,11 +52,11 @@ object PackManagerImpl : PackManager {
         }
     }
 
-    override fun end() {
+    override fun end(process: Process) {
         packHost?.end()
     }
 
-    override fun pack() {
+    override fun pack(process: Process) {
         PackManager.BUILD_ZIP.deleteOnExit()
 
         val startMillis = System.currentTimeMillis()
@@ -67,8 +67,7 @@ object PackManagerImpl : PackManager {
 
         mergeResourcePacks(zipper)
 
-        zipper.build()
-        zipper.close()
+        zipper.build(process)
 
         LOGGER.info("Successfully generated resourcepack (${System.currentTimeMillis() - startMillis}ms)")
     }

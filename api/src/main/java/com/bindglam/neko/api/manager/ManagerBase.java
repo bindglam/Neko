@@ -1,7 +1,7 @@
 package com.bindglam.neko.api.manager;
 
 public interface ManagerBase {
-    void start();
+    void start(Process process);
 
-    void end();
+    void end(Process process);
 }

@@ -4,6 +4,7 @@ import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.item.CustomItem
 import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.api.manager.ContentManager
+import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.content.glyph.GlyphLoader
 import com.bindglam.neko.content.glyph.ShiftGlyph
@@ -18,6 +19,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.inventory.ItemStack
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.nio.file.Files
 
 object ContentManagerImpl : ContentManager {
     private val LOGGER = LoggerFactory.getLogger(ContentManager::class.java)
@@ -26,7 +28,7 @@ object ContentManagerImpl : ContentManager {
 
     private val CONTENT_LOADERS = listOf(CustomItemLoader(), CustomBlockLoader(), GlyphLoader())
 
-    override fun start() {
+    override fun start(process: Process) {
         registerInternalContents()
 
         val startMillis = System.currentTimeMillis()
@@ -34,7 +36,7 @@ object ContentManagerImpl : ContentManager {
         if(!CONTENTS_FOLDER.exists())
             CONTENTS_FOLDER.mkdirs()
 
-        CONTENTS_FOLDER.listFilesRecursively().forEach { file ->
+        process.forEachParallel(CONTENTS_FOLDER.listFilesRecursively(), { Files.size(it.toPath()) }) { file ->
             YamlConfiguration.loadConfiguration(file).apply {
                 getKeys(false).stream().map { Key.key(it) }.forEach { key ->
                     val config = getConfigurationSection(key.asString())!!
@@ -56,7 +58,7 @@ object ContentManagerImpl : ContentManager {
         BuiltInRegistries.GLYPHS.register(Glyph.SHIFT_GLYPH_KEY, ShiftGlyph())
     }
 
-    override fun end() {
+    override fun end(process: Process) {
         BuiltInRegistries.ITEMS.clear()
         BuiltInRegistries.BLOCKS.clear()
         BuiltInRegistries.GLYPHS.clear()

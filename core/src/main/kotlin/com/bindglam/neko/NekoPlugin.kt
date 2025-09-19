@@ -16,8 +16,12 @@ import com.bindglam.neko.manager.CommandManagerImpl
 import com.bindglam.neko.manager.ContentManagerImpl
 import com.bindglam.neko.manager.PackManagerImpl
 import com.bindglam.neko.manager.PlayerNetworkManagerImpl
+import com.bindglam.neko.manager.ReloadProcess
+import com.bindglam.neko.manager.ShutdownProcess
+import com.bindglam.neko.manager.StartupProcess
 import com.bindglam.neko.utils.MCVersion
 import org.bukkit.Bukkit
+import org.bukkit.command.CommandSender
 import org.bukkit.plugin.java.JavaPlugin
 
 class NekoPlugin : Neko, JavaPlugin() {
@@ -52,22 +56,21 @@ class NekoPlugin : Neko, JavaPlugin() {
         }
 
         try {
-            managers.forEach { it.start() }
+            StartupProcess().use { it.start(managers) }
         } catch (e: Exception) {
             slF4JLogger.error("Failed to load", e)
         }
     }
 
     override fun onDisable() {
-        managers.forEach { it.end() }
+        ShutdownProcess().use { it.start(managers) }
     }
 
-    override fun reload(): Neko.ReloadInfo {
+    override fun reload(sender: CommandSender): Neko.ReloadInfo {
         val reloadableList = managers.stream().filter { it is Reloadable }.toList()
 
         try {
-            reloadableList.forEach { it.end() }
-            reloadableList.forEach { it.start() }
+            ReloadProcess(sender).use { it.start(reloadableList) }
         } catch (e: Exception) {
             slF4JLogger.error("Failed to reload", e)
             return Neko.ReloadInfo.FAIL

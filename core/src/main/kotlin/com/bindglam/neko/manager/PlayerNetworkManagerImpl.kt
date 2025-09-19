@@ -2,6 +2,7 @@ package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.manager.PlayerNetworkManager
+import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.nms.PlayerChannelHandler
 import org.bukkit.entity.Player
 import java.util.UUID
@@ -10,10 +11,10 @@ import java.util.concurrent.ConcurrentHashMap
 object PlayerNetworkManagerImpl : PlayerNetworkManager {
     private val channelHandlers = ConcurrentHashMap<UUID, PlayerChannelHandler>()
 
-    override fun start() {
+    override fun start(process: Process) {
     }
 
-    override fun end() {
+    override fun end(process: Process) {
     }
 
     override fun inject(player: Player) {

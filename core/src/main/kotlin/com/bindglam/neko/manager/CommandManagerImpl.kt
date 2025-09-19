@@ -4,6 +4,7 @@ import com.bindglam.neko.api.Neko
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.glyph.GlyphBuilder
 import com.bindglam.neko.api.manager.CommandManager
+import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.utils.plugin
 import dev.jorel.commandapi.CommandAPI
@@ -20,7 +21,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 
 object CommandManagerImpl : CommandManager {
-    override fun start() {
+    override fun start(process: Process) {
         CommandAPI.onLoad(CommandAPIBukkitConfig(NekoProvider.neko().plugin()).silentLogs(true))
 
         CommandAPICommand("neko")
@@ -29,7 +30,7 @@ object CommandManagerImpl : CommandManager {
                 CommandAPICommand("reload")
                     .executes(CommandExecutor { sender, args ->
                         sender.sendMessage(Component.text("Reloading...").color(NamedTextColor.YELLOW))
-                        NekoProvider.neko().reload().also { info ->
+                        NekoProvider.neko().reload(sender).also { info ->
                             if(info == Neko.ReloadInfo.SUCCESS)
                                 sender.sendMessage(Component.text("Successfully reloaded!").color(NamedTextColor.GREEN))
                             else
@@ -73,7 +74,7 @@ object CommandManagerImpl : CommandManager {
         CommandAPI.onEnable()
     }
 
-    override fun end() {
+    override fun end(process: Process) {
         CommandAPI.onDisable()
     }
 }

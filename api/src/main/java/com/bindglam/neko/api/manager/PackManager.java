@@ -12,7 +12,7 @@ import java.net.URI;
 public interface PackManager extends ManagerBase, Reloadable {
     File BUILD_ZIP = new File("plugins/Neko/build.zip");
 
-    void pack();
+    void pack(Process process);
 
     @NotNull File getFile(@NotNull String path);
 
