@@ -1,5 +1,6 @@
 package com.bindglam.neko.api.content.item.block;
 
+import com.bindglam.neko.api.content.Builder;
 import com.bindglam.neko.api.content.item.CustomItem;
 import com.bindglam.neko.api.content.item.CustomItemProperties;
 import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
@@ -13,9 +14,9 @@ public class CustomBlock extends CustomItem {
 
     private final BlockRenderer renderer;
 
-    public CustomBlock(NamespacedKey key, CustomItemProperties itemProperties, CustomBlockProperties blockProperties) {
+    public CustomBlock(NamespacedKey key, Builder<CustomItemProperties> itemProperties, Builder<CustomBlockProperties> blockProperties) {
         super(key, itemProperties);
-        this.properties = blockProperties;
+        this.properties = blockProperties.build();
         this.renderer = properties.renderer().create(this);
     }
 

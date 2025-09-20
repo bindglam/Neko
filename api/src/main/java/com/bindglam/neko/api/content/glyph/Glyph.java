@@ -1,6 +1,7 @@
 package com.bindglam.neko.api.content.glyph;
 
 import com.bindglam.neko.api.NekoProvider;
+import com.bindglam.neko.api.content.Builder;
 import com.bindglam.neko.api.data.Cache;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
@@ -29,9 +30,9 @@ public class Glyph implements Keyed, Packable {
 
     private char character;
 
-    public Glyph(NamespacedKey key, GlyphProperties properties) {
+    public Glyph(NamespacedKey key, Builder<GlyphProperties> properties) {
         this.key = key;
-        this.properties = properties;
+        this.properties = properties.build();
 
         this.fontKey = new NamespacedKey(key.getNamespace(), "default");
 

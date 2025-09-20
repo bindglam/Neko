@@ -15,7 +15,7 @@ public sealed interface GlyphProperties {
         return new Builder();
     }
 
-    final class Builder implements GlyphProperties {
+    final class Builder implements GlyphProperties, com.bindglam.neko.api.content.Builder<GlyphProperties> {
         private Key texture;
         private int offsetY;
         private int scale;
@@ -36,6 +36,15 @@ public sealed interface GlyphProperties {
 
         public Builder scale(int scale) {
             this.scale = scale;
+            return this;
+        }
+
+
+        @Override
+        public @NotNull GlyphProperties build() {
+            if(texture == null)
+                throw new IllegalStateException("Texture can not be null");
+
             return this;
         }
 

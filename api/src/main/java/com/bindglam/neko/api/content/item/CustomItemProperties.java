@@ -22,7 +22,7 @@ public sealed interface CustomItemProperties {
         return new Builder();
     }
 
-    final class Builder implements CustomItemProperties {
+    final class Builder implements CustomItemProperties, com.bindglam.neko.api.content.Builder<CustomItemProperties> {
         private ItemType type;
         private Component name;
         private List<Component> lore;
@@ -49,6 +49,15 @@ public sealed interface CustomItemProperties {
 
         public Builder model(NamespacedKey model) {
             this.model = model;
+            return this;
+        }
+
+
+        @Override
+        public @NotNull CustomItemProperties build() {
+            if(type == null)
+                throw new IllegalStateException("Item type can not be null!");
+
             return this;
         }
 

@@ -31,7 +31,7 @@ public sealed interface CustomBlockProperties {
         return new Builder();
     }
 
-    final class Builder implements CustomBlockProperties {
+    final class Builder implements CustomBlockProperties, com.bindglam.neko.api.content.Builder<CustomBlockProperties> {
         private NamespacedKey model;
         private Factory<BlockRenderer, CustomBlock> renderer;
         private float hardness;
@@ -70,6 +70,18 @@ public sealed interface CustomBlockProperties {
 
         public Builder sounds(Sounds sounds) {
             this.sounds = sounds;
+            return this;
+        }
+
+
+        @Override
+        public @NotNull CustomBlockProperties build() {
+            if(model == null)
+                throw new IllegalStateException("Block model can not be null!");
+
+            if(renderer == null)
+                throw new IllegalStateException("Block renderer can not be null!");
+
             return this;
         }
 

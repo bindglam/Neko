@@ -1,5 +1,6 @@
 package com.bindglam.neko.api.content.item;
 
+import com.bindglam.neko.api.content.Builder;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
@@ -22,9 +23,9 @@ public class CustomItem implements Keyed, ItemStackHolder, Packable {
 
     private ItemStack itemStack;
 
-    public CustomItem(NamespacedKey key, CustomItemProperties itemProperties) {
+    public CustomItem(NamespacedKey key, Builder<CustomItemProperties> itemProperties) {
         this.key = key;
-        this.properties = itemProperties;
+        this.properties = itemProperties.build();
 
         buildItemStack();
     }
