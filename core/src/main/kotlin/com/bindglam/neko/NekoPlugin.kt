@@ -2,26 +2,19 @@ package com.bindglam.neko
 
 import com.bindglam.neko.api.Neko
 import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.api.manager.CacheManager
-import com.bindglam.neko.api.manager.ContentManager
-import com.bindglam.neko.api.manager.PackManager
-import com.bindglam.neko.api.manager.PlayerNetworkManager
-import com.bindglam.neko.api.manager.Reloadable
+import com.bindglam.neko.api.manager.*
 import com.bindglam.neko.api.nms.NMSHook
 import com.bindglam.neko.listeners.InventoryListener
 import com.bindglam.neko.listeners.ItemListener
+import com.bindglam.neko.listeners.NekoListener
 import com.bindglam.neko.listeners.PlayerListener
-import com.bindglam.neko.manager.CacheManagerImpl
-import com.bindglam.neko.manager.CommandManagerImpl
-import com.bindglam.neko.manager.ContentManagerImpl
-import com.bindglam.neko.manager.PackManagerImpl
-import com.bindglam.neko.manager.PlayerNetworkManagerImpl
-import com.bindglam.neko.manager.ReloadProcess
-import com.bindglam.neko.manager.ShutdownProcess
-import com.bindglam.neko.manager.StartupProcess
+import com.bindglam.neko.manager.*
 import com.bindglam.neko.utils.MCVersion
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.server.ServerLoadEvent
 import org.bukkit.plugin.java.JavaPlugin
 
 class NekoPlugin : Neko, JavaPlugin() {
@@ -45,6 +38,7 @@ class NekoPlugin : Neko, JavaPlugin() {
         server.pluginManager.registerEvents(ItemListener(), this)
         server.pluginManager.registerEvents(PlayerListener(), this)
         server.pluginManager.registerEvents(InventoryListener(), this)
+        server.pluginManager.registerEvents(NekoListener(), this)
 
         val version = MCVersion.parse(Bukkit.getBukkitVersion().substringBefore('-'))
 
@@ -55,11 +49,16 @@ class NekoPlugin : Neko, JavaPlugin() {
             else -> TODO()
         }
 
-        try {
-            StartupProcess().use { it.start(managers) }
-        } catch (e: Exception) {
-            slF4JLogger.error("Failed to load", e)
-        }
+        server.pluginManager.registerEvents(object : Listener {
+            @EventHandler
+            fun ServerLoadEvent.loadServices() {
+                try {
+                    StartupProcess().use { it.start(managers) }
+                } catch (e: Exception) {
+                    slF4JLogger.error("Failed to load", e)
+                }
+            }
+        }, this)
     }
 
     override fun onDisable() {

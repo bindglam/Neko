@@ -1,6 +1,7 @@
 package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.NekoProvider
+import com.bindglam.neko.api.event.PackEvent
 import com.bindglam.neko.api.manager.PackManager
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.pack.host.PackHost
@@ -66,6 +67,8 @@ object PackManagerImpl : PackManager {
         PackerApplier.apply(zipper)
 
         mergeResourcePacks(zipper)
+
+        PackEvent(zipper).callEvent()
 
         zipper.build()
         zipper.close()
