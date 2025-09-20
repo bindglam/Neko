@@ -17,6 +17,9 @@ tasks {
         version(mcVersionString)
 
         downloadPlugins {
+            pluginJars(project("test-plugin").tasks.jar.flatMap {
+                it.archiveFile
+            })
             hangar("BetterModel", "1.11.4")
             modrinth("fastasyncworldedit", "2.13.1")
             modrinth("worldguard", "7.0.14")

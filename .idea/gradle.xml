@@ -25,6 +25,7 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/nms" />
             <option value="$PROJECT_DIR$/nms/1_21_R5" />
+            <option value="$PROJECT_DIR$/test-plugin" />
           </set>
         </option>
       </GradleProjectSettings>
