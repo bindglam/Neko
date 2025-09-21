@@ -56,7 +56,7 @@ object ContentManagerImpl : ContentManager {
     }
 
     private fun registerInternalContents() {
-        BuiltInRegistries.BLOCK_RENDERERS.register(NoteBlockRenderer.KEY, NoteBlockRendererFactory())
+        BuiltInRegistries.BLOCK_RENDERERS.register(NoteBlockRenderer.KEY, NoteBlockRendererFactory)
 
         BuiltInRegistries.GLYPHS.register(Glyph.SHIFT_GLYPH_KEY, ShiftGlyph())
     }

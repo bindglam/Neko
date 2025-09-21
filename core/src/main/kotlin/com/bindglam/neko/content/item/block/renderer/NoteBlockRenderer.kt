@@ -31,6 +31,7 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
 
     private var instrument = VanillaInstruments.BANJO
     private var note = 0.toByte()
+    private var powered = false
 
     init {
         loadData()
@@ -42,9 +43,11 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
         if(blockCache["${customBlock.key().asString()}.instrument"] == null) {
             instrument = VanillaInstruments.entries[blockCache.getInteger("note-block.next-instrument", 0)]
             note = blockCache.getByte("note-block.next-note", 0)
+            powered = blockCache.getBoolean("note-block.next-powered", false)
 
             blockCache["${customBlock.key().asString()}.instrument"] = instrument.ordinal
             blockCache["${customBlock.key().asString()}.note"] = note
+            blockCache["${customBlock.key().asString()}.powered"] = powered
 
             if (note >= MAX_NOTE) {
                 blockCache["note-block.next-instrument"] = instrument.ordinal + 1
@@ -52,13 +55,19 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
 
                 if(VanillaInstruments.entries[instrument.ordinal + 1] == VanillaInstruments.HARP)
                     blockCache["note-block.next-note"] = 1
-            } else {
+            } else if(powered) {
                 blockCache["note-block.next-instrument"] = instrument.ordinal
                 blockCache["note-block.next-note"] = note + 1
+                blockCache["note-block.next-powered"] = false
+            } else {
+                blockCache["note-block.next-instrument"] = instrument.ordinal
+                blockCache["note-block.next-note"] = note
+                blockCache["note-block.next-powered"] = true
             }
         } else {
             instrument = VanillaInstruments.entries[blockCache.getInteger("${customBlock.key().asString()}.instrument", 0)]
             note = blockCache.getByte("${customBlock.key().asString()}.note", 0)
+            powered = blockCache.getBoolean("${customBlock.key().asString()}.powered", false)
         }
     }
 
@@ -70,7 +79,7 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
         else
             BlockStateData(hashMapOf())
 
-        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note}"] = BlockStateData.Variant(customBlock.blockProperties().model().asString())
+        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note},powered=${powered}"] = BlockStateData.Variant(customBlock.blockProperties().model().asString())
 
         GSON.toJson(blockStateData).toByteArray().also {
             zipper.addFile(BLOCKSTATE_FILE, PackFile({ it }, it.size.toLong()))
@@ -83,6 +92,7 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
         block.blockData = (block.blockData as NoteBlock).also {
             it.instrument = instrument.bukkit
             it.note = Note(note.toInt())
+            it.isPowered = true
         }
     }
 

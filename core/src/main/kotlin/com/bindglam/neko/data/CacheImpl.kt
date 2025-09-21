@@ -36,6 +36,7 @@ class CacheImpl(private val name: String, private val map: YamlConfiguration) : 
     }
 
     override fun get(key: String): Any? = map.get(key)
+    override fun getBoolean(key: String): Boolean? = get(key) as Boolean?
     override fun getString(key: String): String? = map.getString(key)
     override fun getCharacter(key: String): Char? = getString(key)?.get(0)
     override fun getNumber(key: String): Number? = get(key) as Number?

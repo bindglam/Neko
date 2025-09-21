@@ -15,6 +15,13 @@ public interface Cache {
 
     @Nullable Object get(@NotNull String key);
 
+    @Nullable Boolean getBoolean(@NotNull String key);
+    default @NotNull Boolean getBoolean(@NotNull String key, @NotNull Boolean defaultValue) {
+        Boolean value = getBoolean(key);
+        if(value == null)
+            return defaultValue;
+        return value;
+    }
 
     @Nullable String getString(@NotNull String key);
     default @NotNull String getString(@NotNull String key, @NotNull String defaultValue) {
