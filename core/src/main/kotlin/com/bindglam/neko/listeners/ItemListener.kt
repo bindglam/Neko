@@ -58,4 +58,14 @@ class ItemListener : Listener {
             player.placeBlock(location, { customBlock.renderer().place(it) }, clickedBlock!!, hand!!, placeSound)
         }
     }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    fun PlayerInteractEvent.useCustomItem() {
+        item ?: return
+        hand ?: return
+
+        val customItem = NekoProvider.neko().contentManager().customItem(item) ?: return
+
+        customItem.onUse(player, item!!, action)
+    }
 }

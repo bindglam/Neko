@@ -27,11 +27,14 @@ public sealed interface CustomBlockProperties {
     @Nullable Sounds sounds();
 
 
+    record Impl(NamespacedKey model, Factory<BlockRenderer, CustomBlock> renderer, float hardness, CorrectTools correctTools, Drops drops, Sounds sounds) implements CustomBlockProperties {
+    }
+
     static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements CustomBlockProperties, com.bindglam.neko.api.content.Builder<CustomBlockProperties> {
+    final class Builder implements com.bindglam.neko.api.content.Builder<CustomBlockProperties> {
         private NamespacedKey model;
         private Factory<BlockRenderer, CustomBlock> renderer;
         private float hardness;
@@ -82,38 +85,7 @@ public sealed interface CustomBlockProperties {
             if(renderer == null)
                 throw new IllegalStateException("Block renderer can not be null!");
 
-            return this;
-        }
-
-
-        @Override
-        public @NotNull NamespacedKey model() {
-            return model;
-        }
-
-        @Override
-        public @NotNull Factory<BlockRenderer, CustomBlock> renderer() {
-            return renderer;
-        }
-
-        @Override
-        public float hardness() {
-            return hardness;
-        }
-
-        @Override
-        public @Nullable CorrectTools correctTools() {
-            return correctTools;
-        }
-
-        @Override
-        public @Nullable Drops drops() {
-            return drops;
-        }
-
-        @Override
-        public @Nullable Sounds sounds() {
-            return sounds;
+            return new Impl(model, renderer, hardness, correctTools, drops, sounds);
         }
     }
 

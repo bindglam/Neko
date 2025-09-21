@@ -18,11 +18,14 @@ public sealed interface CustomItemProperties {
     @NotNull NamespacedKey model();
 
 
+    record Impl(ItemType type, Component name, List<Component> lore, NamespacedKey model) implements CustomItemProperties {
+    }
+
     static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements CustomItemProperties, com.bindglam.neko.api.content.Builder<CustomItemProperties> {
+    final class Builder implements com.bindglam.neko.api.content.Builder<CustomItemProperties> {
         private ItemType type = ItemType.PAPER;
         private Component name;
         private List<Component> lore;
@@ -58,28 +61,7 @@ public sealed interface CustomItemProperties {
             if(type == null)
                 throw new IllegalStateException("Item type can not be null!");
 
-            return this;
-        }
-
-
-        @Override
-        public @NotNull ItemType type() {
-            return type;
-        }
-
-        @Override
-        public @Nullable Component name() {
-            return name;
-        }
-
-        @Override
-        public @Nullable List<Component> lore() {
-            return lore;
-        }
-
-        @Override
-        public @NotNull NamespacedKey model() {
-            return model;
+            return new Impl(type, name, lore, model);
         }
     }
 }

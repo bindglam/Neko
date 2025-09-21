@@ -15,9 +15,9 @@ public class CustomBlock extends CustomItem {
 
     private final BlockRenderer renderer;
 
-    public CustomBlock(NamespacedKey key, Builder<CustomItemProperties> itemProperties, Builder<CustomBlockProperties> blockProperties) {
+    public CustomBlock(NamespacedKey key, CustomItemProperties itemProperties, CustomBlockProperties blockProperties) {
         super(key, itemProperties);
-        this.properties = blockProperties.build();
+        this.properties = blockProperties;
         this.renderer = properties.renderer().create(this);
     }
 

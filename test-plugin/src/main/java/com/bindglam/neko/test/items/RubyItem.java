@@ -15,6 +15,7 @@ public class RubyItem extends CustomItem {
         super(KEY, CustomItemProperties.builder()
                 .name(Component.text("루비"))
                 .lore(List.of(Component.text("반짝반짝")))
-                .model(new NamespacedKey("defaultassets", "item/ruby")));
+                .model(new NamespacedKey("defaultassets", "item/ruby"))
+                .build());
     }
 }

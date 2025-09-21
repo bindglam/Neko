@@ -3,7 +3,13 @@ package com.bindglam.neko.test.items;
 import com.bindglam.neko.api.content.item.CustomItem;
 import com.bindglam.neko.api.content.item.CustomItemProperties;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -14,6 +20,14 @@ public class TestItem extends CustomItem {
         super(KEY, CustomItemProperties.builder()
                 .name(Component.text("테스트 아이템"))
                 .lore(List.of(Component.text("테스트 아이템이다.")))
-                .model(new NamespacedKey("defaultassets", "item/testitem")));
+                .model(new NamespacedKey("defaultassets", "item/testitem"))
+                .build());
+    }
+
+    @Override
+    public void onUse(Player player, @NotNull ItemStack itemStack, Action action) {
+        if(!action.isRightClick()) return;
+
+        player.sendMessage(Component.text("냠냠 쩝쩝").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD));
     }
 }

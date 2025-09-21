@@ -30,9 +30,9 @@ public class Glyph implements Keyed, Packable {
 
     private char character;
 
-    public Glyph(NamespacedKey key, Builder<GlyphProperties> properties) {
+    public Glyph(NamespacedKey key, GlyphProperties properties) {
         this.key = key;
-        this.properties = properties.build();
+        this.properties = properties;
 
         this.fontKey = new NamespacedKey(key.getNamespace(), "default");
 

@@ -10,5 +10,6 @@ class GlyphPropertiesConfigurable : Configurable<GlyphProperties, ConfigurationS
         .texture(KEY_CONFIGURABLE.load(config.getString("texture"))!!)
         .offsetY(config.getInt("offset-y"))
         .scale(config.getInt("scale"))
+        .build()
     }
 }

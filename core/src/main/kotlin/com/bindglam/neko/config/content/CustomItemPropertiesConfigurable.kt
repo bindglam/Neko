@@ -14,5 +14,6 @@ class CustomItemPropertiesConfigurable : Configurable<CustomItemProperties, Conf
         .name(config.getRichMessage("name"))
         .lore(config.getStringList("lore").map { MiniMessage.miniMessage().deserialize(it) })
         .model(KEY_CONFIGURABLE.load(config.getString("model")))
+        .build()
     }
 }

@@ -14,10 +14,12 @@ public class RubyOreBlock extends CustomBlock {
         super(KEY,
                 CustomItemProperties.builder()
                         .name(Component.text("루비 광석"))
-                        .model(new NamespacedKey("defaultassets", "block/ruby_ore")),
+                        .model(new NamespacedKey("defaultassets", "block/ruby_ore"))
+                        .build(),
                 CustomBlockProperties.builder()
                         .model(new NamespacedKey("defaultassets", "block/ruby_ore"))
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(new NamespacedKey("neko", "note_block")))
+                        .build()
         );
     }
 }

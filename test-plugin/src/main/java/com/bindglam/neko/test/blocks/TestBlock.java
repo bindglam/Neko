@@ -17,10 +17,12 @@ public class TestBlock extends CustomBlock {
                 CustomItemProperties.builder()
                         .name(Component.text("테스트 아이템"))
                         .lore(List.of(Component.text("테스트 아이템이다.")))
-                        .model(new NamespacedKey("defaultassets", "block/testblock")),
+                        .model(new NamespacedKey("defaultassets", "block/testblock"))
+                        .build(),
                 CustomBlockProperties.builder()
                         .model(new NamespacedKey("defaultassets", "block/testblock"))
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(new NamespacedKey("neko", "note_block")))
+                        .build()
         );
     }
 }

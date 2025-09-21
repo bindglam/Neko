@@ -8,6 +8,8 @@ import com.bindglam.neko.api.pack.minecraft.item.ItemData;
 import com.google.gson.Gson;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.ApiStatus;
@@ -24,9 +26,9 @@ public class CustomItem implements Keyed, ItemStackHolder, Packable {
 
     private ItemStack itemStack;
 
-    public CustomItem(NamespacedKey key, Builder<CustomItemProperties> itemProperties) {
+    public CustomItem(NamespacedKey key, CustomItemProperties itemProperties) {
         this.key = key;
-        this.properties = itemProperties.build();
+        this.properties = itemProperties;
 
         buildItemStack();
     }
@@ -43,6 +45,9 @@ public class CustomItem implements Keyed, ItemStackHolder, Packable {
         itemStack.editPersistentDataContainer((dataContainer) -> {
             dataContainer.set(NEKO_ITEM_PDC_KEY, PersistentDataType.STRING, key.toString());
         });
+    }
+
+    public void onUse(Player player, @NotNull ItemStack itemStack, Action action) {
     }
 
     @ApiStatus.Internal

@@ -18,13 +18,15 @@ public class RubyBlock extends CustomBlock {
         super(KEY,
                 CustomItemProperties.builder()
                         .name(Component.text("루비 블록"))
-                        .model(new NamespacedKey("defaultassets", "block/ruby_block")),
+                        .model(new NamespacedKey("defaultassets", "block/ruby_block"))
+                        .build(),
                 CustomBlockProperties.builder()
                         .model(new NamespacedKey("defaultassets", "block/ruby_block"))
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(new NamespacedKey("neko", "note_block")))
                         .hardness(5.0f)
                         .correctTools(new CustomBlockProperties.CorrectTools(List.of(Tag.ITEMS_PICKAXES), List.of()))
                         .drops(new CustomBlockProperties.Drops(List.of(new CustomBlockProperties.Drops.DropData(ItemStackWrapper.of(new NamespacedKey("defaultassets", "ruby")), 0, 1f))))
+                        .build()
         );
     }
 }

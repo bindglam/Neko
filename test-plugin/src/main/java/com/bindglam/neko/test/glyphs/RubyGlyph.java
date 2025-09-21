@@ -9,6 +9,6 @@ public class RubyGlyph extends Glyph {
 
     public RubyGlyph() {
         super(KEY, GlyphProperties.builder()
-                .texture(new NamespacedKey("defaultassets", "font/ruby")).offsetY(8).scale(16));
+                .texture(new NamespacedKey("defaultassets", "font/ruby")).offsetY(8).scale(16).build());
     }
 }

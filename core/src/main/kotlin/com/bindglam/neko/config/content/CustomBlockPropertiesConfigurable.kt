@@ -23,6 +23,7 @@ class CustomBlockPropertiesConfigurable : Configurable<CustomBlockProperties, Co
         .correctTools(CORRECT_TOOLS_CONFIGURABLE.load(config.getConfigurationSection("correct-tools")))
         .drops(DROPS_CONFIGURABLE.load(config.getConfigurationSection("drops")))
         .sounds(SOUNDS_CONFIGURABLE.load(config.getConfigurationSection("sounds")))
+        .build()
     }
 
 

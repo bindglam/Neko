@@ -14,7 +14,7 @@ import com.google.gson.Gson
 import net.kyori.adventure.text.Component
 import org.bukkit.NamespacedKey
 
-class ShiftGlyph : Glyph(SHIFT_GLYPH_KEY, GlyphProperties.builder().texture(NULL_KEY).offsetY(0).scale(0)) {
+class ShiftGlyph : Glyph(SHIFT_GLYPH_KEY, GlyphProperties.builder().texture(NULL_KEY).offsetY(0).scale(0).build()) {
     companion object {
         private val CHARACTERS = linkedMapOf(
             'a' to -1, 'b' to -2, 'c' to -4, 'd' to -8, 'e' to -16, 'f' to -32, 'g' to -64, 'h' to -128,

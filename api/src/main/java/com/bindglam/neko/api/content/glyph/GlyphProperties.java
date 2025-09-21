@@ -1,22 +1,25 @@
 package com.bindglam.neko.api.content.glyph;
 
-import net.kyori.adventure.key.Key;
+import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
 public sealed interface GlyphProperties {
-    @NotNull Key texture();
+    @NotNull NamespacedKey texture();
 
     int offsetY();
 
     int scale();
 
 
+    record Impl(NamespacedKey texture, int offsetY, int scale) implements GlyphProperties {
+    }
+
     static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements GlyphProperties, com.bindglam.neko.api.content.Builder<GlyphProperties> {
-        private Key texture;
+    final class Builder implements com.bindglam.neko.api.content.Builder<GlyphProperties> {
+        private NamespacedKey texture;
         private int offsetY;
         private int scale;
 
@@ -24,7 +27,7 @@ public sealed interface GlyphProperties {
         }
 
 
-        public Builder texture(Key texture) {
+        public Builder texture(NamespacedKey texture) {
             this.texture = texture;
             return this;
         }
@@ -45,23 +48,7 @@ public sealed interface GlyphProperties {
             if(texture == null)
                 throw new IllegalStateException("Texture can not be null");
 
-            return this;
-        }
-
-
-        @Override
-        public @NotNull Key texture() {
-            return texture;
-        }
-
-        @Override
-        public int offsetY() {
-            return offsetY;
-        }
-
-        @Override
-        public int scale() {
-            return scale;
+            return new Impl(texture, offsetY, scale);
         }
     }
 }
