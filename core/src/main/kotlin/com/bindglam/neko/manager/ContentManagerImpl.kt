@@ -39,7 +39,7 @@ object ContentManagerImpl : ContentManager {
         if(!CONTENTS_FOLDER.exists())
             CONTENTS_FOLDER.mkdirs()
 
-        process.forEachParallel(CONTENTS_FOLDER.listFilesRecursively(), { Files.size(it.toPath()) }) { file ->
+        CONTENTS_FOLDER.listFilesRecursively().forEach { file ->
             YamlConfiguration.loadConfiguration(file).apply {
                 getKeys(false).stream().map { Key.key(it) }.forEach { key ->
                     val config = getConfigurationSection(key.asString())!!
