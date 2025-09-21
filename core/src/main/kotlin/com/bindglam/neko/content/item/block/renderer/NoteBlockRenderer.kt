@@ -43,7 +43,7 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
         if(blockCache["${customBlock.key().asString()}.instrument"] == null) {
             instrument = VanillaInstruments.entries[blockCache.getInteger("note-block.next-instrument", 0)]
             note = blockCache.getByte("note-block.next-note", 0)
-            powered = blockCache.getBoolean("note-block.next-powered", false)
+            powered = if(instrument == VanillaInstruments.HARP) true else blockCache.getBoolean("note-block.next-powered", false)
 
             blockCache["${customBlock.key().asString()}.instrument"] = instrument.ordinal
             blockCache["${customBlock.key().asString()}.note"] = note
@@ -52,13 +52,11 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
             if (note >= MAX_NOTE) {
                 blockCache["note-block.next-instrument"] = instrument.ordinal + 1
                 blockCache["note-block.next-note"] = 0
-
-                if(VanillaInstruments.entries[instrument.ordinal + 1] == VanillaInstruments.HARP)
-                    blockCache["note-block.next-note"] = 1
-            } else if(powered) {
+                blockCache["note-block.next-powered"] = VanillaInstruments.entries[instrument.ordinal + 1] == VanillaInstruments.HARP
+            } else if(powered || instrument == VanillaInstruments.HARP) {
                 blockCache["note-block.next-instrument"] = instrument.ordinal
                 blockCache["note-block.next-note"] = note + 1
-                blockCache["note-block.next-powered"] = false
+                blockCache["note-block.next-powered"] = instrument == VanillaInstruments.HARP
             } else {
                 blockCache["note-block.next-instrument"] = instrument.ordinal
                 blockCache["note-block.next-note"] = note

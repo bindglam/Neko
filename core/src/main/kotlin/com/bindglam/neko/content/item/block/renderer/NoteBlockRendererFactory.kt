@@ -13,7 +13,7 @@ object NoteBlockRendererFactory : Factory<BlockRenderer, CustomBlock> {
     private val LOGGER = LoggerFactory.getLogger(NoteBlockRendererFactory::class.java)
 
     init {
-        LOGGER.info("Available ${VanillaInstruments.entries.size * 24 * 2} note block states")
+        LOGGER.info("Available ${VanillaInstruments.entries.size * 24 * 2 - 24} note block states")
 
         Bukkit.getPluginManager().registerEvents(NoteBlockRendererListener(), NekoProvider.neko().plugin())
     }
