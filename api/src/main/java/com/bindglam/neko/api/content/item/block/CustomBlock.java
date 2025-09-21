@@ -7,6 +7,7 @@ import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomBlock extends CustomItem {
@@ -20,6 +21,7 @@ public class CustomBlock extends CustomItem {
         this.renderer = properties.renderer().create(this);
     }
 
+    @ApiStatus.Internal
     @Override
     public void pack(@NotNull PackZipper zipper) {
         super.pack(zipper);

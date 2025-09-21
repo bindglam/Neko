@@ -8,7 +8,6 @@ import com.bindglam.neko.api.registry.BuiltInRegistries;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
-import org.bukkit.inventory.ItemType;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class RubyBlock extends CustomBlock {
 
     public RubyBlock() {
         super(KEY,
-                CustomItemProperties.builder().type(ItemType.PAPER)
+                CustomItemProperties.builder()
                         .name(Component.text("루비 블록"))
                         .model(new NamespacedKey("defaultassets", "block/ruby_block")),
                 CustomBlockProperties.builder()

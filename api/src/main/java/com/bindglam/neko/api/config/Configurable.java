@@ -1,11 +1,13 @@
 package com.bindglam.neko.api.config;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiStatus.Internal
 public interface Configurable<T, C> {
     @Nullable T load(@Nullable C config);
 

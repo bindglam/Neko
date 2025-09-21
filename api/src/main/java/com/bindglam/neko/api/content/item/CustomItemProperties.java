@@ -23,7 +23,7 @@ public sealed interface CustomItemProperties {
     }
 
     final class Builder implements CustomItemProperties, com.bindglam.neko.api.content.Builder<CustomItemProperties> {
-        private ItemType type;
+        private ItemType type = ItemType.PAPER;
         private Component name;
         private List<Component> lore;
         private NamespacedKey model;

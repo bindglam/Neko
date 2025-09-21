@@ -1,7 +1,9 @@
 package com.bindglam.neko.api.pack.minecraft.item;
 
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Internal
 public record ItemData(
         Model model
 ) {

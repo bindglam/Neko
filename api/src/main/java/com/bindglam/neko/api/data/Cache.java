@@ -1,11 +1,12 @@
 package com.bindglam.neko.api.data;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.Optional;
 
+@ApiStatus.Internal
 public interface Cache {
     File CACHE_FOLDER = new File("plugins/Neko/cache");
 

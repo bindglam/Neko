@@ -10,6 +10,7 @@ import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -44,6 +45,7 @@ public class CustomItem implements Keyed, ItemStackHolder, Packable {
         });
     }
 
+    @ApiStatus.Internal
     @Override
     public void pack(@NotNull PackZipper zipper) {
         byte[] data = GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().asString()))).getBytes();

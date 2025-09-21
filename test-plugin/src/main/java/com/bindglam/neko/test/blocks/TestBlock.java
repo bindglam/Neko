@@ -6,7 +6,6 @@ import com.bindglam.neko.api.content.item.block.CustomBlockProperties;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemType;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class TestBlock extends CustomBlock {
 
     public TestBlock() {
         super(KEY,
-                CustomItemProperties.builder().type(ItemType.PAPER)
+                CustomItemProperties.builder()
                         .name(Component.text("테스트 아이템"))
                         .lore(List.of(Component.text("테스트 아이템이다.")))
                         .model(new NamespacedKey("defaultassets", "block/testblock")),

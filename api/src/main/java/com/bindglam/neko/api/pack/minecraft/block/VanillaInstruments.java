@@ -1,11 +1,13 @@
 package com.bindglam.neko.api.pack.minecraft.block;
 
 import org.bukkit.Instrument;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@ApiStatus.Internal
 public enum VanillaInstruments {
     BANJO(Instrument.BANJO),
     BASS(Instrument.BASS_GUITAR),

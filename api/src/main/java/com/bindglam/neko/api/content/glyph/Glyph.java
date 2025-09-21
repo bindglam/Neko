@@ -53,6 +53,7 @@ public class Glyph implements Keyed, Packable {
         }
     }
 
+    @ApiStatus.Internal
     @Override
     public void pack(@NotNull PackZipper zipper) {
         String path = "assets/" + key.namespace() + "/font/default.json";

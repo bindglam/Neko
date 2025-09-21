@@ -1,10 +1,12 @@
 package com.bindglam.neko.api.pack.minecraft.font;
 
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 import java.util.Map;
 
+@ApiStatus.Internal
 public record FontData(
         List<Provider> providers
 ) {

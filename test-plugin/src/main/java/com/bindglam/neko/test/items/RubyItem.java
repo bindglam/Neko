@@ -12,8 +12,9 @@ public class RubyItem extends CustomItem {
     public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "ruby");
 
     public RubyItem() {
-        super(KEY, CustomItemProperties.builder().type(ItemType.PAPER)
-                .name(Component.text("루비")).lore(List.of(Component.text("반짝반짝")))
+        super(KEY, CustomItemProperties.builder()
+                .name(Component.text("루비"))
+                .lore(List.of(Component.text("반짝반짝")))
                 .model(new NamespacedKey("defaultassets", "item/ruby")));
     }
 }
