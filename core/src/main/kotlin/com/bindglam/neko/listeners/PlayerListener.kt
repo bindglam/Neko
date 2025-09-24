@@ -58,9 +58,9 @@ class PlayerListener : Listener {
 
             if(event.callEvent()) {
                 Particle.BLOCK.builder()
-                    .location(block.location)
-                    .offset(0.5, 0.5, 0.5)
-                    .count(40)
+                    .location(block.location.toCenterLocation())
+                    .offset(0.0, 0.2, 0.0)
+                    .count(80)
                     .extra(10.0)
                     .receivers(32, true)
                     .data(block.blockData.clone())
