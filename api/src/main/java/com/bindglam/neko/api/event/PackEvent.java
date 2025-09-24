@@ -6,6 +6,7 @@ import com.bindglam.neko.api.utils.FileUtils;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class PackEvent extends Event {
 
     private final PackZipper zipper;
 
+    @ApiStatus.Internal
     public PackEvent(PackZipper zipper) {
         this.zipper = zipper;
     }
