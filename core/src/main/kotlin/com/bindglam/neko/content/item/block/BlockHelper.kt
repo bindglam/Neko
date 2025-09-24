@@ -48,7 +48,7 @@ object BlockHelper {
         breakProgress.remove(player.uniqueId)
     }
 
-    fun lastPlaceBlock(player: Player): Int = lastPlaceBlock.getOrDefault(player.uniqueId, Bukkit.getCurrentTick())
+    fun lastPlaceBlock(player: Player): Int = lastPlaceBlock.computeIfAbsent(player.uniqueId) { 0 }
 
     fun updateLastPlaceBlock(player: Player) {
         lastPlaceBlock[player.uniqueId] = Bukkit.getCurrentTick()
