@@ -10,9 +10,19 @@ import org.bukkit.block.data.type.NoteBlock
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.block.NotePlayEvent
 
 class NoteBlockRendererListener : Listener {
+    @EventHandler(priority = EventPriority.LOWEST)
+    fun BlockPlaceEvent.placeOtherNoteBlock() {
+        if(block.type == Material.NOTE_BLOCK) {
+            val data = block.blockData as NoteBlock
+
+            data.isPowered = false
+        }
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     fun NotePlayEvent.cancelCustomBlockInteract() {
         val customBlock = NekoProvider.neko().contentManager().customBlock(block)
