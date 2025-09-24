@@ -3,11 +3,11 @@ package com.bindglam.neko.listeners
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
 import com.bindglam.neko.api.content.item.block.CustomBlock
+import com.bindglam.neko.content.item.block.BlockHelper
 import com.bindglam.neko.utils.canPlaceBlock
 import com.bindglam.neko.utils.isInteractable
 import com.bindglam.neko.utils.isReplaceable
 import com.bindglam.neko.utils.placeBlock
-import com.bindglam.neko.utils.plugin
 import net.kyori.adventure.sound.Sound
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
@@ -32,9 +32,9 @@ class BlockListener : Listener {
         if(player.canPlaceBlock(location)) {
             isCancelled = true
 
-            Bukkit.getScheduler().runTask(NekoProvider.neko().plugin()) { _ ->
-                player.placeBlock(location, { it.block.type = item!!.type }, clickedBlock!!, hand!!, Sound.sound(item!!.type.createBlockData().soundGroup.placeSound, Sound.Source.BLOCK, 1f, 1f))
-            }
+            player.placeBlock(location, { it.block.type = item!!.type }, clickedBlock!!, hand!!, Sound.sound(item!!.type.createBlockData().soundGroup.placeSound, Sound.Source.BLOCK, 1f, 1f))
+
+            BlockHelper.updateLastPlaceBlock(player)
         }
     }
 
@@ -60,9 +60,9 @@ class BlockListener : Listener {
             else
                 Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f)
 
-            Bukkit.getScheduler().runTask(NekoProvider.neko().plugin()) { _ ->
-                player.placeBlock(location, { customBlock.renderer().place(it) }, clickedBlock!!, hand!!, placeSound)
-            }
+            player.placeBlock(location, { customBlock.renderer().place(it) }, clickedBlock!!, hand!!, placeSound)
+
+            BlockHelper.updateLastPlaceBlock(player)
         }
     }
 
@@ -71,6 +71,7 @@ class BlockListener : Listener {
         clickedBlock ?: return
 
         if (action != Action.RIGHT_CLICK_BLOCK || player.isSneaking) return
+        if(Bukkit.getCurrentTick() - BlockHelper.lastPlaceBlock(player) < 3) return
 
         val customBlock = NekoProvider.neko().contentManager().customBlock(clickedBlock) ?: return
 

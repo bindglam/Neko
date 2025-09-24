@@ -2,7 +2,7 @@ package com.bindglam.neko.listeners
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.item.block.CustomBlock
-import com.bindglam.neko.content.item.block.MiningHelper
+import com.bindglam.neko.content.item.block.BlockHelper
 import com.bindglam.neko.utils.plugin
 import io.papermc.paper.datacomponent.DataComponentTypes
 import net.kyori.adventure.sound.Sound
@@ -47,11 +47,11 @@ class PlayerListener : Listener {
 
         player.addPotionEffect(PotionEffect(PotionEffectType.MINING_FATIGUE, 5, Int.MAX_VALUE, false, false, false))
 
-        MiningHelper.updateProgress(player, blockBreakSpeedData.speed)
-        player.sendBlockDamage(block.location, MiningHelper.progress(player).coerceAtMost(1f))
+        BlockHelper.updateBreakProgress(player, blockBreakSpeedData.speed)
+        player.sendBlockDamage(block.location, BlockHelper.breakProgress(player).coerceAtMost(1f))
 
-        if(MiningHelper.progress(player) >= 1f) {
-            MiningHelper.removeProgress(player)
+        if(BlockHelper.breakProgress(player) >= 1f) {
+            BlockHelper.removeBreakProgress(player)
 
             val event = BlockBreakEvent(block, player)
 
