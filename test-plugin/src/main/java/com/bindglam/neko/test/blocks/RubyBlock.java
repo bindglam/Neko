@@ -4,6 +4,7 @@ import com.bindglam.neko.api.content.item.CustomItemProperties;
 import com.bindglam.neko.api.content.item.ItemStackWrapper;
 import com.bindglam.neko.api.content.item.block.CustomBlock;
 import com.bindglam.neko.api.content.item.block.CustomBlockProperties;
+import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
@@ -22,7 +23,7 @@ public class RubyBlock extends CustomBlock {
                         .build(),
                 CustomBlockProperties.builder()
                         .model(new NamespacedKey("defaultassets", "block/ruby_block"))
-                        .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(new NamespacedKey("neko", "note_block")))
+                        .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(BlockRenderer.NOTE_BLOCK_RENDERER))
                         .hardness(5.0f)
                         .correctTools(new CustomBlockProperties.CorrectTools(List.of(Tag.ITEMS_PICKAXES), List.of()))
                         .drops(new CustomBlockProperties.Drops(List.of(new CustomBlockProperties.Drops.DropData(ItemStackWrapper.of(new NamespacedKey("defaultassets", "ruby")), 0, 1f))))
