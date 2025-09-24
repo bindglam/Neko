@@ -9,6 +9,7 @@ import net.kyori.adventure.sound.Sound
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.block.Block
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.ExperienceOrb
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerAnimationEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.Damageable
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
@@ -57,6 +59,15 @@ class PlayerListener : Listener {
             val event = BlockBreakEvent(block, player)
 
             if(event.callEvent()) {
+                player.inventory.itemInMainHand.editMeta {
+                    if(it !is Damageable) return@editMeta
+
+                    val unbreakingLevel = it.getEnchantLevel(Enchantment.UNBREAKING)
+
+                    if(Math.random() <= 1.0/(unbreakingLevel+1))
+                        it.damage += 1
+                }
+
                 Particle.BLOCK.builder()
                     .location(block.location.toCenterLocation())
                     .offset(0.0, 0.2, 0.0)
