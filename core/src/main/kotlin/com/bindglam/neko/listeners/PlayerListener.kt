@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import kotlin.math.pow
 
 class PlayerListener : Listener {
     @EventHandler
@@ -117,7 +118,7 @@ class PlayerListener : Listener {
             }
         }
 
-        val blockBreakSpeed = itemBlockBreakSpeed / customBlock.blockProperties().hardness() / if(isCorrectTool) 30f else 100f
+        val blockBreakSpeed = (itemBlockBreakSpeed + (player.inventory.itemInMainHand.getEnchantmentLevel(Enchantment.EFFICIENCY).toFloat().pow(2))+1) / customBlock.blockProperties().hardness() / if(isCorrectTool) 30f else 100f
 
         return BlockBreakSpeedData(blockBreakSpeed, isCorrectTool)
     }
