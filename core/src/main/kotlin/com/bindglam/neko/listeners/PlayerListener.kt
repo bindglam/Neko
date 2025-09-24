@@ -38,6 +38,7 @@ class PlayerListener : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun PlayerAnimationEvent.tryBreakCustomBlock() {
         if (player.gameMode != GameMode.SURVIVAL) return
+        if (Bukkit.getCurrentTick() - BlockHelper.lastPlaceBlock(player) < 3) return
 
         val result = player.rayTraceBlocks(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)?.value ?: 3.0, FluidCollisionMode.NEVER) ?: return
         val block = result.hitBlock ?: return
