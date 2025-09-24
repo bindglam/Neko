@@ -47,7 +47,7 @@ public class CustomItem implements Keyed, ItemStackHolder, Packable {
         });
     }
 
-    public void onUse(Player player, @NotNull ItemStack itemStack, Action action) {
+    public void onUse(Player player, @NotNull ItemStack itemStack) {
     }
 
     @ApiStatus.Internal

@@ -7,7 +7,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,9 +24,7 @@ public class TestItem extends CustomItem {
     }
 
     @Override
-    public void onUse(Player player, @NotNull ItemStack itemStack, Action action) {
-        if(!action.isRightClick()) return;
-
+    public void onUse(Player player, @NotNull ItemStack itemStack) {
         player.sendMessage(Component.text("냠냠 쩝쩝").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD));
     }
 }

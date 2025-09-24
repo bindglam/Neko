@@ -10,6 +10,7 @@ import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientGamePacketListener
 import net.minecraft.network.protocol.game.ServerGamePacketListener
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket
+import net.minecraft.network.protocol.game.ServerboundUseItemPacket
 import org.bukkit.GameMode
 import org.bukkit.craftbukkit.util.CraftLocation
 import org.bukkit.entity.Player
@@ -49,6 +50,12 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
 
                     return null
                 }
+            }
+
+            is ServerboundUseItemPacket -> {
+                val customItem = NekoProvider.neko().contentManager().customItem(player.inventory.itemInMainHand) ?: return this
+
+                customItem.onUse(player, player.inventory.itemInMainHand)
             }
         }
         return this
