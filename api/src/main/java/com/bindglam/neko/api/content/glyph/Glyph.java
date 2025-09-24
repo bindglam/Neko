@@ -10,6 +10,7 @@ import com.bindglam.neko.api.pack.minecraft.font.FontData;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import com.google.gson.Gson;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.ShadowColor;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.ApiStatus;
@@ -89,6 +90,10 @@ public class Glyph implements Keyed, Packable {
 
     @NotNull
     public Component component(@NotNull GlyphBuilder builder) {
-        return BuiltInRegistries.GLYPHS.get(Glyph.SHIFT_GLYPH_KEY).component(builder).append(Component.text(character).font(fontKey));
+        int shadow = 255;
+        if(!builder.shadow())
+            shadow = 0;
+
+        return BuiltInRegistries.GLYPHS.get(Glyph.SHIFT_GLYPH_KEY).component(builder).append(Component.text(character).font(fontKey).shadowColor(ShadowColor.shadowColor(0, 0, 0, shadow)));
     }
 }
