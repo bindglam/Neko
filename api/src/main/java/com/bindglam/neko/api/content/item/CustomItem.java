@@ -1,6 +1,7 @@
 package com.bindglam.neko.api.content.item;
 
 import com.bindglam.neko.api.content.Builder;
+import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
@@ -47,7 +48,8 @@ public class CustomItem implements Keyed, ItemStackHolder, Packable {
         });
     }
 
-    public void onUse(Player player, @NotNull ItemStack itemStack) {
+    public EventState onUse(Player player, @NotNull ItemStack itemStack) {
+        return EventState.CONTINUE;
     }
 
     @ApiStatus.Internal

@@ -6,6 +6,7 @@ import com.bindglam.neko.api.manager.*
 import com.bindglam.neko.api.nms.NMSHook
 import com.bindglam.neko.listeners.BlockListener
 import com.bindglam.neko.listeners.InventoryListener
+import com.bindglam.neko.listeners.ItemListener
 import com.bindglam.neko.listeners.NekoListener
 import com.bindglam.neko.listeners.PlayerListener
 import com.bindglam.neko.manager.*
@@ -35,6 +36,7 @@ class NekoPlugin : Neko, JavaPlugin() {
 
         saveDefaultConfig()
 
+        server.pluginManager.registerEvents(ItemListener(), this)
         server.pluginManager.registerEvents(BlockListener(), this)
         server.pluginManager.registerEvents(PlayerListener(), this)
         server.pluginManager.registerEvents(InventoryListener(), this)

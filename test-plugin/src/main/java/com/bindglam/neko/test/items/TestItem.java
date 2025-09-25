@@ -1,5 +1,6 @@
 package com.bindglam.neko.test.items;
 
+import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.content.item.CustomItem;
 import com.bindglam.neko.api.content.item.CustomItemProperties;
 import net.kyori.adventure.text.Component;
@@ -24,7 +25,8 @@ public class TestItem extends CustomItem {
     }
 
     @Override
-    public void onUse(Player player, @NotNull ItemStack itemStack) {
+    public EventState onUse(Player player, @NotNull ItemStack itemStack) {
         player.sendMessage(Component.text("냠냠 쩝쩝").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD));
+        return EventState.CANCEL;
     }
 }
