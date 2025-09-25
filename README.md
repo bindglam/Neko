@@ -3,6 +3,8 @@
 ---
 
 [![CodeFactor](https://www.codefactor.io/repository/github/bindglam/neko/badge)](https://www.codefactor.io/repository/github/bindglam/neko)
+[![](https://img.shields.io/badge/Github%20Wiki-181717?logo=github&logoColor=white)](https://github.com/bindglam/Neko/wiki)
+[![](https://deepwiki.com/badge.svg)](https://deepwiki.com/bindglam/Neko)
 
 A powerful and easy-to-use Paper plugin that allows you to create fully custom items and blocks on your Minecraft server without the need for any client-side mods.
 
