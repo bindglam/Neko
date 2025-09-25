@@ -1,4 +1,4 @@
-# <img width="64" height="32" alt="icon" src="https://github.com/user-attachments/assets/9a51b484-d8df-4832-8e6c-99b31ee023b0" /> Neko
+# <img width="64" height="32" alt="icon" src="https://github.com/user-attachments/assets/289894f5-2e35-4567-946e-8486a8cdd133" /> Neko
 
 ---
 
