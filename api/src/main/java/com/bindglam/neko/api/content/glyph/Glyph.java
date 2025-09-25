@@ -65,7 +65,6 @@ public class Glyph implements Keyed, Packable {
         if(fontFile != null)
             data = GSON.fromJson(new String(fontFile.bytes().get()), FontData.class);
 
-        // TODO : sprite sheet
         data.providers().add(new FontData.Bitmap(properties.texture().asString() + ".png", properties.scale(), properties.offsetY(), List.of(character)));
 
         byte[] output = GSON.toJson(data).getBytes();
