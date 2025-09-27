@@ -11,6 +11,7 @@ import com.bindglam.neko.pack.host.selfhost.SelfHost
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.plugin
 import net.kyori.adventure.resource.ResourcePackInfo
+import org.bukkit.Bukkit
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.math.BigInteger
@@ -50,6 +51,8 @@ object PackManagerImpl : PackManager {
             packHost = PACK_HOSTS.find { config.getBoolean("pack.host.${it.id()}.enabled") }
 
             config.getConfigurationSection("pack.host.${packHost?.id()}")?.let { packHost?.start(it) }
+
+            Bukkit.getOnlinePlayers().forEach { packHost?.sendPack(it, NekoProvider.neko().plugin().config.getRichMessage("pack.prompt-message")!!) }
         }
     }
 
