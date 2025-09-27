@@ -1,6 +1,7 @@
 package com.bindglam.neko.api.content.item.block;
 
 import com.bindglam.neko.api.content.Factory;
+import com.bindglam.neko.api.content.item.Item;
 import com.bindglam.neko.api.content.item.ItemStackHolder;
 import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
 import net.kyori.adventure.key.Key;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public sealed interface CustomBlockProperties {
+public sealed interface BlockProperties {
     @NotNull NamespacedKey model();
 
     @NotNull Factory<BlockRenderer, CustomBlock> renderer();
@@ -27,14 +28,14 @@ public sealed interface CustomBlockProperties {
     @Nullable Sounds sounds();
 
 
-    record Impl(NamespacedKey model, Factory<BlockRenderer, CustomBlock> renderer, float hardness, CorrectTools correctTools, Drops drops, Sounds sounds) implements CustomBlockProperties {
+    record Impl(NamespacedKey model, Factory<BlockRenderer, CustomBlock> renderer, float hardness, CorrectTools correctTools, Drops drops, Sounds sounds) implements BlockProperties {
     }
 
     static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements com.bindglam.neko.api.content.Builder<CustomBlockProperties> {
+    final class Builder implements com.bindglam.neko.api.content.Builder<BlockProperties> {
         private NamespacedKey model;
         private Factory<BlockRenderer, CustomBlock> renderer;
         private float hardness;
@@ -78,7 +79,7 @@ public sealed interface CustomBlockProperties {
 
 
         @Override
-        public @NotNull CustomBlockProperties build() {
+        public @NotNull BlockProperties build() {
             if(model == null)
                 throw new IllegalStateException("Block model can not be null!");
 

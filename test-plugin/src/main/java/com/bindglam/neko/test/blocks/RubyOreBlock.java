@@ -1,8 +1,8 @@
 package com.bindglam.neko.test.blocks;
 
-import com.bindglam.neko.api.content.item.CustomItemProperties;
+import com.bindglam.neko.api.content.item.ItemProperties;
 import com.bindglam.neko.api.content.item.block.CustomBlock;
-import com.bindglam.neko.api.content.item.block.CustomBlockProperties;
+import com.bindglam.neko.api.content.item.block.BlockProperties;
 import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import net.kyori.adventure.text.Component;
@@ -13,11 +13,11 @@ public class RubyOreBlock extends CustomBlock {
 
     public RubyOreBlock() {
         super(KEY,
-                CustomItemProperties.builder()
+                ItemProperties.builder()
                         .name(Component.text("루비 광석"))
                         .model(new NamespacedKey("defaultassets", "block/ruby_ore"))
                         .build(),
-                CustomBlockProperties.builder()
+                BlockProperties.builder()
                         .model(new NamespacedKey("defaultassets", "block/ruby_ore"))
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(BlockRenderer.NOTE_BLOCK_RENDERER))
                         .build()

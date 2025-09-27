@@ -3,7 +3,6 @@ package com.bindglam.neko.api.content.item;
 import com.bindglam.neko.api.NekoProvider;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
