@@ -76,7 +76,6 @@ class BlockListener : Listener {
         if(Bukkit.getCurrentTick() - BlockHelper.lastPlaceBlock(player) < 3) return
 
         val customBlock = NekoProvider.neko().contentManager().customBlock(clickedBlock) ?: return
-        if(customBlock !is CustomBlock) return
 
         if(customBlock.onInteract(player, clickedBlock) == EventState.CANCEL)
             isCancelled = true

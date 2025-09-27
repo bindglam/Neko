@@ -1,12 +1,10 @@
 package com.bindglam.neko.api.content.block;
 
-import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,10 +19,6 @@ public class CustomBlock implements Block, Packable {
         this.properties = blockProperties;
 
         this.renderer = properties.renderer().create(this);
-    }
-
-    public EventState onInteract(Player player, org.bukkit.block.Block block) {
-        return EventState.CONTINUE;
     }
 
     @ApiStatus.Internal
