@@ -6,4 +6,8 @@ import org.bukkit.entity.Player
 
 object NMSHookImpl : NMSHook {
     override fun createChannelHandler(player: Player): PlayerChannelHandler = PlayerChannelHandlerImpl(player)
+
+    override fun <T : Any?> registerForNMS(value: T?): T? {
+        TODO("Not yet implemented")
+    }
 }

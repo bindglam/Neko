@@ -2,7 +2,7 @@ package com.bindglam.neko.test.items;
 
 import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.content.item.CustomItem;
-import com.bindglam.neko.api.content.item.CustomItemProperties;
+import com.bindglam.neko.api.content.item.ItemProperties;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -17,7 +17,7 @@ public class TestItem extends CustomItem {
     public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "testitem");
 
     public TestItem() {
-        super(KEY, CustomItemProperties.builder()
+        super(KEY, ItemProperties.builder()
                 .name(Component.text("테스트 아이템"))
                 .lore(List.of(Component.text("테스트 아이템이다.")))
                 .model(new NamespacedKey("defaultassets", "item/testitem"))

@@ -1,7 +1,9 @@
 package com.bindglam.neko.nms.v1_21_R5
 
+import net.kyori.adventure.key.Key
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.Packet
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import org.bukkit.Location
 import org.bukkit.World
@@ -17,3 +19,5 @@ fun Player.sendPacket(packet: List<Packet<*>>) {
 }
 
 fun BlockPos.toLocation(world: World?) = Location(world, x.toDouble(), y.toDouble(), z.toDouble())
+
+fun Key.toNMS() = ResourceLocation.fromNamespaceAndPath(namespace(), value())

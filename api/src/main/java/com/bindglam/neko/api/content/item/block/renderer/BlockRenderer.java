@@ -8,7 +8,11 @@ import org.jetbrains.annotations.NotNull;
 public interface BlockRenderer {
     NamespacedKey NOTE_BLOCK_RENDERER = new NamespacedKey("neko", "note_block");
 
-    void place(@NotNull Location location);
+    @NotNull BlockState createBlockState();
+
+    default void place(@NotNull Location location) {
+        createBlockState().copy(location).update();
+    }
 
     boolean isSame(@NotNull BlockState block);
 }

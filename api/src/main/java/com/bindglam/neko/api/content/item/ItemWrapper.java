@@ -3,7 +3,6 @@ package com.bindglam.neko.api.content.item;
 import com.bindglam.neko.api.NekoProvider;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -12,10 +11,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public final class ItemStackWrapper implements ItemStackHolder {
+public final class ItemWrapper implements Item {
     private final NamespacedKey key;
 
-    private ItemStackWrapper(NamespacedKey key) {
+    private ItemWrapper(NamespacedKey key) {
         this.key = key;
     }
 
@@ -29,23 +28,33 @@ public final class ItemStackWrapper implements ItemStackHolder {
         return Objects.requireNonNull(NekoProvider.neko().contentManager().customItem(key)).itemStack();
     }
 
-    public static ItemStackWrapper of(NamespacedKey key) {
-        return new ItemStackWrapper(key);
+    @Override
+    public @NotNull ItemProperties itemProperties() {
+        throw new UnsupportedOperationException();
     }
 
-    public static ItemStackWrapper of(Material material) {
+    @Override
+    public @NotNull NamespacedKey getKey() {
+        return key;
+    }
+
+    public static ItemWrapper of(NamespacedKey key) {
+        return new ItemWrapper(key);
+    }
+
+    public static ItemWrapper of(Material material) {
         return of(material.getKey());
     }
 
-    public static ItemStackWrapper of(ItemType type) {
+    public static ItemWrapper of(ItemType type) {
         return of(type.getKey());
     }
 
-    public static ItemStackWrapper of(ItemStack itemStack) {
+    public static ItemWrapper of(ItemStack itemStack) {
         return of(itemStack.getType());
     }
 
-    public static ItemStackWrapper of(CustomItem customItem) {
+    public static ItemWrapper of(CustomItem customItem) {
         return of(customItem.getKey());
     }
 }

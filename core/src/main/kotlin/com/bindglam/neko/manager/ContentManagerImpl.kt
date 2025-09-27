@@ -1,12 +1,16 @@
 package com.bindglam.neko.manager
 
+import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.item.CustomItem
+import com.bindglam.neko.api.content.item.Item
+import com.bindglam.neko.api.content.item.block.Block
 import com.bindglam.neko.api.content.item.block.CustomBlock
 import com.bindglam.neko.api.event.ContentsLoadEvent
 import com.bindglam.neko.api.manager.ContentManager
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.registry.BuiltInRegistries
+import com.bindglam.neko.api.registry.WritableRegistry
 import com.bindglam.neko.content.glyph.GlyphLoader
 import com.bindglam.neko.content.glyph.ShiftGlyph
 import com.bindglam.neko.content.item.CustomItemLoader
@@ -30,9 +34,14 @@ object ContentManagerImpl : ContentManager {
     private val CONTENT_LOADERS = listOf(CustomItemLoader(), CustomBlockLoader(), GlyphLoader())
 
     override fun start(process: Process) {
-        registerInternalContents()
+        ContentsLoadEvent().also { event ->
+            registerInternalContents(event)
+        }.callEvent()
 
-        ContentsLoadEvent().callEvent()
+        (BuiltInRegistries.ITEMS as WritableRegistry).freeze()
+        (BuiltInRegistries.BLOCKS as WritableRegistry).freeze()
+        (BuiltInRegistries.GLYPHS as WritableRegistry).freeze()
+        (BuiltInRegistries.BLOCK_RENDERERS as WritableRegistry).freeze()
 
         val startMillis = System.currentTimeMillis()
 
@@ -55,21 +64,22 @@ object ContentManagerImpl : ContentManager {
         LOGGER.info("Successfully loaded in ${System.currentTimeMillis() - startMillis}ms")
     }
 
-    private fun registerInternalContents() {
-        BuiltInRegistries.BLOCK_RENDERERS.register(NoteBlockRenderer.KEY, NoteBlockRendererFactory)
+    private fun registerInternalContents(event: ContentsLoadEvent) {
+        event.registerBlockRenderer(NoteBlockRenderer.KEY, NoteBlockRendererFactory)
 
-        BuiltInRegistries.GLYPHS.register(Glyph.SHIFT_GLYPH_KEY, ShiftGlyph())
+        event.registerGlyph(Glyph.SHIFT_GLYPH_KEY, ShiftGlyph())
     }
 
     override fun end(process: Process) {
-        BuiltInRegistries.ITEMS.clear()
-        BuiltInRegistries.BLOCKS.clear()
-        BuiltInRegistries.GLYPHS.clear()
+        (BuiltInRegistries.ITEMS as WritableRegistry).clear()
+        (BuiltInRegistries.BLOCKS as WritableRegistry).clear()
+        (BuiltInRegistries.GLYPHS as WritableRegistry).clear()
+        (BuiltInRegistries.BLOCK_RENDERERS as WritableRegistry).clear()
     }
 
-    override fun customItem(key: Key): CustomItem? = BuiltInRegistries.ITEMS.getOrNull(key)
-    override fun customItem(itemStack: ItemStack): CustomItem? = BuiltInRegistries.ITEMS.find { it.isSame(itemStack) }
-    override fun customBlock(key: Key): CustomBlock? = BuiltInRegistries.BLOCKS.getOrNull(key)
-    override fun customBlock(block: BlockState): CustomBlock? = BuiltInRegistries.BLOCKS.find { it.renderer().isSame(block) }
+    override fun customItem(key: Key): Item? = BuiltInRegistries.ITEMS.getOrNull(key)
+    override fun customItem(itemStack: ItemStack): Item? = BuiltInRegistries.ITEMS.find { it.isSame(itemStack) }
+    override fun customBlock(key: Key): Block? = BuiltInRegistries.BLOCKS.getOrNull(key)
+    override fun customBlock(block: BlockState): Block? = BuiltInRegistries.BLOCKS.find { it.isSame(block) }
     override fun glyph(key: Key): Glyph? = BuiltInRegistries.GLYPHS.getOrNull(key)
 }

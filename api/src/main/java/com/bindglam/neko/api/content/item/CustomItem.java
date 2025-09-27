@@ -1,16 +1,13 @@
 package com.bindglam.neko.api.content.item;
 
-import com.bindglam.neko.api.content.Builder;
 import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
 import com.bindglam.neko.api.pack.minecraft.item.ItemData;
 import com.google.gson.Gson;
-import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.ApiStatus;
@@ -18,16 +15,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class CustomItem implements Keyed, ItemStackHolder, Packable {
+public class CustomItem implements Item, Packable {
     private static final NamespacedKey NEKO_ITEM_PDC_KEY = new NamespacedKey("neko", "item");
     private static final Gson GSON = new Gson();
 
     private final NamespacedKey key;
-    private final CustomItemProperties properties;
+    private final ItemProperties properties;
 
     private ItemStack itemStack;
 
-    public CustomItem(NamespacedKey key, CustomItemProperties itemProperties) {
+    public CustomItem(NamespacedKey key, ItemProperties itemProperties) {
         this.key = key;
         this.properties = itemProperties;
 
@@ -46,10 +43,6 @@ public class CustomItem implements Keyed, ItemStackHolder, Packable {
         itemStack.editPersistentDataContainer((dataContainer) -> {
             dataContainer.set(NEKO_ITEM_PDC_KEY, PersistentDataType.STRING, key.toString());
         });
-    }
-
-    public EventState onUse(Player player, @NotNull ItemStack itemStack) {
-        return EventState.CONTINUE;
     }
 
     @ApiStatus.Internal
@@ -77,7 +70,7 @@ public class CustomItem implements Keyed, ItemStackHolder, Packable {
         return key;
     }
 
-    public @NotNull CustomItemProperties itemProperties() {
+    public @NotNull ItemProperties itemProperties() {
         return properties;
     }
 }

@@ -99,7 +99,7 @@ class PlayerListener : Listener {
         val isCorrectTool: Boolean
     )
 
-    private fun blockBreakSpeed(player: Player, customBlock: CustomBlock): BlockBreakSpeedData {
+    private fun blockBreakSpeed(player: Player, customBlock: com.bindglam.neko.api.content.item.block.Block): BlockBreakSpeedData {
         var itemBlockBreakSpeed = 1.0f
         var isCorrectTool = customBlock.blockProperties().correctTools()?.isCorrectTool(player.inventory.itemInMainHand) == true
 
@@ -126,7 +126,7 @@ class PlayerListener : Listener {
         return BlockBreakSpeedData(blockBreakSpeed, isCorrectTool)
     }
 
-    private fun dropItems(block: Block, customBlock: CustomBlock) {
+    private fun dropItems(block: Block, customBlock: com.bindglam.neko.api.content.item.block.Block) {
         fun dropItem(itemStack: ItemStack) {
             block.world.dropItemNaturally(block.location.offset(0.5, 0.5, 0.5).toLocation(block.world), itemStack)
         }
@@ -148,7 +148,7 @@ class PlayerListener : Listener {
                 }
             }
         } else {
-            dropItem(customBlock.itemStack())
+            customBlock.itemStack()?.let { dropItem(it) }
         }
     }
 }

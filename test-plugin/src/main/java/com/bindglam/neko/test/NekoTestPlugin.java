@@ -28,15 +28,15 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onContentsLoad(ContentsLoadEvent event) {
-        BuiltInRegistries.GLYPHS.register(RubyGlyph.KEY, new RubyGlyph());
+        event.registerGlyph(RubyGlyph.KEY, new RubyGlyph());
 
-        BuiltInRegistries.ITEMS.register(TestItem.KEY, new TestItem());
-        BuiltInRegistries.ITEMS.register(RubyItem.KEY, new RubyItem());
+        event.registerItem(TestItem.KEY, new TestItem());
+        event.registerItem(RubyItem.KEY, new RubyItem());
 
-        registerBlock(TestBlock.KEY, new TestBlock());
-        registerBlock(RubyBlock.KEY, new RubyBlock());
-        registerBlock(RubyOreBlock.KEY, new RubyOreBlock());
-        registerBlock(DeepslateRubyOreBlock.KEY, new DeepslateRubyOreBlock());
+        event.registerBlock(TestBlock.KEY, new TestBlock());
+        event.registerBlock(RubyBlock.KEY, new RubyBlock());
+        event.registerBlock(RubyOreBlock.KEY, new RubyOreBlock());
+        event.registerBlock(DeepslateRubyOreBlock.KEY, new DeepslateRubyOreBlock());
     }
 
     @EventHandler
@@ -44,8 +44,8 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
         event.addPluginPack(this);
     }
 
-    private static void registerBlock(NamespacedKey key, CustomBlock block) {
-        BuiltInRegistries.ITEMS.register(key, block);
-        BuiltInRegistries.BLOCKS.register(key, block);
+    private static void registerBlock(ContentsLoadEvent event, NamespacedKey key, CustomBlock block) {
+        event.registerItem(key, block);
+        event.registerBlock(key, block);
     }
 }

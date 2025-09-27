@@ -1,30 +1,24 @@
 package com.bindglam.neko.api.content.item.block;
 
-import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.content.item.CustomItem;
-import com.bindglam.neko.api.content.item.CustomItemProperties;
+import com.bindglam.neko.api.content.item.ItemProperties;
 import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
+import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-public class CustomBlock extends CustomItem {
-    private final CustomBlockProperties properties;
+public class CustomBlock extends CustomItem implements Block {
+    private final BlockProperties properties;
 
     private final BlockRenderer renderer;
 
-    public CustomBlock(NamespacedKey key, CustomItemProperties itemProperties, CustomBlockProperties blockProperties) {
+    public CustomBlock(NamespacedKey key, ItemProperties itemProperties, BlockProperties blockProperties) {
         super(key, itemProperties);
         this.properties = blockProperties;
         this.renderer = properties.renderer().create(this);
-    }
-
-    public EventState onInteract(Player player, Block block) {
-        return EventState.CONTINUE;
     }
 
     @ApiStatus.Internal
@@ -36,8 +30,18 @@ public class CustomBlock extends CustomItem {
             packable.pack(zipper);
     }
 
+    @Override
+    public boolean isSame(BlockState other) {
+        return renderer().isSame(other);
+    }
+
+    @Override
+    public BlockState blockState() {
+        return renderer.createBlockState();
+    }
+
     @NotNull
-    public CustomBlockProperties blockProperties() {
+    public BlockProperties blockProperties() {
         return properties;
     }
 

@@ -60,7 +60,8 @@ class BlockListener : Listener {
             else
                 Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f)
 
-            player.placeBlock(location, { customBlock.renderer().place(it) }, clickedBlock!!, hand!!, placeSound)
+            println("test")
+            player.placeBlock(location, { customBlock.blockState().copy(it).update(true) }, clickedBlock!!, hand!!, placeSound)
 
             BlockHelper.updateLastPlaceBlock(player)
         }

@@ -6,14 +6,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ApiStatus.Internal
-public class ScalableRegistry<T> implements Registry<T> {
-    private final Map<Key, T> map = new HashMap<>();
+public class ScalableRegistry<T> implements WritableRegistry<T> {
+    private final Map<Key, T> map = new ConcurrentHashMap<>();
+
+    private boolean frozen = false;
 
 
     @Override
@@ -27,12 +29,23 @@ public class ScalableRegistry<T> implements Registry<T> {
     }
 
     @Override
-    public synchronized void register(Key key, T value) {
+    public void freeze() {
+        frozen = true;
+    }
+
+    @Override
+    public void register(Key key, T value) {
+        if(frozen)
+            throw new IllegalStateException("This registry is frozen");
+
         map.put(key, value);
     }
 
     @Override
     public void clear() {
+        /*if(frozen)
+            throw new IllegalStateException("This registry is frozen");*/
+
         map.clear();
     }
 
