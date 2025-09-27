@@ -1,11 +1,9 @@
 package com.bindglam.neko.test.blocks;
 
-import com.bindglam.neko.api.content.item.ItemProperties;
-import com.bindglam.neko.api.content.item.block.CustomBlock;
-import com.bindglam.neko.api.content.item.block.BlockProperties;
-import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
+import com.bindglam.neko.api.content.block.CustomBlock;
+import com.bindglam.neko.api.content.block.BlockProperties;
+import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
-import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 
 public class DeepslateRubyOreBlock extends CustomBlock {
@@ -13,10 +11,6 @@ public class DeepslateRubyOreBlock extends CustomBlock {
 
     public DeepslateRubyOreBlock() {
         super(KEY,
-                ItemProperties.builder()
-                        .name(Component.text("심층암 루비 광석"))
-                        .model(new NamespacedKey("defaultassets", "block/deepslate_ruby_ore"))
-                        .build(),
                 BlockProperties.builder()
                         .model(new NamespacedKey("defaultassets", "block/deepslate_ruby_ore"))
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(BlockRenderer.NOTE_BLOCK_RENDERER))

@@ -1,9 +1,8 @@
-package com.bindglam.neko.api.content.item.block;
+package com.bindglam.neko.api.content.block;
 
 import com.bindglam.neko.api.content.Factory;
-import com.bindglam.neko.api.content.item.Item;
 import com.bindglam.neko.api.content.item.ItemStackHolder;
-import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
+import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -17,7 +16,7 @@ import java.util.List;
 public sealed interface BlockProperties {
     @NotNull NamespacedKey model();
 
-    @NotNull Factory<BlockRenderer, CustomBlock> renderer();
+    @NotNull Factory<BlockRenderer, Block> renderer();
 
     float hardness();
 
@@ -28,7 +27,7 @@ public sealed interface BlockProperties {
     @Nullable Sounds sounds();
 
 
-    record Impl(NamespacedKey model, Factory<BlockRenderer, CustomBlock> renderer, float hardness, CorrectTools correctTools, Drops drops, Sounds sounds) implements BlockProperties {
+    record Impl(NamespacedKey model, Factory<BlockRenderer, Block> renderer, float hardness, CorrectTools correctTools, Drops drops, Sounds sounds) implements BlockProperties {
     }
 
     static Builder builder() {
@@ -37,7 +36,7 @@ public sealed interface BlockProperties {
 
     final class Builder implements com.bindglam.neko.api.content.Builder<BlockProperties> {
         private NamespacedKey model;
-        private Factory<BlockRenderer, CustomBlock> renderer;
+        private Factory<BlockRenderer, Block> renderer;
         private float hardness;
         private CorrectTools correctTools;
         private Drops drops;
@@ -52,7 +51,7 @@ public sealed interface BlockProperties {
             return this;
         }
 
-        public Builder renderer(Factory<BlockRenderer, CustomBlock> renderer) {
+        public Builder renderer(Factory<BlockRenderer, Block> renderer) {
             this.renderer = renderer;
             return this;
         }

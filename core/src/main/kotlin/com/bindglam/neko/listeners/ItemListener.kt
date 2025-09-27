@@ -2,6 +2,7 @@ package com.bindglam.neko.listeners
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
+import com.bindglam.neko.api.content.item.CustomItem
 import com.bindglam.neko.utils.isInteractable
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
@@ -20,6 +21,7 @@ class ItemListener : Listener {
             return
 
         val customItem = NekoProvider.neko().contentManager().customItem(item) ?: return
+        if(customItem !is CustomItem) return
 
         if(customItem.onUse(player, item!!) == EventState.CANCEL)
             isCancelled = true

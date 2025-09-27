@@ -1,12 +1,10 @@
 package com.bindglam.neko.test.blocks;
 
-import com.bindglam.neko.api.content.item.ItemProperties;
 import com.bindglam.neko.api.content.item.ItemStackWrapper;
-import com.bindglam.neko.api.content.item.block.CustomBlock;
-import com.bindglam.neko.api.content.item.block.BlockProperties;
-import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer;
+import com.bindglam.neko.api.content.block.CustomBlock;
+import com.bindglam.neko.api.content.block.BlockProperties;
+import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
-import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 
@@ -17,10 +15,6 @@ public class RubyBlock extends CustomBlock {
 
     public RubyBlock() {
         super(KEY,
-                ItemProperties.builder()
-                        .name(Component.text("루비 블록"))
-                        .model(new NamespacedKey("defaultassets", "block/ruby_block"))
-                        .build(),
                 BlockProperties.builder()
                         .model(new NamespacedKey("defaultassets", "block/ruby_block"))
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(BlockRenderer.NOTE_BLOCK_RENDERER))

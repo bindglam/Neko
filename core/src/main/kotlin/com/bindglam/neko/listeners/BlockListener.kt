@@ -2,7 +2,8 @@ package com.bindglam.neko.listeners
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
-import com.bindglam.neko.api.content.item.block.CustomBlock
+import com.bindglam.neko.api.content.block.CustomBlock
+import com.bindglam.neko.api.content.item.block.BlockItem
 import com.bindglam.neko.content.item.block.BlockHelper
 import com.bindglam.neko.utils.canPlaceBlock
 import com.bindglam.neko.utils.isInteractable
@@ -47,20 +48,21 @@ class BlockListener : Listener {
         if (action != Action.RIGHT_CLICK_BLOCK) return
         if (clickedBlock!!.isInteractable() && !player.isSneaking) return
 
-        val customBlock = NekoProvider.neko().contentManager().customItem(item) ?: return
-        if (customBlock !is CustomBlock) return
+        val customItem = NekoProvider.neko().contentManager().customItem(item) ?: return
+        if (customItem !is BlockItem) return
+        val customBlock = customItem.block()
 
         val location = if(!clickedBlock!!.type.isReplaceable) clickedBlock!!.getRelative(blockFace).location else clickedBlock!!.location
 
         if(player.canPlaceBlock(location)) {
             isCancelled = true
 
-            val placeSound = if(customBlock.blockProperties().sounds() != null)
-                Sound.sound(customBlock.blockProperties().sounds()!!.placeSound(), Sound.Source.BLOCK, 1f, 1f)
+            val placeSound = if(customBlock.properties().sounds() != null)
+                Sound.sound(customBlock.properties().sounds()!!.placeSound(), Sound.Source.BLOCK, 1f, 1f)
             else
                 Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f)
 
-            player.placeBlock(location, { customBlock.renderer().place(it) }, clickedBlock!!, hand!!, placeSound)
+            player.placeBlock(location, { customBlock.blockState().copy(it).update(true, true) }, clickedBlock!!, hand!!, placeSound)
 
             BlockHelper.updateLastPlaceBlock(player)
         }
@@ -74,6 +76,7 @@ class BlockListener : Listener {
         if(Bukkit.getCurrentTick() - BlockHelper.lastPlaceBlock(player) < 3) return
 
         val customBlock = NekoProvider.neko().contentManager().customBlock(clickedBlock) ?: return
+        if(customBlock !is CustomBlock) return
 
         if(customBlock.onInteract(player, clickedBlock) == EventState.CANCEL)
             isCancelled = true

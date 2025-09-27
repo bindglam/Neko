@@ -1,8 +1,8 @@
 package com.bindglam.neko.content.item.block.renderer
 
 import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.api.content.item.block.CustomBlock
-import com.bindglam.neko.api.content.item.block.renderer.BlockRenderer
+import com.bindglam.neko.api.content.block.Block
+import com.bindglam.neko.api.content.block.renderer.BlockRenderer
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.api.pack.Packable
@@ -12,14 +12,14 @@ import com.bindglam.neko.utils.plugin
 import com.bindglam.neko.utils.toPackPath
 import com.google.gson.Gson
 import net.kyori.adventure.key.Key
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Note
 import org.bukkit.block.BlockState
+import org.bukkit.block.BlockType
 import org.bukkit.block.data.type.NoteBlock
 
-class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, Packable {
+class NoteBlockRenderer(private val block: Block) : BlockRenderer, Packable {
     companion object {
         val KEY = NamespacedKey(NekoProvider.neko().plugin(), "note_block")
 
@@ -40,14 +40,14 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
     private fun loadData() {
         val blockCache = NekoProvider.neko().cacheManager().getCache("blocks")
 
-        if(blockCache["${customBlock.key().asString()}.instrument"] == null) {
+        if(blockCache["${block.key().asString()}.instrument"] == null) {
             instrument = VanillaInstruments.entries[blockCache.getInteger("note-block.next-instrument", 0)]
             note = blockCache.getByte("note-block.next-note", 0)
             powered = if(instrument == VanillaInstruments.HARP) true else blockCache.getBoolean("note-block.next-powered", false)
 
-            blockCache["${customBlock.key().asString()}.instrument"] = instrument.ordinal
-            blockCache["${customBlock.key().asString()}.note"] = note
-            blockCache["${customBlock.key().asString()}.powered"] = powered
+            blockCache["${block.key().asString()}.instrument"] = instrument.ordinal
+            blockCache["${block.key().asString()}.note"] = note
+            blockCache["${block.key().asString()}.powered"] = powered
 
             if (note >= MAX_NOTE) {
                 blockCache["note-block.next-instrument"] = instrument.ordinal + 1
@@ -63,9 +63,9 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
                 blockCache["note-block.next-powered"] = true
             }
         } else {
-            instrument = VanillaInstruments.entries[blockCache.getInteger("${customBlock.key().asString()}.instrument", 0)]
-            note = blockCache.getByte("${customBlock.key().asString()}.note", 0)
-            powered = blockCache.getBoolean("${customBlock.key().asString()}.powered", false)
+            instrument = VanillaInstruments.entries[blockCache.getInteger("${block.key().asString()}.instrument", 0)]
+            note = blockCache.getByte("${block.key().asString()}.note", 0)
+            powered = blockCache.getBoolean("${block.key().asString()}.powered", false)
         }
     }
 
@@ -77,22 +77,18 @@ class NoteBlockRenderer(private val customBlock: CustomBlock) : BlockRenderer, P
         else
             BlockStateData(hashMapOf())
 
-        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note},powered=${powered}"] = BlockStateData.Variant(customBlock.blockProperties().model().asString())
+        blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note},powered=${powered}"] = BlockStateData.Variant(block.properties().model().asString())
 
         GSON.toJson(blockStateData).toByteArray().also {
             zipper.addFile(BLOCKSTATE_FILE, PackFile({ it }, it.size.toLong()))
         }
     }
 
-    override fun place(location: Location) {
-        val block = location.block.apply { type = Material.NOTE_BLOCK }
-
-        block.blockData = (block.blockData as NoteBlock).also {
-            it.instrument = instrument.bukkit
-            it.note = Note(note.toInt())
-            it.isPowered = true
-        }
-    }
+    override fun createBlockState(): BlockState = BlockType.NOTE_BLOCK.createBlockData().also {
+        it.instrument = instrument.bukkit
+        it.note = Note(note.toInt())
+        it.isPowered = powered
+    }.createBlockState()
 
     override fun isSame(block: BlockState): Boolean {
         if(block.type != Material.NOTE_BLOCK)

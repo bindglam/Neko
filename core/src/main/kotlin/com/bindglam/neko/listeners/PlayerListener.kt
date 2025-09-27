@@ -1,7 +1,8 @@
 package com.bindglam.neko.listeners
 
 import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.api.content.item.block.CustomBlock
+import com.bindglam.neko.api.content.block.CustomBlock
+import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.content.item.block.BlockHelper
 import com.bindglam.neko.utils.plugin
 import io.papermc.paper.datacomponent.DataComponentTypes
@@ -79,8 +80,8 @@ class PlayerListener : Listener {
                     .spawn()
                 block.type = Material.AIR
 
-                val breakSound = if(customBlock.blockProperties().sounds() != null)
-                    Sound.sound(customBlock.blockProperties().sounds()!!.breakSound(), Sound.Source.BLOCK, 1f, 1f)
+                val breakSound = if(customBlock.properties().sounds() != null)
+                    Sound.sound(customBlock.properties().sounds()!!.breakSound(), Sound.Source.BLOCK, 1f, 1f)
                 else
                     Sound.sound(org.bukkit.Sound.BLOCK_METAL_BREAK, Sound.Source.BLOCK, 1f, 1f)
                 block.world.playSound(breakSound, Sound.Emitter.self())
@@ -99,9 +100,9 @@ class PlayerListener : Listener {
         val isCorrectTool: Boolean
     )
 
-    private fun blockBreakSpeed(player: Player, customBlock: CustomBlock): BlockBreakSpeedData {
+    private fun blockBreakSpeed(player: Player, customBlock: com.bindglam.neko.api.content.block.Block): BlockBreakSpeedData {
         var itemBlockBreakSpeed = 1.0f
-        var isCorrectTool = customBlock.blockProperties().correctTools()?.isCorrectTool(player.inventory.itemInMainHand) == true
+        var isCorrectTool = customBlock.properties().correctTools()?.isCorrectTool(player.inventory.itemInMainHand) == true
 
         if(player.inventory.itemInMainHand.hasData(DataComponentTypes.TOOL)) {
             player.inventory.itemInMainHand.getData(DataComponentTypes.TOOL)!!.also { tool ->
@@ -121,18 +122,18 @@ class PlayerListener : Listener {
         val efficiencyEffect = player.inventory.itemInMainHand.getEnchantmentLevel(Enchantment.EFFICIENCY).toFloat().pow(2f) + 1f
         val attributeEffect = player.inventory.itemInMainHand.itemMeta.getAttributeModifiers(Attribute.BLOCK_BREAK_SPEED)?.sumOf { it.amount }?.toFloat() ?: 0f
 
-        val blockBreakSpeed = (itemBlockBreakSpeed + efficiencyEffect + attributeEffect) / customBlock.blockProperties().hardness() / if(isCorrectTool) 30f else 100f
+        val blockBreakSpeed = (itemBlockBreakSpeed + efficiencyEffect + attributeEffect) / customBlock.properties().hardness() / if(isCorrectTool) 30f else 100f
 
         return BlockBreakSpeedData(blockBreakSpeed, isCorrectTool)
     }
 
-    private fun dropItems(block: Block, customBlock: CustomBlock) {
+    private fun dropItems(block: Block, customBlock: com.bindglam.neko.api.content.block.Block) {
         fun dropItem(itemStack: ItemStack) {
             block.world.dropItemNaturally(block.location.offset(0.5, 0.5, 0.5).toLocation(block.world), itemStack)
         }
 
-        if(customBlock.blockProperties().drops() != null) {
-            customBlock.blockProperties().drops()?.dataList()?.forEach { data ->
+        if(customBlock.properties().drops() != null) {
+            customBlock.properties().drops()?.dataList()?.forEach { data ->
                 val random = Math.random()
 
                 if(random > data.chance()) return@forEach
@@ -148,7 +149,7 @@ class PlayerListener : Listener {
                 }
             }
         } else {
-            dropItem(customBlock.itemStack())
+            customBlock.item()?.itemStack()?.let { dropItem(it) }
         }
     }
 }

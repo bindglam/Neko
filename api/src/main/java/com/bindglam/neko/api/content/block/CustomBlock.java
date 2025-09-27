@@ -1,0 +1,62 @@
+package com.bindglam.neko.api.content.block;
+
+import com.bindglam.neko.api.content.EventState;
+import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
+import com.bindglam.neko.api.pack.PackZipper;
+import com.bindglam.neko.api.pack.Packable;
+import org.bukkit.NamespacedKey;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+
+public class CustomBlock implements Block, Packable {
+    private final NamespacedKey key;
+    private final BlockProperties properties;
+
+    private final BlockRenderer renderer;
+
+    public CustomBlock(NamespacedKey key, BlockProperties blockProperties) {
+        this.key = key;
+        this.properties = blockProperties;
+
+        this.renderer = properties.renderer().create(this);
+    }
+
+    public EventState onInteract(Player player, org.bukkit.block.Block block) {
+        return EventState.CONTINUE;
+    }
+
+    @ApiStatus.Internal
+    @Override
+    public void pack(@NotNull PackZipper zipper) {
+        if(renderer instanceof Packable packable)
+            packable.pack(zipper);
+    }
+
+    @NotNull
+    public BlockRenderer renderer() {
+        return renderer;
+    }
+
+    @Override
+    public @NotNull BlockState blockState() {
+        return renderer.createBlockState();
+    }
+
+    @Override
+    public boolean isSame(BlockState other) {
+        return renderer.isSame(other);
+    }
+
+    @Override
+    @NotNull
+    public BlockProperties properties() {
+        return properties;
+    }
+
+    @Override
+    public @NotNull NamespacedKey getKey() {
+        return key;
+    }
+}

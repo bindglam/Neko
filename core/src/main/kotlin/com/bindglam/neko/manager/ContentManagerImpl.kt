@@ -1,8 +1,10 @@
 package com.bindglam.neko.manager
 
+import com.bindglam.neko.api.content.block.Block
 import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.item.CustomItem
-import com.bindglam.neko.api.content.item.block.CustomBlock
+import com.bindglam.neko.api.content.block.CustomBlock
+import com.bindglam.neko.api.content.item.Item
 import com.bindglam.neko.api.event.ContentsLoadEvent
 import com.bindglam.neko.api.manager.ContentManager
 import com.bindglam.neko.api.manager.Process
@@ -20,7 +22,6 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.inventory.ItemStack
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.nio.file.Files
 
 object ContentManagerImpl : ContentManager {
     private val LOGGER = LoggerFactory.getLogger(ContentManager::class.java)
@@ -67,9 +68,9 @@ object ContentManagerImpl : ContentManager {
         BuiltInRegistries.GLYPHS.clear()
     }
 
-    override fun customItem(key: Key): CustomItem? = BuiltInRegistries.ITEMS.getOrNull(key)
-    override fun customItem(itemStack: ItemStack): CustomItem? = BuiltInRegistries.ITEMS.find { it.isSame(itemStack) }
-    override fun customBlock(key: Key): CustomBlock? = BuiltInRegistries.BLOCKS.getOrNull(key)
-    override fun customBlock(block: BlockState): CustomBlock? = BuiltInRegistries.BLOCKS.find { it.renderer().isSame(block) }
+    override fun customItem(key: Key): Item? = BuiltInRegistries.ITEMS.getOrNull(key)
+    override fun customItem(itemStack: ItemStack): Item? = BuiltInRegistries.ITEMS.find { it.isSame(itemStack) }
+    override fun customBlock(key: Key): Block? = BuiltInRegistries.BLOCKS.getOrNull(key)
+    override fun customBlock(block: BlockState): Block? = BuiltInRegistries.BLOCKS.find { it.isSame(block) }
     override fun glyph(key: Key): Glyph? = BuiltInRegistries.GLYPHS.getOrNull(key)
 }
