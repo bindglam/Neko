@@ -18,7 +18,6 @@ public class TestItem extends CustomItem {
 
     public TestItem() {
         super(KEY, ItemProperties.builder()
-                .name(Component.text("테스트 아이템"))
                 .lore(List.of(Component.text("테스트 아이템이다.")))
                 .model(new NamespacedKey("defaultassets", "item/testitem"))
                 .build());

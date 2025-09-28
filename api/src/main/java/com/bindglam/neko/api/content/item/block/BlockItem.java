@@ -6,4 +6,10 @@ import org.jetbrains.annotations.NotNull;
 
 public interface BlockItem extends Item {
     @NotNull Block block();
+
+    @Override
+    @NotNull
+    default String translationKey() {
+        return block().translationKey();
+    }
 }

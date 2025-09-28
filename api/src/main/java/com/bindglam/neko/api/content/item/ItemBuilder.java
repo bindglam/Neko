@@ -1,5 +1,6 @@
 package com.bindglam.neko.api.content.item;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,10 @@ public final class ItemBuilder {
         ItemStack itemStack = item.properties().type().createItemStack();
 
         itemStack.editMeta((meta) -> {
-            meta.itemName(item.properties().name());
+            if(item.properties().name() == null)
+                meta.itemName(Component.translatable(item));
+            else
+                meta.itemName(item.properties().name());
             meta.lore(item.properties().lore());
             meta.setItemModel(item.getKey());
         });

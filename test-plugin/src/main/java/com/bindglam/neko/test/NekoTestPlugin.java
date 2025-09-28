@@ -37,10 +37,10 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
         BuiltInRegistries.ITEMS.register(TestItem.KEY, new TestItem());
         BuiltInRegistries.ITEMS.register(RubyItem.KEY, new RubyItem());
 
-        registerBlock(TestBlock.KEY, new TestBlock(), Component.text("테스트 블록"));
-        registerBlock(RubyBlock.KEY, new RubyBlock(), Component.text("루비 블록"));
-        registerBlock(RubyOreBlock.KEY, new RubyOreBlock(), Component.text("루비 광석"));
-        registerBlock(DeepslateRubyOreBlock.KEY, new DeepslateRubyOreBlock(), Component.text("심층암 루비 광석"));
+        registerBlock(TestBlock.KEY, new TestBlock());
+        registerBlock(RubyBlock.KEY, new RubyBlock());
+        registerBlock(RubyOreBlock.KEY, new RubyOreBlock());
+        registerBlock(DeepslateRubyOreBlock.KEY, new DeepslateRubyOreBlock());
     }
 
     @EventHandler
@@ -48,8 +48,8 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
         event.addPluginPack(this);
     }
 
-    private static void registerBlock(NamespacedKey key, CustomBlock block, Component name) {
-        BuiltInRegistries.ITEMS.register(key, new CustomBlockItem(block.getKey(), ItemProperties.builder().name(name).model(block.properties().model()).build(), block));
+    private static void registerBlock(NamespacedKey key, CustomBlock block) {
+        BuiltInRegistries.ITEMS.register(key, new CustomBlockItem(block.getKey(), ItemProperties.builder().model(block.properties().model()).build(), block));
         BuiltInRegistries.BLOCKS.register(key, block);
     }
 }

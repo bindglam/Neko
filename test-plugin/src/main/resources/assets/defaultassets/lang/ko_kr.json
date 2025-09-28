@@ -1,0 +1,9 @@
+{
+  "item.defaultassets.ruby": "루비",
+  "item.defaultassets.testitem": "테스트 아이템",
+
+  "block.defaultassets.testblock": "테스트 블록",
+  "block.defaultassets.ruby_block": "루비 블록",
+  "block.defaultassets.ruby_ore": "루비 광석",
+  "block.defaultassets.deepslate_ruby_ore": "심층암 루비 광석"
+}
