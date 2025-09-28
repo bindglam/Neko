@@ -54,10 +54,12 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
 
         when (this) {
             is ClientboundContainerSetContentPacket -> {
-                val items = items.map { it.copy().also {
-                    val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
-                    mapClientsideLore(it, customItem.properties().clientsideLore())
-                } }
+                val items = arrayListOf<ItemStack>().apply {
+                    items.forEach { add(it.copy().also {
+                        val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
+                        mapClientsideLore(it, customItem.properties().clientsideLore())
+                    }) }
+                }
 
                 val carriedItem = carriedItem.copy().also {
                     val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
