@@ -48,33 +48,33 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
         when (this) {
             is ClientboundContainerSetContentPacket -> {
                 val items = arrayListOf<ItemStack>().apply {
-                    items.forEach { add(it.copy().also {
-                        val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
-                        mapClientsideLore(it, customItem.properties().clientsideLore())
+                    items.forEach { add(it.copy().apply {
+                        val customItem = NekoProvider.neko().contentManager().customItem(bukkitStack) ?: return@apply
+                        mapClientsideLore(this, customItem.properties().clientsideLore())
                     }) }
                 }
 
-                val carriedItem = carriedItem.copy().also {
-                    val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
-                    mapClientsideLore(it, customItem.properties().clientsideLore())
+                val carriedItem = carriedItem.copy().apply {
+                    val customItem = NekoProvider.neko().contentManager().customItem(bukkitStack) ?: return@apply
+                    mapClientsideLore(this, customItem.properties().clientsideLore())
                 }
 
                 return ClientboundContainerSetContentPacket(containerId, stateId, items, carriedItem)
             }
 
             is ClientboundContainerSetSlotPacket -> {
-                val item = item.copy().also {
-                    val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
-                    mapClientsideLore(it, customItem.properties().clientsideLore())
+                val item = item.copy().apply {
+                    val customItem = NekoProvider.neko().contentManager().customItem(bukkitStack) ?: return@apply
+                    mapClientsideLore(this, customItem.properties().clientsideLore())
                 }
 
                 return ClientboundContainerSetSlotPacket(containerId, stateId, slot, item)
             }
 
             is ClientboundSetPlayerInventoryPacket -> {
-                val contents = contents.copy().also {
-                    val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
-                    mapClientsideLore(it, customItem.properties().clientsideLore())
+                val contents = contents.copy().apply {
+                    val customItem = NekoProvider.neko().contentManager().customItem(bukkitStack) ?: return@apply
+                    mapClientsideLore(this, customItem.properties().clientsideLore())
                 }
 
                 return ClientboundSetPlayerInventoryPacket(slot, contents)
