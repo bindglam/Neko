@@ -18,7 +18,7 @@ public sealed interface GlyphProperties {
         return new Builder();
     }
 
-    final class Builder implements com.bindglam.neko.api.content.Builder<GlyphProperties> {
+    final class Builder implements com.bindglam.neko.api.utils.Builder<GlyphProperties> {
         private NamespacedKey texture;
         private int offsetY;
         private int scale;

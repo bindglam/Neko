@@ -25,7 +25,7 @@ public sealed interface ItemProperties {
         return new Builder();
     }
 
-    final class Builder implements com.bindglam.neko.api.content.Builder<ItemProperties> {
+    final class Builder implements com.bindglam.neko.api.utils.Builder<ItemProperties> {
         private ItemType type = ItemType.PAPER;
         private Component name;
         private List<Component> lore;

@@ -1,6 +1,6 @@
 package com.bindglam.neko.api.content.block;
 
-import com.bindglam.neko.api.content.Factory;
+import com.bindglam.neko.api.utils.Factory;
 import com.bindglam.neko.api.content.item.ItemStackHolder;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import net.kyori.adventure.key.Key;
@@ -34,7 +34,7 @@ public sealed interface BlockProperties {
         return new Builder();
     }
 
-    final class Builder implements com.bindglam.neko.api.content.Builder<BlockProperties> {
+    final class Builder implements com.bindglam.neko.api.utils.Builder<BlockProperties> {
         private NamespacedKey model;
         private Factory<BlockRenderer, Block> renderer;
         private float hardness;

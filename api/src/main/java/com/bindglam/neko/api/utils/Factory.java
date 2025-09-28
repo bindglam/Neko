@@ -1,4 +1,4 @@
-package com.bindglam.neko.api.content;
+package com.bindglam.neko.api.utils;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,6 +1,6 @@
 package com.bindglam.neko.api.registry;
 
-import com.bindglam.neko.api.content.Factory;
+import com.bindglam.neko.api.utils.Factory;
 import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.content.glyph.Glyph;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
