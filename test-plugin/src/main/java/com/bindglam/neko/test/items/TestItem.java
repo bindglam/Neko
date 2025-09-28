@@ -18,7 +18,7 @@ public class TestItem extends CustomItem {
 
     public TestItem() {
         super(KEY, ItemProperties.builder()
-                .lore(List.of(Component.text("테스트 아이템이다.")))
+                .clientsideLore((itemStack, player) -> List.of(Component.text("테스트 아이템이다. " + player.getName() + "님아.")))
                 .model(new NamespacedKey("defaultassets", "item/testitem"))
                 .build());
     }
