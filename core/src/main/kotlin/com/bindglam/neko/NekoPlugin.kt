@@ -13,10 +13,12 @@ import com.bindglam.neko.manager.*
 import com.bindglam.neko.utils.MCVersion
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.server.ServerLoadEvent
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 
 class NekoPlugin : Neko, JavaPlugin() {
     private val managers by lazy {
@@ -62,6 +64,12 @@ class NekoPlugin : Neko, JavaPlugin() {
                 }
             }
         }, this)
+
+        YamlConfiguration.loadConfiguration(File("config/paper-global.yml")).also { paperConfig ->
+            if(!paperConfig.getBoolean("block-updates.disable-noteblock-updates")) {
+                logger.warning("Please enable block-updates.disable-noteblock-updates in paper-global.yml, or custom block will not work properly!")
+            }
+        }
     }
 
     override fun onDisable() {
