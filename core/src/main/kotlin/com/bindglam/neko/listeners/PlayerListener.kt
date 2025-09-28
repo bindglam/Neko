@@ -1,9 +1,7 @@
 package com.bindglam.neko.listeners
 
 import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.api.content.block.CustomBlock
-import com.bindglam.neko.api.registry.BuiltInRegistries
-import com.bindglam.neko.content.item.block.BlockHelper
+import com.bindglam.neko.content.block.BlockHelper
 import com.bindglam.neko.utils.plugin
 import io.papermc.paper.datacomponent.DataComponentTypes
 import net.kyori.adventure.sound.Sound

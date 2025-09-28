@@ -1,4 +1,4 @@
-package com.bindglam.neko.content.item.block
+package com.bindglam.neko.content.block
 
 import com.bindglam.neko.api.content.ContentLoader
 import com.bindglam.neko.api.content.block.CustomBlock

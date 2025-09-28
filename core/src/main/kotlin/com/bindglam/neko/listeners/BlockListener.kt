@@ -2,9 +2,8 @@ package com.bindglam.neko.listeners
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
-import com.bindglam.neko.api.content.block.CustomBlock
 import com.bindglam.neko.api.content.item.block.BlockItem
-import com.bindglam.neko.content.item.block.BlockHelper
+import com.bindglam.neko.content.block.BlockHelper
 import com.bindglam.neko.utils.canPlaceBlock
 import com.bindglam.neko.utils.isInteractable
 import com.bindglam.neko.utils.isReplaceable

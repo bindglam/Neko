@@ -2,8 +2,6 @@ package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.content.block.Block
 import com.bindglam.neko.api.content.glyph.Glyph
-import com.bindglam.neko.api.content.item.CustomItem
-import com.bindglam.neko.api.content.block.CustomBlock
 import com.bindglam.neko.api.content.item.Item
 import com.bindglam.neko.api.event.ContentsLoadEvent
 import com.bindglam.neko.api.manager.ContentManager
@@ -12,9 +10,9 @@ import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.content.glyph.GlyphLoader
 import com.bindglam.neko.content.glyph.ShiftGlyph
 import com.bindglam.neko.content.item.CustomItemLoader
-import com.bindglam.neko.content.item.block.CustomBlockLoader
-import com.bindglam.neko.content.item.block.renderer.NoteBlockRenderer
-import com.bindglam.neko.content.item.block.renderer.NoteBlockRendererFactory
+import com.bindglam.neko.content.block.CustomBlockLoader
+import com.bindglam.neko.content.block.renderer.NoteBlockRenderer
+import com.bindglam.neko.content.block.renderer.NoteBlockRendererFactory
 import com.bindglam.neko.utils.listFilesRecursively
 import net.kyori.adventure.key.Key
 import org.bukkit.block.BlockState

@@ -1,4 +1,4 @@
-package com.bindglam.neko.content.item.block.renderer
+package com.bindglam.neko.content.block.renderer
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.Factory
