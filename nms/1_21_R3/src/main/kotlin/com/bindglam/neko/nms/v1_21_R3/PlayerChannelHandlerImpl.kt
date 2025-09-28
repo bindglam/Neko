@@ -1,18 +1,28 @@
 package com.bindglam.neko.nms.v1_21_R3
 
 import com.bindglam.neko.api.NekoProvider
+import com.bindglam.neko.api.content.item.ItemProperties
 import com.bindglam.neko.api.nms.PlayerChannelHandler
 import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelPromise
+import io.papermc.paper.adventure.PaperAdventure
+import net.minecraft.core.NonNullList
+import net.minecraft.core.component.DataComponents
 import net.minecraft.network.Connection
 import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientGamePacketListener
+import net.minecraft.network.protocol.game.ClientboundContainerSetContentPacket
+import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket
+import net.minecraft.network.protocol.game.ClientboundSetPlayerInventoryPacket
 import net.minecraft.network.protocol.game.ServerGamePacketListener
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.component.ItemLore
 import org.bukkit.GameMode
 import org.bukkit.craftbukkit.util.CraftLocation
 import org.bukkit.entity.Player
+import kotlin.collections.map
 
 class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandler, ChannelDuplexHandler() {
     companion object {
@@ -36,6 +46,47 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
     }
 
     private fun <T : ClientGamePacketListener> Packet<in T>.handleClientbound(): Packet<in T>? {
+        fun mapClientsideLore(itemStack: ItemStack, function: ItemProperties.LoreFunction?) {
+            function ?: return
+            val lore = function.apply(itemStack.bukkitStack, player)
+            itemStack.set(DataComponents.LORE, ItemLore(lore.map { PaperAdventure.asVanilla(it) }))
+        }
+
+        when (this) {
+            is ClientboundContainerSetContentPacket -> {
+                val items = NonNullList.create<ItemStack>().apply {
+                    items.forEach { add(it.copy().also {
+                        val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
+                        mapClientsideLore(it, customItem.properties().clientsideLore())
+                    }) }
+                }
+
+                val carriedItem = carriedItem.copy().also {
+                    val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
+                    mapClientsideLore(it, customItem.properties().clientsideLore())
+                }
+
+                return ClientboundContainerSetContentPacket(containerId, stateId, items, carriedItem)
+            }
+
+            is ClientboundContainerSetSlotPacket -> {
+                val item = item.copy().also {
+                    val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
+                    mapClientsideLore(it, customItem.properties().clientsideLore())
+                }
+
+                return ClientboundContainerSetSlotPacket(containerId, stateId, slot, item)
+            }
+
+            is ClientboundSetPlayerInventoryPacket -> {
+                val contents = contents.copy().also {
+                    val customItem = NekoProvider.neko().contentManager().customItem(it.bukkitStack) ?: return@also
+                    mapClientsideLore(it, customItem.properties().clientsideLore())
+                }
+
+                return ClientboundSetPlayerInventoryPacket(slot, contents)
+            }
+        }
         return this
     }
 
