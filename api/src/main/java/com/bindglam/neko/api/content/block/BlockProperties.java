@@ -22,12 +22,14 @@ public sealed interface BlockProperties {
 
     @Nullable CorrectTools correctTools();
 
+    boolean dropSilkTouch();
+
     @Nullable Drops drops();
 
     @Nullable Sounds sounds();
 
 
-    record Impl(NamespacedKey model, Factory<BlockRenderer, Block> renderer, float hardness, CorrectTools correctTools, Drops drops, Sounds sounds) implements BlockProperties {
+    record Impl(NamespacedKey model, Factory<BlockRenderer, Block> renderer, float hardness, CorrectTools correctTools, boolean dropSilkTouch, Drops drops, Sounds sounds) implements BlockProperties {
     }
 
     static Builder builder() {
@@ -39,6 +41,7 @@ public sealed interface BlockProperties {
         private Factory<BlockRenderer, Block> renderer;
         private float hardness;
         private CorrectTools correctTools;
+        private boolean dropSilkTouch;
         private Drops drops;
         private Sounds sounds;
 
@@ -66,6 +69,11 @@ public sealed interface BlockProperties {
             return this;
         }
 
+        public Builder dropSilkTouch(boolean dropSilkTouch) {
+            this.dropSilkTouch = dropSilkTouch;
+            return this;
+        }
+
         public Builder drops(Drops drops) {
             this.drops = drops;
             return this;
@@ -85,7 +93,7 @@ public sealed interface BlockProperties {
             if(renderer == null)
                 throw new IllegalStateException("Block renderer can not be null!");
 
-            return new Impl(model, renderer, hardness, correctTools, drops, sounds);
+            return new Impl(model, renderer, hardness, correctTools, dropSilkTouch, drops, sounds);
         }
     }
 

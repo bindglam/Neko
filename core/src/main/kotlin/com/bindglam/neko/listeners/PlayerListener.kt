@@ -85,7 +85,7 @@ class PlayerListener : Listener {
                 block.world.playSound(breakSound, Sound.Emitter.self())
 
                 if(blockBreakSpeedData.isCorrectTool) {
-                    dropItems(block, customBlock)
+                    dropItems(player, block, customBlock)
                 }
 
                 block.world.sendGameEvent(player, GameEvent.BLOCK_DESTROY, block.location.toVector())
@@ -125,12 +125,14 @@ class PlayerListener : Listener {
         return BlockBreakSpeedData(blockBreakSpeed, isCorrectTool)
     }
 
-    private fun dropItems(block: Block, customBlock: com.bindglam.neko.api.content.block.Block) {
+    private fun dropItems(player: Player, block: Block, customBlock: com.bindglam.neko.api.content.block.Block) {
         fun dropItem(itemStack: ItemStack) {
             block.world.dropItemNaturally(block.location.offset(0.5, 0.5, 0.5).toLocation(block.world), itemStack)
         }
 
-        if(customBlock.properties().drops() != null) {
+        val useSilkTouch = customBlock.properties().dropSilkTouch() && player.inventory.itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)
+
+        if(customBlock.properties().drops() != null && !useSilkTouch) {
             customBlock.properties().drops()?.dataList()?.forEach { data ->
                 val random = Math.random()
 

@@ -21,6 +21,7 @@ class CustomBlockPropertiesConfigurable : Configurable<BlockProperties, Configur
         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(KEY_CONFIGURABLE.load(config.getString("renderer"))))
         .hardness(config.getDouble("hardness").toFloat())
         .correctTools(CORRECT_TOOLS_CONFIGURABLE.load(config.getConfigurationSection("correct-tools")))
+        .dropSilkTouch(config.getBoolean("drop-silk-touch"))
         .drops(DROPS_CONFIGURABLE.load(config.getConfigurationSection("drops")))
         .sounds(SOUNDS_CONFIGURABLE.load(config.getConfigurationSection("sounds")))
         .build()
