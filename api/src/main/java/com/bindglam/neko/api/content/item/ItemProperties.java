@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public sealed interface ItemProperties {
     @NotNull ItemType type();
@@ -18,12 +18,12 @@ public sealed interface ItemProperties {
 
     @Nullable List<Component> lore();
 
-    @Nullable LoreFunction clientsideLore();
+    @Nullable BiFunction<ItemStack, Player, List<Component>> clientsideLore();
 
     @NotNull NamespacedKey model();
 
 
-    record Impl(ItemType type, Component name, List<Component> lore, LoreFunction clientsideLore, NamespacedKey model) implements ItemProperties {
+    record Impl(ItemType type, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model) implements ItemProperties {
     }
 
     static Builder builder() {
@@ -34,7 +34,7 @@ public sealed interface ItemProperties {
         private ItemType type = ItemType.PAPER;
         private Component name;
         private List<Component> lore;
-        private LoreFunction clientsideLore;
+        private BiFunction<ItemStack, Player, List<Component>> clientsideLore;
         private NamespacedKey model;
 
         private Builder() {
@@ -56,7 +56,7 @@ public sealed interface ItemProperties {
             return this;
         }
 
-        public Builder clientsideLore(LoreFunction function) {
+        public Builder clientsideLore(BiFunction<ItemStack, Player, List<Component>> function) {
             this.clientsideLore = function;
             return this;
         }
@@ -74,10 +74,5 @@ public sealed interface ItemProperties {
 
             return new Impl(type, name, lore, clientsideLore, model);
         }
-    }
-
-    @FunctionalInterface
-    interface LoreFunction {
-        List<Component> apply(ItemStack itemStack, Player player);
     }
 }

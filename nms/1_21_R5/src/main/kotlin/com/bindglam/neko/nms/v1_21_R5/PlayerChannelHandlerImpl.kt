@@ -7,6 +7,7 @@ import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelPromise
 import io.papermc.paper.adventure.PaperAdventure
+import net.kyori.adventure.text.Component
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.Connection
 import net.minecraft.network.protocol.Packet
@@ -16,6 +17,7 @@ import net.minecraft.world.item.component.ItemLore
 import org.bukkit.GameMode
 import org.bukkit.craftbukkit.util.CraftLocation
 import org.bukkit.entity.Player
+import java.util.function.BiFunction
 
 class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandler, ChannelDuplexHandler() {
     companion object {
@@ -39,7 +41,7 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
     }
 
     private fun <T : ClientGamePacketListener> Packet<in T>.handleClientbound(): Packet<in T>? {
-        fun mapClientsideLore(itemStack: ItemStack, function: ItemProperties.LoreFunction?) {
+        fun mapClientsideLore(itemStack: ItemStack, function: BiFunction<org.bukkit.inventory.ItemStack, Player, List<Component>>?) {
             function ?: return
             val lore = function.apply(itemStack.bukkitStack, player)
             itemStack.set(DataComponents.LORE, ItemLore(lore.map { PaperAdventure.asVanilla(it) }))
