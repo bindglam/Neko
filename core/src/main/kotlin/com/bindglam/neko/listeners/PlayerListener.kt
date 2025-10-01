@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import kotlin.math.pow
 
+@Suppress("unstableApiUsage")
 class PlayerListener : Listener {
     @EventHandler
     fun PlayerJoinEvent.onJoin() {
