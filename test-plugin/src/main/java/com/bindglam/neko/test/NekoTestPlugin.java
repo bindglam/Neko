@@ -28,19 +28,6 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
-
-        CustomBlockPopulator populator = new CustomBlockPopulator(PopulatorSettings.builder()
-                .veinSize(5)
-                .replace(List.of(Material.STONE, Material.DEEPSLATE))
-                .maxLevel(50)
-                .minLevel(-50)
-                .clusterChance(0.5)
-                .iterations(10)
-                .chance(1.0)
-                .block(BuiltInRegistries.BLOCKS.get(RubyBlock.KEY))
-        );
-
-        Bukkit.getWorlds().forEach(world -> world.getPopulators().add(populator));
     }
 
     @Override
@@ -58,6 +45,19 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
         registerBlock(RubyBlock.KEY, new RubyBlock());
         registerBlock(RubyOreBlock.KEY, new RubyOreBlock());
         registerBlock(DeepslateRubyOreBlock.KEY, new DeepslateRubyOreBlock());
+
+        CustomBlockPopulator populator = new CustomBlockPopulator(PopulatorSettings.builder()
+                .veinSize(5)
+                .replace(List.of(Material.STONE, Material.DEEPSLATE))
+                .maxLevel(50)
+                .minLevel(-50)
+                .clusterChance(0.5)
+                .iterations(10)
+                .chance(1.0)
+                .block(BuiltInRegistries.BLOCKS.get(RubyBlock.KEY))
+        );
+
+        Bukkit.getWorlds().forEach(world -> world.getPopulators().add(populator));
     }
 
     @EventHandler

@@ -79,8 +79,8 @@ public class CustomBlockPopulator extends BlockPopulator {
 
             if(nextPosition == null) break;
 
-            Bukkit.broadcast(Component.text(limitedRegion.getCenterBlockX() + " " + limitedRegion.getCenterBlockZ()));
-            Bukkit.broadcast(Component.text(nextPosition.x + " " + nextPosition.y + " " + nextPosition.z));
+            //Bukkit.broadcast(Component.text(limitedRegion.getCenterBlockX() + " " + limitedRegion.getCenterBlockZ()));
+            //Bukkit.broadcast(Component.text(nextPosition.x + " " + nextPosition.y + " " + nextPosition.z));
 
             if(settings.replace().contains(nextPosition.type) && (settings.biomes().isEmpty() || settings.biomes().contains(nextPosition.biome))) {
                 if(!limitedRegion.isInRegion(new Location(Bukkit.getWorld(worldInfo.getUID()), nextPosition.x(), nextPosition.y(), nextPosition.z())))
