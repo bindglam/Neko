@@ -1,8 +1,9 @@
 package com.bindglam.neko.test;
 
 import com.bindglam.neko.api.content.block.CustomBlock;
+import com.bindglam.neko.api.content.block.populator.CustomBlockPopulator;
+import com.bindglam.neko.api.content.block.populator.PopulatorSettings;
 import com.bindglam.neko.api.content.item.ItemProperties;
-import com.bindglam.neko.api.content.item.block.BlockItem;
 import com.bindglam.neko.api.content.item.block.CustomBlockItem;
 import com.bindglam.neko.api.event.ContentsLoadEvent;
 import com.bindglam.neko.api.event.PackEvent;
@@ -14,16 +15,32 @@ import com.bindglam.neko.test.blocks.TestBlock;
 import com.bindglam.neko.test.glyphs.RubyGlyph;
 import com.bindglam.neko.test.items.RubyItem;
 import com.bindglam.neko.test.items.TestItem;
-import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+
 public class NekoTestPlugin extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
+
+        CustomBlockPopulator populator = new CustomBlockPopulator(PopulatorSettings.builder()
+                .veinSize(5)
+                .replace(List.of(Material.STONE, Material.DEEPSLATE))
+                .maxLevel(50)
+                .minLevel(-50)
+                .clusterChance(0.5)
+                .iterations(10)
+                .chance(1.0)
+                .block(BuiltInRegistries.BLOCKS.get(RubyBlock.KEY))
+        );
+
+        Bukkit.getWorlds().forEach(world -> world.getPopulators().add(populator));
     }
 
     @Override

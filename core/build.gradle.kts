@@ -1,3 +1,5 @@
+import xyz.jpenilla.resourcefactory.bukkit.BukkitPluginYaml
+
 plugins {
     id("paper-conventions")
     alias(libs.plugins.resourceFactory.paper)
@@ -22,4 +24,5 @@ paperPluginYaml {
     loader = "$group.NekoLoader"
     apiVersion = "1.21"
     author = "Bindglam"
+    load = BukkitPluginYaml.PluginLoadOrder.STARTUP
 }

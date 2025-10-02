@@ -1,3 +1,4 @@
+import xyz.jpenilla.resourcefactory.bukkit.BukkitPluginYaml
 import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
@@ -23,6 +24,7 @@ paperPluginYaml {
     main = "$group.test.NekoTestPlugin"
     apiVersion = "1.21"
     author = "Bindglam"
+    load = BukkitPluginYaml.PluginLoadOrder.POSTWORLD
     dependencies {
         server("Neko", PaperPluginYaml.Load.BEFORE, true, true)
     }
