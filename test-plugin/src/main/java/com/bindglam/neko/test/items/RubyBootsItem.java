@@ -13,6 +13,7 @@ public class RubyBootsItem extends CustomItem {
     public RubyBootsItem() {
         super(KEY, ItemProperties.builder()
                 .type(ItemType.NETHERITE_BOOTS)
+                .durability(962)
                 .model(new NamespacedKey("defaultassets", "item/ruby_boots"))
                 .armor(Armor.builder()
                         .slot(EquipmentSlot.FEET)

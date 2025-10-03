@@ -2,6 +2,7 @@ package com.bindglam.neko.api.content.item;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,11 @@ public final class ItemBuilder {
                 meta.itemName(Component.translatable(item));
             else
                 meta.itemName(item.properties().name());
+            if(meta instanceof Damageable damageable) {
+                Integer durability = item.properties().durability();
+                if(durability != null && durability != 0)
+                    damageable.setMaxDamage(durability);
+            }
             meta.lore(item.properties().lore());
             meta.setItemModel(item.getKey());
 

@@ -13,6 +13,7 @@ public class RubyLeggingsItem extends CustomItem {
     public RubyLeggingsItem() {
         super(KEY, ItemProperties.builder()
                 .type(ItemType.NETHERITE_LEGGINGS)
+                .durability(1110)
                 .model(new NamespacedKey("defaultassets", "item/ruby_leggings"))
                 .armor(Armor.builder()
                         .slot(EquipmentSlot.LEGS)

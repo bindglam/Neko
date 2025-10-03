@@ -13,6 +13,7 @@ public class RubyChestplateItem extends CustomItem {
     public RubyChestplateItem() {
         super(KEY, ItemProperties.builder()
                 .type(ItemType.NETHERITE_CHESTPLATE)
+                .durability(1184)
                 .model(new NamespacedKey("defaultassets", "item/ruby_chestplate"))
                 .armor(Armor.builder()
                         .slot(EquipmentSlot.CHEST)

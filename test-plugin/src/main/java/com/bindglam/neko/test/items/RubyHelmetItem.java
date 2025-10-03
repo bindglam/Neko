@@ -13,6 +13,7 @@ public class RubyHelmetItem extends CustomItem {
     public RubyHelmetItem() {
         super(KEY, ItemProperties.builder()
                 .type(ItemType.NETHERITE_HELMET)
+                .durability(814)
                 .model(new NamespacedKey("defaultassets", "item/ruby_helmet"))
                 .armor(Armor.builder()
                         .slot(EquipmentSlot.HEAD)

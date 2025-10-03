@@ -14,6 +14,8 @@ import java.util.function.BiFunction;
 public sealed interface ItemProperties {
     @NotNull ItemType type();
 
+    @Nullable Integer durability();
+
     @Nullable Component name();
 
     @Nullable List<Component> lore();
@@ -25,7 +27,7 @@ public sealed interface ItemProperties {
     @Nullable Armor armor();
 
 
-    record Impl(ItemType type, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor) implements ItemProperties {
+    record Impl(ItemType type, Integer durability, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor) implements ItemProperties {
     }
 
     static Builder builder() {
@@ -34,6 +36,7 @@ public sealed interface ItemProperties {
 
     final class Builder implements com.bindglam.neko.api.utils.Builder<ItemProperties> {
         private ItemType type = ItemType.PAPER;
+        private Integer durability;
         private Component name;
         private List<Component> lore;
         private BiFunction<ItemStack, Player, List<Component>> clientsideLore;
@@ -46,6 +49,11 @@ public sealed interface ItemProperties {
 
         public Builder type(ItemType type) {
             this.type = type;
+            return this;
+        }
+
+        public Builder durability(Integer durability) {
+            this.durability = durability;
             return this;
         }
 
@@ -80,7 +88,7 @@ public sealed interface ItemProperties {
             if(type == null)
                 throw new IllegalStateException("Item type can not be null!");
 
-            return new Impl(type, name, lore, clientsideLore, model, armor);
+            return new Impl(type, durability, name, lore, clientsideLore, model, armor);
         }
     }
 }
