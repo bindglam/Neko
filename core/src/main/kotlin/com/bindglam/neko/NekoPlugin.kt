@@ -23,7 +23,6 @@ import java.io.File
 class NekoPlugin : Neko, JavaPlugin() {
     private val managers by lazy {
         listOf(
-            CommandManagerImpl,
             CacheManagerImpl,
             ContentManagerImpl,
             PackManagerImpl,
@@ -49,7 +48,7 @@ class NekoPlugin : Neko, JavaPlugin() {
         logger.info("Minecraft Version : $version")
 
         nmsHook = when(version) {
-            MCVersion.v1_21_R5 -> com.bindglam.neko.nms.v1_21_R6.NMSHookImpl
+            MCVersion.v1_21_R6 -> com.bindglam.neko.nms.v1_21_R6.NMSHookImpl
             MCVersion.v1_21_R3 -> com.bindglam.neko.nms.v1_21_R3.NMSHookImpl
             else -> throw IllegalStateException("Unsupported minecraft version")
         }

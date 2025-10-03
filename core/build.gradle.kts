@@ -10,7 +10,6 @@ repositories {
 }
 
 dependencies {
-    implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:10.1.2")
     implementation(project(":api"))
     rootProject.project("nms").subprojects.forEach {
         implementation(project(":nms:${it.name}"))
@@ -22,6 +21,7 @@ paperPluginYaml {
     version = rootProject.version.toString()
     main = "$group.NekoPlugin"
     loader = "$group.NekoLoader"
+    bootstrapper = "$group.NekoBootstrap"
     apiVersion = "1.21"
     author = "Bindglam"
     load = BukkitPluginYaml.PluginLoadOrder.STARTUP

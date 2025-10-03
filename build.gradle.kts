@@ -41,6 +41,5 @@ tasks {
             relocate(pattern, "$groupString.shaded.$pattern")
         }
         prefix("kotlin")
-        prefix("dev.jorel.commandapi")
     }
 }
