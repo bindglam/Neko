@@ -1,4 +1,4 @@
-package com.bindglam.neko.nms.v1_21_R5
+package com.bindglam.neko.nms.v1_21_R6
 
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.Packet

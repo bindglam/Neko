@@ -1,4 +1,4 @@
-package com.bindglam.neko.nms.v1_21_R5
+package com.bindglam.neko.nms.v1_21_R6
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.nms.PlayerChannelHandler
