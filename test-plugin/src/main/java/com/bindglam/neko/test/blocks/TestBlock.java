@@ -2,7 +2,7 @@ package com.bindglam.neko.test.blocks;
 
 import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.content.block.CustomBlock;
-import com.bindglam.neko.api.content.block.BlockProperties;
+import com.bindglam.neko.api.content.block.properties.BlockProperties;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import net.kyori.adventure.text.Component;

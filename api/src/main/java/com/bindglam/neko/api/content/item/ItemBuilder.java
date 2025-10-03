@@ -2,8 +2,11 @@ package com.bindglam.neko.api.content.item;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public final class ItemBuilder {
     private ItemBuilder() {
@@ -19,6 +22,12 @@ public final class ItemBuilder {
                 meta.itemName(item.properties().name());
             meta.lore(item.properties().lore());
             meta.setItemModel(item.getKey());
+
+            if(item.properties().armor() != null) {
+                EquippableComponent equippable = meta.getEquippable();
+                Objects.requireNonNull(item.properties().armor()).apply(equippable);
+                meta.setEquippable(equippable);
+            }
         });
 
         itemStack.editPersistentDataContainer((dataContainer) -> dataContainer.set(Item.NEKO_ITEM_PDC_KEY, PersistentDataType.STRING, item.getKey().toString()));

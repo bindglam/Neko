@@ -1,7 +1,7 @@
 package com.bindglam.neko.test.items;
 
 import com.bindglam.neko.api.content.item.CustomItem;
-import com.bindglam.neko.api.content.item.ItemProperties;
+import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 

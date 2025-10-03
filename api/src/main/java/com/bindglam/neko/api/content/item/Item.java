@@ -1,6 +1,7 @@
 package com.bindglam.neko.api.content.item;
 
 import com.bindglam.neko.api.content.EventState;
+import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import net.kyori.adventure.translation.Translatable;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;

@@ -2,8 +2,7 @@ package com.bindglam.neko.api.content.item.block;
 
 import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.content.item.CustomItem;
-import com.bindglam.neko.api.content.item.ItemProperties;
-import net.kyori.adventure.text.Component;
+import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 

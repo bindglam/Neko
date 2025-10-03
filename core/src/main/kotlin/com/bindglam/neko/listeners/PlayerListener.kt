@@ -134,7 +134,7 @@ class PlayerListener : Listener {
         val useSilkTouch = customBlock.properties().dropSilkTouch() && player.inventory.itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)
 
         if(customBlock.properties().drops() != null && !useSilkTouch) {
-            customBlock.properties().drops()?.dataList()?.forEach { data ->
+            customBlock.properties().drops()?.data()?.forEach { data ->
                 val random = Math.random()
 
                 if(random > data.chance()) return@forEach

@@ -3,7 +3,7 @@ package com.bindglam.neko.test;
 import com.bindglam.neko.api.content.block.CustomBlock;
 import com.bindglam.neko.api.content.block.populator.CustomBlockPopulator;
 import com.bindglam.neko.api.content.block.populator.PopulatorSettings;
-import com.bindglam.neko.api.content.item.ItemProperties;
+import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import com.bindglam.neko.api.content.item.block.CustomBlockItem;
 import com.bindglam.neko.api.event.ContentsLoadEvent;
 import com.bindglam.neko.api.event.PackEvent;

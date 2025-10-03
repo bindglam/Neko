@@ -1,6 +1,7 @@
 package com.bindglam.neko.api.content.block;
 
 import com.bindglam.neko.api.content.EventState;
+import com.bindglam.neko.api.content.block.properties.BlockProperties;
 import com.bindglam.neko.api.content.item.Item;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import net.kyori.adventure.translation.Translatable;

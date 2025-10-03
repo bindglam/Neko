@@ -1,17 +1,12 @@
-package com.bindglam.neko.api.content.block;
+package com.bindglam.neko.api.content.block.properties;
 
+import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.utils.Factory;
-import com.bindglam.neko.api.content.item.ItemStackHolder;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import net.kyori.adventure.key.Key;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Tag;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public sealed interface BlockProperties {
     @NotNull NamespacedKey model();
@@ -95,37 +90,6 @@ public sealed interface BlockProperties {
 
             return new Impl(model, renderer, hardness, correctTools, dropSilkTouch, drops, sounds);
         }
-    }
-
-
-    record CorrectTools(
-            @Nullable List<Tag<Material>> tags,
-            @Nullable List<ItemStackHolder> items
-    ) {
-        public boolean isCorrectTool(ItemStack itemStack) {
-            if(itemStack == null) return false;
-
-            if(tags != null) {
-                if(tags.stream().anyMatch((tag) -> tag.isTagged(itemStack.getType())))
-                    return true;
-            }
-
-            if(items != null) {
-                return items.stream().anyMatch((item) -> item.isSame(itemStack));
-            }
-
-            return false;
-        }
-    }
-
-    record Drops(
-            @Nullable List<DropData> dataList
-    ) {
-        public record DropData(
-                @Nullable ItemStackHolder item,
-                int experience,
-                float chance
-        ) {}
     }
 
     record Sounds(

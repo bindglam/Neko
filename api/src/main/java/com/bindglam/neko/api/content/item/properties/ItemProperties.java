@@ -1,4 +1,4 @@
-package com.bindglam.neko.api.content.item;
+package com.bindglam.neko.api.content.item.properties;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
@@ -22,8 +22,10 @@ public sealed interface ItemProperties {
 
     @NotNull NamespacedKey model();
 
+    @Nullable Armor armor();
 
-    record Impl(ItemType type, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model) implements ItemProperties {
+
+    record Impl(ItemType type, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor) implements ItemProperties {
     }
 
     static Builder builder() {
@@ -36,6 +38,7 @@ public sealed interface ItemProperties {
         private List<Component> lore;
         private BiFunction<ItemStack, Player, List<Component>> clientsideLore;
         private NamespacedKey model;
+        private Armor armor;
 
         private Builder() {
         }
@@ -66,13 +69,18 @@ public sealed interface ItemProperties {
             return this;
         }
 
+        public Builder armor(Armor armor) {
+            this.armor = armor;
+            return this;
+        }
+
 
         @Override
         public @NotNull ItemProperties build() {
             if(type == null)
                 throw new IllegalStateException("Item type can not be null!");
 
-            return new Impl(type, name, lore, clientsideLore, model);
+            return new Impl(type, name, lore, clientsideLore, model, armor);
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.bindglam.neko.nms.v1_21_R3
 
 import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.api.content.item.ItemProperties
 import com.bindglam.neko.api.nms.PlayerChannelHandler
 import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext

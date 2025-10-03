@@ -1,5 +1,6 @@
 package com.bindglam.neko.api.content.item;
 
+import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
