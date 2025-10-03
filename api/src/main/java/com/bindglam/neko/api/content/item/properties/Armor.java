@@ -6,19 +6,20 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public sealed interface Armor {
-    EquipmentSlot slot();
+    @NotNull EquipmentSlot slot();
 
-    Sound equipSound();
+    @Nullable Sound equipSound();
 
-    NamespacedKey model();
+    @Nullable NamespacedKey model();
 
-    NamespacedKey cameraOverlay();
+    @Nullable NamespacedKey cameraOverlay();
 
-    List<EntityType> allowedEntities();
+    @Nullable List<EntityType> allowedEntities();
 
     boolean isDispensable();
 
@@ -28,13 +29,13 @@ public sealed interface Armor {
 
     boolean isEquipOnInteract();
 
-    void apply(EquippableComponent component);
+    void apply(@NotNull EquippableComponent component);
 
 
     record Impl(EquipmentSlot slot, Sound equipSound, NamespacedKey model, NamespacedKey cameraOverlay, List<EntityType> allowedEntities,
                 boolean isDispensable, boolean isSwappable, boolean isDamageOnHurt, boolean isEquipOnInteract) implements Armor {
         @Override
-        public void apply(EquippableComponent component) {
+        public void apply(@NotNull EquippableComponent component) {
             component.setSlot(slot);
             component.setEquipSound(equipSound);
             component.setModel(model);

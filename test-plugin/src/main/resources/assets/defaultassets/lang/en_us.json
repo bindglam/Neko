@@ -1,6 +1,10 @@
 {
   "item.defaultassets.ruby": "Ruby",
   "item.defaultassets.testitem": "Test Item",
+  "item.defaultassets.ruby_helmet": "Ruby Helmet",
+  "item.defaultassets.ruby_chestplate": "Ruby Chestplate",
+  "item.defaultassets.ruby_leggings": "Ruby Leggings",
+  "item.defaultassets.ruby_boots": "Ruby Boots",
 
   "block.defaultassets.testblock": "Test Block",
   "block.defaultassets.ruby_block": "Ruby Block",

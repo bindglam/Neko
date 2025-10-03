@@ -13,8 +13,7 @@ import com.bindglam.neko.test.blocks.RubyBlock;
 import com.bindglam.neko.test.blocks.RubyOreBlock;
 import com.bindglam.neko.test.blocks.TestBlock;
 import com.bindglam.neko.test.glyphs.RubyGlyph;
-import com.bindglam.neko.test.items.RubyItem;
-import com.bindglam.neko.test.items.TestItem;
+import com.bindglam.neko.test.items.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -40,6 +39,11 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
 
         BuiltInRegistries.ITEMS.register(TestItem.KEY, new TestItem());
         BuiltInRegistries.ITEMS.register(RubyItem.KEY, new RubyItem());
+
+        BuiltInRegistries.ITEMS.register(RubyHelmetItem.KEY, new RubyHelmetItem());
+        BuiltInRegistries.ITEMS.register(RubyChestplateItem.KEY, new RubyChestplateItem());
+        BuiltInRegistries.ITEMS.register(RubyLeggingsItem.KEY, new RubyLeggingsItem());
+        BuiltInRegistries.ITEMS.register(RubyBootsItem.KEY, new RubyBootsItem());
 
         registerBlock(TestBlock.KEY, new TestBlock());
         registerBlock(RubyBlock.KEY, new RubyBlock());
