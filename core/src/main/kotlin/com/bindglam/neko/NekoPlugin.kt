@@ -43,9 +43,9 @@ class NekoPlugin : Neko, JavaPlugin() {
         server.pluginManager.registerEvents(InventoryListener(), this)
         server.pluginManager.registerEvents(NekoListener(), this)
 
-        val version = MCVersion.parse(Bukkit.getBukkitVersion().substringBefore('-'))
-
-        logger.info("Minecraft Version : $version")
+        val version = MCVersion.parse(Bukkit.getBukkitVersion().substringBefore('-')).also {
+            logger.info("Minecraft Version : $it")
+        }
 
         nmsHook = when(version) {
             MCVersion.v1_21_R6 -> com.bindglam.neko.nms.v1_21_R6.NMSHookImpl

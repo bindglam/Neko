@@ -1,6 +1,5 @@
 package com.bindglam.neko.api.content.block.populator;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -146,10 +145,6 @@ public class CustomBlockPopulator extends BlockPopulator {
         } catch(Exception ignored) {
             return null;
         }
-    }
-
-    public PopulatorSettings getSettings() {
-        return settings;
     }
 
     private record Position(WorldInfo worldInfo, int x, int y, int z, Material type, Biome biome, LimitedRegion region) {
