@@ -21,8 +21,7 @@ public class RubyHelmetItem extends CustomItem {
                         .isDispensable(true)
                         .isDamageOnHurt(true)
                         .isSwappable(true)
-                        .isEquipOnInteract(true)
-                        .build())
+                        .isEquipOnInteract(true))
                 .build());
     }
 }

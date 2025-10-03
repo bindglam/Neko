@@ -29,30 +29,24 @@ public sealed interface Armor {
 
     boolean isEquipOnInteract();
 
-    void apply(@NotNull EquippableComponent component);
-
-
-    record Impl(EquipmentSlot slot, Sound equipSound, NamespacedKey model, NamespacedKey cameraOverlay, List<EntityType> allowedEntities,
-                boolean isDispensable, boolean isSwappable, boolean isDamageOnHurt, boolean isEquipOnInteract) implements Armor {
-        @Override
-        public void apply(@NotNull EquippableComponent component) {
-            component.setSlot(slot);
-            component.setEquipSound(equipSound);
-            component.setModel(model);
-            component.setCameraOverlay(cameraOverlay);
-            component.setAllowedEntities(allowedEntities);
-            component.setDispensable(isDispensable);
-            component.setSwappable(isSwappable);
-            component.setDamageOnHurt(isDamageOnHurt);
-            component.setEquipOnInteract(isEquipOnInteract);
-        }
+    default void apply(@NotNull EquippableComponent component) {
+        component.setSlot(slot());
+        component.setEquipSound(equipSound());
+        component.setModel(model());
+        component.setCameraOverlay(cameraOverlay());
+        component.setAllowedEntities(allowedEntities());
+        component.setDispensable(isDispensable());
+        component.setSwappable(isSwappable());
+        component.setDamageOnHurt(isDamageOnHurt());
+        component.setEquipOnInteract(isEquipOnInteract());
     }
+
 
     static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements com.bindglam.neko.api.utils.Builder<Armor> {
+    final class Builder implements Armor {
         private EquipmentSlot slot;
         private Sound equipSound;
         private NamespacedKey model;
@@ -108,9 +102,50 @@ public sealed interface Armor {
             return this;
         }
 
+
         @Override
-        public @NotNull Armor build() {
-            return new Impl(slot, equipSound, model, cameraOverlay, allowedEntities, isDispensable, isSwappable, isDamageOnHurt, isEquipOnInteract);
+        public @NotNull EquipmentSlot slot() {
+            return slot;
+        }
+
+        @Override
+        public @Nullable Sound equipSound() {
+            return equipSound;
+        }
+
+        @Override
+        public @Nullable NamespacedKey model() {
+            return model;
+        }
+
+        @Override
+        public @Nullable NamespacedKey cameraOverlay() {
+            return cameraOverlay;
+        }
+
+        @Override
+        public @Nullable List<EntityType> allowedEntities() {
+            return allowedEntities;
+        }
+
+        @Override
+        public boolean isDispensable() {
+            return isDispensable;
+        }
+
+        @Override
+        public boolean isSwappable() {
+            return isSwappable;
+        }
+
+        @Override
+        public boolean isDamageOnHurt() {
+            return isDamageOnHurt;
+        }
+
+        @Override
+        public boolean isEquipOnInteract() {
+            return isEquipOnInteract;
         }
     }
 }

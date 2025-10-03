@@ -22,13 +22,6 @@ public class TestItem extends CustomItem {
         super(KEY, ItemProperties.builder()
                 .clientsideLore((itemStack, player) -> List.of(Component.text("테스트 아이템이다. " + player.getName() + "님아.")))
                 .model(new NamespacedKey("defaultassets", "item/testitem"))
-                .armor(Armor.builder()
-                        .slot(EquipmentSlot.HEAD)
-                        .isDispensable(true)
-                        .isSwappable(true)
-                        .isDamageOnHurt(true)
-                        .isEquipOnInteract(true)
-                        .build())
                 .build());
     }
 

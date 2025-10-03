@@ -38,7 +38,6 @@ class CustomItemPropertiesConfigurable : Configurable<ItemProperties, Configurat
             .isSwappable(config.getBoolean("is-swappable"))
             .isDamageOnHurt(config.getBoolean("damage-on-hurt"))
             .isEquipOnInteract(config.getBoolean("equip-on-interact"))
-            .build()
         }
     }
 }

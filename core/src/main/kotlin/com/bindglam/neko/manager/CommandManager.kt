@@ -13,7 +13,6 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.NamespacedKey
-import org.bukkit.entity.Player
 
 @Suppress("unstableApiUsage")
 object CommandManager {
