@@ -1,0 +1,52 @@
+package com.bindglam.neko.api.content.item.properties;
+
+import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlotGroup;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public sealed interface Attributes {
+    @NotNull Map<Attribute, AttributeModifier> modifiers();
+
+    boolean resetWhenApply();
+
+
+    static Builder builder() {
+        return new Builder();
+    }
+
+    final class Builder implements Attributes {
+        private final Map<Attribute, AttributeModifier> modifiers = new HashMap<>();
+        private boolean resetWhenApply = false;
+
+
+        public Builder modifier(Attribute attribute, double value, EquipmentSlotGroup slot) {
+            modifiers.put(attribute, new AttributeModifier(NamespacedKey.minecraft("base_" + attribute.getKey().value()), value, AttributeModifier.Operation.ADD_NUMBER, slot));
+            return this;
+        }
+
+        public Builder modifier(Attribute attribute, double value) {
+            return modifier(attribute, value, EquipmentSlotGroup.ANY);
+        }
+
+        public Builder resetWhenApply(boolean resetWhenApply) {
+            this.resetWhenApply = resetWhenApply;
+            return this;
+        }
+
+
+        @Override
+        public @NotNull Map<Attribute, AttributeModifier> modifiers() {
+            return modifiers;
+        }
+
+        @Override
+        public boolean resetWhenApply() {
+            return resetWhenApply;
+        }
+    }
+}

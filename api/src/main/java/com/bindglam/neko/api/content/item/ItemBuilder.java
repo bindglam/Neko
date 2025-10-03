@@ -1,6 +1,12 @@
 package com.bindglam.neko.api.content.item;
 
+import com.bindglam.neko.api.content.item.properties.Armor;
+import com.bindglam.neko.api.content.item.properties.Attributes;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import net.kyori.adventure.text.Component;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.components.EquippableComponent;
@@ -30,9 +36,27 @@ public final class ItemBuilder {
             meta.setItemModel(item.getKey());
 
             if(item.properties().armor() != null) {
+                Armor armor = Objects.requireNonNull(item.properties().armor());
                 EquippableComponent equippable = meta.getEquippable();
-                Objects.requireNonNull(item.properties().armor()).apply(equippable);
+
+                armor.apply(equippable);
+
                 meta.setEquippable(equippable);
+            }
+
+            if(item.properties().attributes() != null) {
+                Attributes attributes = Objects.requireNonNull(item.properties().attributes());
+                Multimap<Attribute, AttributeModifier> modifiers = ArrayListMultimap.create();
+
+                attributes.modifiers().forEach(modifiers::put);
+                if(!attributes.resetWhenApply()) {
+                    item.properties().type().getDefaultAttributeModifiers().forEach(((attribute, modifier) -> {
+                        if (!modifiers.containsKey(attribute))
+                            modifiers.put(attribute, modifier);
+                    }));
+                }
+
+                meta.setAttributeModifiers(modifiers);
             }
         });
 

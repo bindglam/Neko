@@ -26,8 +26,10 @@ public sealed interface ItemProperties {
 
     @Nullable Armor armor();
 
+    @Nullable Attributes attributes();
 
-    record Impl(ItemType type, Integer durability, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor) implements ItemProperties {
+
+    record Impl(ItemType type, Integer durability, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor, Attributes attributes) implements ItemProperties {
     }
 
     static Builder builder() {
@@ -42,6 +44,7 @@ public sealed interface ItemProperties {
         private BiFunction<ItemStack, Player, List<Component>> clientsideLore;
         private NamespacedKey model;
         private Armor armor;
+        private Attributes attributes;
 
         private Builder() {
         }
@@ -82,13 +85,18 @@ public sealed interface ItemProperties {
             return this;
         }
 
+        public Builder attributes(Attributes attributes) {
+            this.attributes = attributes;
+            return this;
+        }
+
 
         @Override
         public @NotNull ItemProperties build() {
             if(type == null)
                 throw new IllegalStateException("Item type can not be null!");
 
-            return new Impl(type, durability, name, lore, clientsideLore, model, armor);
+            return new Impl(type, durability, name, lore, clientsideLore, model, armor, attributes);
         }
     }
 }

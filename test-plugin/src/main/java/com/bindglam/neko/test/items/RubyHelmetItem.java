@@ -2,9 +2,12 @@ package com.bindglam.neko.test.items;
 
 import com.bindglam.neko.api.content.item.CustomItem;
 import com.bindglam.neko.api.content.item.properties.Armor;
+import com.bindglam.neko.api.content.item.properties.Attributes;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemType;
 
 public class RubyHelmetItem extends CustomItem {
@@ -22,6 +25,9 @@ public class RubyHelmetItem extends CustomItem {
                         .isDamageOnHurt(true)
                         .isSwappable(true)
                         .isEquipOnInteract(true))
+                .attributes(Attributes.builder()
+                        .modifier(Attribute.ARMOR, 100.0, EquipmentSlotGroup.HEAD)
+                        .resetWhenApply(true))
                 .build());
     }
 }

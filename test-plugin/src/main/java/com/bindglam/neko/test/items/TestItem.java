@@ -2,14 +2,12 @@ package com.bindglam.neko.test.items;
 
 import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.content.item.CustomItem;
-import com.bindglam.neko.api.content.item.properties.Armor;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
