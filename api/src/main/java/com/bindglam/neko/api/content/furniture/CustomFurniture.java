@@ -61,7 +61,7 @@ public class CustomFurniture implements Furniture, Packable {
 
     @Override
     public void destroy(@NotNull Location location) {
-        ItemDisplay display = (ItemDisplay) getDisplay(location);
+        ItemDisplay display = (ItemDisplay) display(location);
         if(display == null) return;
 
         Chunk chunk = location.getChunk();
@@ -75,10 +75,11 @@ public class CustomFurniture implements Furniture, Packable {
 
     @Override
     public boolean isSame(@NotNull Location location) {
-        return getDisplay(location) != null;
+        return display(location) != null;
     }
 
-    private @Nullable Entity getDisplay(Location location) {
+    @Override
+    public @Nullable ItemDisplay display(@NotNull Location location) {
         Chunk chunk = location.getChunk();
         if(!chunk.getPersistentDataContainer().has(Furniture.NEKO_FURNITURE_LIST_PDC_KEY))
             return null;
@@ -98,7 +99,7 @@ public class CustomFurniture implements Furniture, Packable {
 
             if (entity.getLocation().toCenterLocation().equals(location.toCenterLocation()) && Objects.equals(entity.getPersistentDataContainer().get(Furniture.NEKO_FURNITURE_PDC_KEY, PersistentDataType.STRING), key.toString())) {
                 chunk.getPersistentDataContainer().set(Furniture.NEKO_FURNITURE_LIST_PDC_KEY, PersistentDataType.LIST.strings(), uuids);
-                return entity;
+                return (ItemDisplay) entity;
             }
         }
 

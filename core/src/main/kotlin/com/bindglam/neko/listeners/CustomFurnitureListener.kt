@@ -4,10 +4,12 @@ import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
 import com.bindglam.neko.api.content.item.furniture.FurnitureItem
 import com.bindglam.neko.content.block.BlockHelper
+import com.bindglam.neko.content.furniture.FurnitureHelper
 import com.bindglam.neko.utils.canPlaceBlock
 import com.bindglam.neko.utils.isInteractable
 import com.bindglam.neko.utils.isReplaceable
 import com.bindglam.neko.utils.placeBlock
+import com.bindglam.neko.utils.plugin
 import net.kyori.adventure.sound.Sound
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
@@ -15,6 +17,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.util.Transformation
 
 class CustomFurnitureListener : Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -42,7 +45,7 @@ class CustomFurnitureListener : Listener {
 
             player.placeBlock(location, { customFurniture.place(it) }, clickedBlock!!, hand!!, Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f))
 
-            BlockHelper.updateLastPlaceBlock(player)
+            FurnitureHelper.updateLastPlaceFurniture(player)
         }
     }
 
@@ -54,7 +57,31 @@ class CustomFurnitureListener : Listener {
 
         val customFurniture = NekoProvider.neko().contentManager().furniture(clickedBlock!!.location) ?: return
 
-        customFurniture.destroy(clickedBlock!!.location)
+        val display = customFurniture.display(clickedBlock!!.location) ?: return
+        display.interpolationDelay = 1
+        display.interpolationDuration = 3
+        display.transformation = Transformation(
+            display.transformation.translation,
+            display.transformation.leftRotation,
+            display.transformation.scale.sub(0.1f, 0.1f, 0.1f),
+            display.transformation.rightRotation
+        )
+        Bukkit.getScheduler().runTaskLater(NekoProvider.neko().plugin(), { _ ->
+            display.transformation = Transformation(
+                display.transformation.translation,
+                display.transformation.leftRotation,
+                display.transformation.scale.add(0.1f, 0.1f, 0.1f),
+                display.transformation.rightRotation
+            )
+        }, 4L)
+
+        FurnitureHelper.updateBreakProgress(player, 1)
+
+        isCancelled = true
+
+        if(FurnitureHelper.breakProgress(player) >= 3) {
+            customFurniture.destroy(clickedBlock!!.location)
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -62,7 +89,7 @@ class CustomFurnitureListener : Listener {
         clickedBlock ?: return
 
         if (action != Action.RIGHT_CLICK_BLOCK || player.isSneaking) return
-        if(Bukkit.getCurrentTick() - BlockHelper.lastPlaceBlock(player) < 3) return
+        if(Bukkit.getCurrentTick() - FurnitureHelper.lastPlaceFurniture(player) < 3) return
 
         val customFurniture = NekoProvider.neko().contentManager().furniture(clickedBlock!!.location) ?: return
 

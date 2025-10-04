@@ -6,8 +6,10 @@ import net.kyori.adventure.translation.Translatable;
 import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface Furniture extends Keyed, Translatable {
     NamespacedKey NEKO_FURNITURE_PDC_KEY = new NamespacedKey("neko", "furniture");
@@ -22,6 +24,8 @@ public interface Furniture extends Keyed, Translatable {
     void destroy(@NotNull Location location);
 
     boolean isSame(@NotNull Location location);
+
+    @Nullable ItemDisplay display(@NotNull Location location);
 
     @NotNull FurnitureProperties properties();
 
