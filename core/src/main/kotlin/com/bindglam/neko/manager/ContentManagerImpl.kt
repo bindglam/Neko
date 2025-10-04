@@ -1,6 +1,7 @@
 package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.content.block.Block
+import com.bindglam.neko.api.content.furniture.Furniture
 import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.item.Item
 import com.bindglam.neko.api.event.ContentsLoadEvent
@@ -15,6 +16,7 @@ import com.bindglam.neko.content.block.renderer.NoteBlockRenderer
 import com.bindglam.neko.content.block.renderer.NoteBlockRendererFactory
 import com.bindglam.neko.utils.listFilesRecursively
 import net.kyori.adventure.key.Key
+import org.bukkit.Location
 import org.bukkit.block.BlockState
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.inventory.ItemStack
@@ -71,4 +73,6 @@ object ContentManagerImpl : ContentManager {
     override fun customBlock(key: Key): Block? = BuiltInRegistries.BLOCKS.getOrNull(key)
     override fun customBlock(block: BlockState): Block? = BuiltInRegistries.BLOCKS.find { it.isSame(block) }
     override fun glyph(key: Key): Glyph? = BuiltInRegistries.GLYPHS.getOrNull(key)
+    override fun furniture(key: Key): Furniture? = BuiltInRegistries.FURNITURE.getOrNull(key)
+    override fun furniture(location: Location): Furniture? = BuiltInRegistries.FURNITURE.find { it.isSame(location) }
 }
