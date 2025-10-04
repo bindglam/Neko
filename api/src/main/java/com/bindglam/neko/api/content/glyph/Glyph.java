@@ -7,7 +7,7 @@ import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
 import com.bindglam.neko.api.pack.minecraft.font.FontData;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
-import com.google.gson.Gson;
+import com.bindglam.neko.api.utils.GsonUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.ShadowColor;
 import org.bukkit.Keyed;
@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Glyph implements Keyed, Packable {
-    private static final Gson GSON = new Gson();
-
     public static final NamespacedKey SHIFT_GLYPH_KEY = new NamespacedKey("neko", "shift");
 
     private final NamespacedKey key;
@@ -62,11 +60,11 @@ public class Glyph implements Keyed, Packable {
 
         FontData data = new FontData(new ArrayList<>());
         if(fontFile != null)
-            data = GSON.fromJson(new String(fontFile.bytes().get()), FontData.class);
+            data = GsonUtils.GSON.fromJson(new String(fontFile.bytes().get()), FontData.class);
 
         data.providers().add(new FontData.Bitmap(properties.texture().asString() + ".png", properties.scale(), properties.offsetY(), List.of(character)));
 
-        byte[] output = GSON.toJson(data).getBytes();
+        byte[] output = GsonUtils.GSON.toJson(data).getBytes();
 
         zipper.addFile(path, new PackFile(() -> output, output.length));
     }

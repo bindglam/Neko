@@ -5,7 +5,7 @@ import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
 import com.bindglam.neko.api.pack.minecraft.item.ItemData;
-import com.google.gson.Gson;
+import com.bindglam.neko.api.utils.GsonUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
@@ -20,8 +20,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class CustomFurniture implements Furniture, Packable {
-    private static final Gson GSON = new Gson();
-
     private final NamespacedKey key;
     private final FurnitureProperties properties;
 
@@ -32,7 +30,7 @@ public class CustomFurniture implements Furniture, Packable {
 
     @Override
     public void pack(@NotNull PackZipper zipper) {
-        byte[] data = GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().model().toString()))).getBytes();
+        byte[] data = GsonUtils.GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().model().toString()))).getBytes();
 
         String filePath = "assets/" + key.namespace() + "/items/" + key.value() + ".json";
 
@@ -61,7 +59,7 @@ public class CustomFurniture implements Furniture, Packable {
 
     @Override
     public void destroy(@NotNull Location location) {
-        ItemDisplay display = (ItemDisplay) display(location);
+        ItemDisplay display = display(location);
         if(display == null) return;
 
         Chunk chunk = location.getChunk();
