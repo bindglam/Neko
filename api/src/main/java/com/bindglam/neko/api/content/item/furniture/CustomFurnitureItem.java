@@ -4,8 +4,10 @@ import com.bindglam.neko.api.content.furniture.Furniture;
 import com.bindglam.neko.api.content.item.CustomItem;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+@ApiStatus.Experimental
 public class CustomFurnitureItem extends CustomItem implements FurnitureItem {
     private final Furniture furniture;
 

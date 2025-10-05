@@ -8,9 +8,11 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@ApiStatus.Experimental
 public interface Furniture extends Keyed, Translatable {
     NamespacedKey NEKO_FURNITURE_PDC_KEY = new NamespacedKey("neko", "furniture");
     NamespacedKey NEKO_FURNITURE_LIST_PDC_KEY = new NamespacedKey("neko", "furniture-list");

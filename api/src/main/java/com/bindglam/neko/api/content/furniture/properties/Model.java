@@ -2,10 +2,12 @@ package com.bindglam.neko.api.content.furniture.properties;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.util.Transformation;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+@ApiStatus.Experimental
 public sealed interface Model {
     @NotNull NamespacedKey model();
 

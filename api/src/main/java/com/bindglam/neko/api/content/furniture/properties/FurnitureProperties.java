@@ -1,7 +1,9 @@
 package com.bindglam.neko.api.content.furniture.properties;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+@ApiStatus.Experimental
 public sealed interface FurnitureProperties {
     @NotNull Model model();
 
