@@ -4,6 +4,7 @@ import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
 import com.bindglam.neko.api.content.item.block.BlockItem
 import com.bindglam.neko.content.block.BlockHelper
+import com.bindglam.neko.utils.CURRENT_TICK
 import com.bindglam.neko.utils.canPlaceBlock
 import com.bindglam.neko.utils.isInteractable
 import com.bindglam.neko.utils.isReplaceable
@@ -90,7 +91,7 @@ class CustomBlockListener : Listener {
         clickedBlock ?: return
 
         if (action != Action.RIGHT_CLICK_BLOCK || player.isSneaking) return
-        if(Bukkit.getCurrentTick() - BlockHelper.lastPlaceBlock(player) < 3) return
+        if(CURRENT_TICK - BlockHelper.lastPlaceBlock(player) < 3) return
 
         val customBlock = NekoProvider.neko().contentManager().customBlock(clickedBlock) ?: return
 
@@ -101,7 +102,7 @@ class CustomBlockListener : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun PlayerAnimationEvent.tryBreakCustomBlock() {
         if (player.gameMode != GameMode.SURVIVAL) return
-        if (Bukkit.getCurrentTick() - BlockHelper.lastPlaceBlock(player) < 3) return
+        if (CURRENT_TICK - BlockHelper.lastPlaceBlock(player) < 3) return
 
         val result = player.rayTraceBlocks(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)?.value ?: 3.0, FluidCollisionMode.NEVER) ?: return
         val block = result.hitBlock ?: return

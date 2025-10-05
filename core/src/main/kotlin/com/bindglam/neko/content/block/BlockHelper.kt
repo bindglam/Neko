@@ -1,7 +1,6 @@
 package com.bindglam.neko.content.block
 
-import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.utils.plugin
+import com.bindglam.neko.utils.CURRENT_TICK
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
@@ -12,16 +11,10 @@ object BlockHelper {
 
     private val lastPlaceBlock = hashMapOf<UUID, Int>()
 
-    init {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(NekoProvider.neko().plugin(), { tick() }, 1L, 1L)
-    }
-
-    private fun tick() {
-        val tick = Bukkit.getCurrentTick()
-
+    fun tick() {
         val forRemoval = arrayListOf<UUID>()
         lastBreakProgressUpdated.forEach { (uuid, lastTick) ->
-            if(tick - lastTick > 2) {
+            if(CURRENT_TICK - lastTick > 2) {
                 forRemoval.add(uuid)
             }
         }
@@ -41,7 +34,7 @@ object BlockHelper {
             breakProgress.put(player.uniqueId, 0f)
 
         breakProgress[player.uniqueId] = breakProgress(player) + speed
-        lastBreakProgressUpdated[player.uniqueId] = Bukkit.getCurrentTick()
+        lastBreakProgressUpdated[player.uniqueId] = CURRENT_TICK
     }
 
     fun removeBreakProgress(player: Player) {
@@ -51,6 +44,6 @@ object BlockHelper {
     fun lastPlaceBlock(player: Player): Int = lastPlaceBlock.computeIfAbsent(player.uniqueId) { 0 }
 
     fun updateLastPlaceBlock(player: Player) {
-        lastPlaceBlock[player.uniqueId] = Bukkit.getCurrentTick()
+        lastPlaceBlock[player.uniqueId] = CURRENT_TICK
     }
 }

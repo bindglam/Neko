@@ -4,10 +4,8 @@ import com.bindglam.neko.api.content.furniture.properties.FurnitureProperties;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
-import com.bindglam.neko.api.pack.minecraft.AtlasesData;
 import com.bindglam.neko.api.pack.minecraft.AtlasesMaker;
 import com.bindglam.neko.api.pack.minecraft.item.ItemData;
-import com.bindglam.neko.api.pack.minecraft.model.ModelData;
 import com.bindglam.neko.api.utils.GsonUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -47,6 +45,7 @@ public class CustomFurniture implements Furniture, Packable {
         location.getBlock().setType(Material.BARRIER);
 
         ItemDisplay display = location.getWorld().spawn(location.toCenterLocation(), ItemDisplay.class);
+        display.setTransformation(properties.model().transformation());
         display.getPersistentDataContainer().set(Furniture.NEKO_FURNITURE_PDC_KEY, PersistentDataType.STRING, key.toString());
         display.setPersistent(true);
 

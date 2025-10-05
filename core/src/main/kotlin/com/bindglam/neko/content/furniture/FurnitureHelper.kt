@@ -1,8 +1,6 @@
 package com.bindglam.neko.content.furniture
 
-import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.utils.plugin
-import org.bukkit.Bukkit
+import com.bindglam.neko.utils.CURRENT_TICK
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -12,16 +10,10 @@ object FurnitureHelper {
 
     private val lastPlaceFurniture = hashMapOf<UUID, Int>()
 
-    init {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(NekoProvider.neko().plugin(), { tick() }, 1L, 1L)
-    }
-
-    private fun tick() {
-        val tick = Bukkit.getCurrentTick()
-
+    fun tick() {
         val forRemoval = arrayListOf<UUID>()
         lastBreakProgressUpdated.forEach { (uuid, lastTick) ->
-            if(tick - lastTick > 20) {
+            if(CURRENT_TICK - lastTick > 20) {
                 forRemoval.add(uuid)
             }
         }
@@ -41,7 +33,7 @@ object FurnitureHelper {
             breakProgress.put(player.uniqueId, 0)
 
         breakProgress[player.uniqueId] = breakProgress(player) + speed
-        lastBreakProgressUpdated[player.uniqueId] = Bukkit.getCurrentTick()
+        lastBreakProgressUpdated[player.uniqueId] = CURRENT_TICK
     }
 
     fun removeBreakProgress(player: Player) {
@@ -51,6 +43,6 @@ object FurnitureHelper {
     fun lastPlaceFurniture(player: Player): Int = lastPlaceFurniture.computeIfAbsent(player.uniqueId) { 0 }
 
     fun updateLastPlaceFurniture(player: Player) {
-        lastPlaceFurniture[player.uniqueId] = Bukkit.getCurrentTick()
+        lastPlaceFurniture[player.uniqueId] = CURRENT_TICK
     }
 }

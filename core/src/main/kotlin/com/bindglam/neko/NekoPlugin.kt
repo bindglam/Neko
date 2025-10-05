@@ -10,6 +10,7 @@ import com.bindglam.neko.listeners.InventoryListener
 import com.bindglam.neko.listeners.CustomItemListener
 import com.bindglam.neko.listeners.NekoListener
 import com.bindglam.neko.listeners.PlayerListener
+import com.bindglam.neko.listeners.ServerListener
 import com.bindglam.neko.manager.*
 import com.bindglam.neko.utils.MCVersion
 import org.bukkit.Bukkit
@@ -44,6 +45,7 @@ class NekoPlugin : Neko, JavaPlugin() {
         server.pluginManager.registerEvents(PlayerListener(), this)
         server.pluginManager.registerEvents(InventoryListener(), this)
         server.pluginManager.registerEvents(NekoListener(), this)
+        server.pluginManager.registerEvents(ServerListener(), this)
 
         val version = MCVersion.parse(Bukkit.getBukkitVersion().substringBefore('-')).also {
             logger.info("Minecraft Version : $it")
