@@ -5,6 +5,7 @@ import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
+import com.bindglam.neko.api.pack.minecraft.AtlasesMaker;
 import com.bindglam.neko.api.pack.minecraft.item.EquipmentData;
 import com.bindglam.neko.api.pack.minecraft.item.ItemData;
 import com.bindglam.neko.api.utils.GsonUtils;
@@ -33,11 +34,14 @@ public class CustomItem implements Item, Packable {
     }
 
     private void buildModel(PackZipper zipper) {
+        AtlasesMaker.addAllFromModel(properties.model(), zipper);
+
         byte[] data = GsonUtils.GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().asString()))).getBytes();
 
         String filePath = "assets/" + key.namespace() + "/items/" + key.value() + ".json";
 
-        zipper.addFile(filePath, new PackFile(() -> data, data.length));
+        if(zipper.file(filePath) == null)
+            zipper.addFile(filePath, new PackFile(() -> data, data.length));
     }
 
     private void buildArmor(PackZipper zipper) {

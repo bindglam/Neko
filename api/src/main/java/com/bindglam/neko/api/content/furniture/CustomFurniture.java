@@ -4,7 +4,10 @@ import com.bindglam.neko.api.content.furniture.properties.FurnitureProperties;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
+import com.bindglam.neko.api.pack.minecraft.AtlasesData;
+import com.bindglam.neko.api.pack.minecraft.AtlasesMaker;
 import com.bindglam.neko.api.pack.minecraft.item.ItemData;
+import com.bindglam.neko.api.pack.minecraft.model.ModelData;
 import com.bindglam.neko.api.utils.GsonUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -30,6 +33,8 @@ public class CustomFurniture implements Furniture, Packable {
 
     @Override
     public void pack(@NotNull PackZipper zipper) {
+        AtlasesMaker.addAllFromModel(properties.model().model(), zipper);
+
         byte[] data = GsonUtils.GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().model().toString()))).getBytes();
 
         String filePath = "assets/" + key.namespace() + "/items/" + key.value() + ".json";

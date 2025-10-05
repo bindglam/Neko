@@ -25,6 +25,13 @@ object PackerApplier {
             entry.value.pack(zipper)
         }
 
+        BuiltInRegistries.FURNITURE.entrySet().forEach { entry ->
+            val furniture = entry.value
+
+            if(furniture is Packable)
+                furniture.pack(zipper)
+        }
+
         AtlasesMaker.pack(zipper)
     }
 }
