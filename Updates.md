@@ -1,4 +1,0 @@
-- **1.21.9 support**
-- **Add Attributes**
-- CommandAPI -> Brigadier API
-- **Add Furniture**(only in API, Experimental)
