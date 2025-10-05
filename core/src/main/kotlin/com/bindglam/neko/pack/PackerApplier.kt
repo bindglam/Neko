@@ -2,6 +2,7 @@ package com.bindglam.neko.pack
 
 import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.api.pack.Packable
+import com.bindglam.neko.api.pack.minecraft.AtlasesMaker
 import com.bindglam.neko.api.registry.BuiltInRegistries
 
 object PackerApplier {
@@ -23,5 +24,14 @@ object PackerApplier {
         BuiltInRegistries.GLYPHS.entrySet().forEach { entry ->
             entry.value.pack(zipper)
         }
+
+        BuiltInRegistries.FURNITURE.entrySet().forEach { entry ->
+            val furniture = entry.value
+
+            if(furniture is Packable)
+                furniture.pack(zipper)
+        }
+
+        AtlasesMaker.pack(zipper)
     }
 }

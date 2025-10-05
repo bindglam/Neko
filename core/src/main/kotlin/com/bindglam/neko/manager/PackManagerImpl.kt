@@ -67,11 +67,11 @@ object PackManagerImpl : PackManager {
 
         val zipper = PackZipperImpl(PackManager.BUILD_ZIP)
 
-        PackerApplier.apply(zipper)
-
         mergeResourcePacks(zipper)
 
         PackEvent(zipper).callEvent()
+
+        PackerApplier.apply(zipper)
 
         zipper.build()
         zipper.close()

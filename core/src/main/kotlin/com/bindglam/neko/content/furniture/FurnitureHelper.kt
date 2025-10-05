@@ -1,20 +1,19 @@
-package com.bindglam.neko.content.block
+package com.bindglam.neko.content.furniture
 
 import com.bindglam.neko.utils.CURRENT_TICK
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
-object BlockHelper {
-    private val breakProgress = hashMapOf<UUID, Float>()
+object FurnitureHelper {
+    private val breakProgress = hashMapOf<UUID, Int>()
     private val lastBreakProgressUpdated = hashMapOf<UUID, Int>()
 
-    private val lastPlaceBlock = hashMapOf<UUID, Int>()
+    private val lastPlaceFurniture = hashMapOf<UUID, Int>()
 
     fun tick() {
         val forRemoval = arrayListOf<UUID>()
         lastBreakProgressUpdated.forEach { (uuid, lastTick) ->
-            if(CURRENT_TICK - lastTick > 2) {
+            if(CURRENT_TICK - lastTick > 20) {
                 forRemoval.add(uuid)
             }
         }
@@ -27,11 +26,11 @@ object BlockHelper {
 
     fun hasBreakProgress(player: Player): Boolean = breakProgress.contains(player.uniqueId)
 
-    fun breakProgress(player: Player): Float = breakProgress.getOrDefault(player.uniqueId, 0f)
+    fun breakProgress(player: Player): Int = breakProgress.getOrDefault(player.uniqueId, 0)
 
-    fun updateBreakProgress(player: Player, speed: Float) {
+    fun updateBreakProgress(player: Player, speed: Int) {
         if(!hasBreakProgress(player))
-            breakProgress.put(player.uniqueId, 0f)
+            breakProgress.put(player.uniqueId, 0)
 
         breakProgress[player.uniqueId] = breakProgress(player) + speed
         lastBreakProgressUpdated[player.uniqueId] = CURRENT_TICK
@@ -41,9 +40,9 @@ object BlockHelper {
         breakProgress.remove(player.uniqueId)
     }
 
-    fun lastPlaceBlock(player: Player): Int = lastPlaceBlock.computeIfAbsent(player.uniqueId) { 0 }
+    fun lastPlaceFurniture(player: Player): Int = lastPlaceFurniture.computeIfAbsent(player.uniqueId) { 0 }
 
-    fun updateLastPlaceBlock(player: Player) {
-        lastPlaceBlock[player.uniqueId] = CURRENT_TICK
+    fun updateLastPlaceFurniture(player: Player) {
+        lastPlaceFurniture[player.uniqueId] = CURRENT_TICK
     }
 }

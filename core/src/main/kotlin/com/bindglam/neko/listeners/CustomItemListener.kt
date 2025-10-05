@@ -9,7 +9,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 
-class ItemListener : Listener {
+class CustomItemListener : Listener {
     @EventHandler(priority = EventPriority.LOW)
     fun PlayerInteractEvent.useCustomItem() {
         item ?: return

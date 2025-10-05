@@ -8,9 +8,9 @@ import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.api.pack.Packable
 import com.bindglam.neko.api.pack.minecraft.block.BlockStateData
 import com.bindglam.neko.api.pack.minecraft.block.VanillaInstruments
+import com.bindglam.neko.api.utils.GsonUtils
 import com.bindglam.neko.utils.plugin
 import com.bindglam.neko.utils.toPackPath
-import com.google.gson.Gson
 import net.kyori.adventure.key.Key
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -25,8 +25,6 @@ class NoteBlockRenderer(private val block: Block) : BlockRenderer, Packable {
 
         private const val MAX_NOTE = 24
         private val BLOCKSTATE_FILE = Key.key("minecraft:blockstates/note_block").toPackPath("json")
-
-        private val GSON = Gson()
     }
 
     private var instrument = VanillaInstruments.BANJO
@@ -73,13 +71,13 @@ class NoteBlockRenderer(private val block: Block) : BlockRenderer, Packable {
         val data = zipper.file(BLOCKSTATE_FILE)
 
         val blockStateData = if(data != null)
-            GSON.fromJson(data.bytes.get().decodeToString(), BlockStateData::class.java)
+            GsonUtils.GSON.fromJson(data.bytes.get().decodeToString(), BlockStateData::class.java)
         else
             BlockStateData(hashMapOf())
 
         blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note},powered=${powered}"] = BlockStateData.Variant(block.properties().model().asString())
 
-        GSON.toJson(blockStateData).toByteArray().also {
+        GsonUtils.GSON.toJson(blockStateData).toByteArray().also {
             zipper.addFile(BLOCKSTATE_FILE, PackFile({ it }, it.size.toLong()))
         }
     }

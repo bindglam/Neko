@@ -2,8 +2,13 @@ package com.bindglam.neko.api.content.block;
 
 import com.bindglam.neko.api.content.block.properties.BlockProperties;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
+import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
+import com.bindglam.neko.api.pack.minecraft.AtlasesData;
+import com.bindglam.neko.api.pack.minecraft.AtlasesMaker;
+import com.bindglam.neko.api.pack.minecraft.model.ModelData;
+import com.bindglam.neko.api.utils.GsonUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.ApiStatus;
@@ -25,6 +30,8 @@ public class CustomBlock implements Block, Packable {
     @ApiStatus.Internal
     @Override
     public void pack(@NotNull PackZipper zipper) {
+        AtlasesMaker.addAllFromModel(properties.model(), zipper);
+
         if(renderer instanceof Packable packable)
             packable.pack(zipper);
     }
