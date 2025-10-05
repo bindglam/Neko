@@ -19,13 +19,13 @@ public interface Furniture extends Keyed, Translatable {
         return EventState.CONTINUE;
     }
 
-    void place(@NotNull Location location);
+    @NotNull FurnitureDisplay place(@NotNull Location location);
 
     void destroy(@NotNull Location location);
 
     boolean isSame(@NotNull Location location);
 
-    @Nullable ItemDisplay display(@NotNull Location location);
+    @Nullable FurnitureDisplay display(@NotNull Location location);
 
     @NotNull FurnitureProperties properties();
 

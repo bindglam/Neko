@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class TestFurniture extends CustomFurniture {
@@ -17,7 +18,8 @@ public class TestFurniture extends CustomFurniture {
         super(KEY, FurnitureProperties.builder()
                 .model(Model.builder()
                         .model(new NamespacedKey("defaultassets", "furniture/test_furniture"))
-                        .translation(new Vector3f(-0.5f, 0f, 0f)))
+                        .translation(new Vector3f(-0.5f, 0f, 0f))
+                        .rotation(new Quaternionf()))
                 .build());
     }
 

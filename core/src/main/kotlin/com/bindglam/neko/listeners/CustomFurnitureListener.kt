@@ -19,6 +19,10 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.util.Transformation
+import org.joml.Quaternionf
+import org.joml.Vector3f
+import kotlin.math.atan2
+import kotlin.math.roundToInt
 
 class CustomFurnitureListener : Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -44,7 +48,12 @@ class CustomFurnitureListener : Listener {
             else
                 Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f)*/
 
-            player.placeBlock(location, { customFurniture.place(it) }, clickedBlock!!, hand!!, Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f))
+            player.placeBlock(location, {
+                val dLoc = it.clone().subtract(player.location)
+                it.yaw = (Math.toDegrees(atan2(dLoc.z, dLoc.x)) / 90f).roundToInt() * 90f + 90f
+
+                customFurniture.place(it)
+            }, clickedBlock!!, hand!!, Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f))
 
             FurnitureHelper.updateLastPlaceFurniture(player)
         }
@@ -59,15 +68,23 @@ class CustomFurnitureListener : Listener {
         val customFurniture = NekoProvider.neko().contentManager().furniture(clickedBlock!!.location) ?: return
 
         val display = customFurniture.display(clickedBlock!!.location) ?: return
-        display.interpolationDelay = 1
-        display.interpolationDuration = 3
-        display.transformation = Transformation(
-            customFurniture.properties().model().transformation().translation,
-            customFurniture.properties().model().transformation().leftRotation,
-            customFurniture.properties().model().transformation().scale.sub(0.1f, 0.1f, 0.1f),
-            customFurniture.properties().model().transformation().rightRotation
-        )
-        Bukkit.getScheduler().runTaskLater(NekoProvider.neko().plugin(), { _ -> display.transformation = customFurniture.properties().model().transformation() }, 4L)
+        display.display.interpolationDelay = 1
+        display.display.interpolationDuration = 3
+        display.applyTransformationModifier(Transformation(
+            Vector3f(),
+            Quaternionf(),
+            Vector3f(-0.1f),
+            Quaternionf()
+        ))
+        Bukkit.getScheduler().runTaskLater(NekoProvider.neko().plugin(), { _ ->
+            val display = customFurniture.display(clickedBlock!!.location) ?: return@runTaskLater
+            display.applyTransformationModifier(Transformation(
+                Vector3f(),
+                Quaternionf(),
+                Vector3f(0.1f),
+                Quaternionf()
+            ))
+        }, 4L)
 
         FurnitureHelper.updateBreakProgress(player, 1)
 

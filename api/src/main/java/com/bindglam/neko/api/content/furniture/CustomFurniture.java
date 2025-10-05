@@ -41,11 +41,12 @@ public class CustomFurniture implements Furniture, Packable {
     }
 
     @Override
-    public void place(@NotNull Location location) {
+    public @NotNull FurnitureDisplay place(@NotNull Location location) {
         location.getBlock().setType(Material.BARRIER);
 
         ItemDisplay display = location.getWorld().spawn(location.toCenterLocation(), ItemDisplay.class);
         display.setTransformation(properties.model().transformation());
+
         display.getPersistentDataContainer().set(Furniture.NEKO_FURNITURE_PDC_KEY, PersistentDataType.STRING, key.toString());
         display.setPersistent(true);
 
@@ -59,19 +60,21 @@ public class CustomFurniture implements Furniture, Packable {
         List<String> list = new ArrayList<>(Objects.requireNonNull(chunk.getPersistentDataContainer().get(Furniture.NEKO_FURNITURE_LIST_PDC_KEY, PersistentDataType.LIST.strings())));
         list.add(display.getUniqueId().toString());
         chunk.getPersistentDataContainer().set(Furniture.NEKO_FURNITURE_LIST_PDC_KEY, PersistentDataType.LIST.strings(), list);
+
+        return new FurnitureDisplay(this, location.toBlockLocation(), display);
     }
 
     @Override
     public void destroy(@NotNull Location location) {
-        ItemDisplay display = display(location);
+        FurnitureDisplay display = display(location);
         if(display == null) return;
 
         Chunk chunk = location.getChunk();
         List<String> uuids = new ArrayList<>(Objects.requireNonNull(chunk.getPersistentDataContainer().get(Furniture.NEKO_FURNITURE_LIST_PDC_KEY, PersistentDataType.LIST.strings())));
-        uuids.remove(display.getUniqueId().toString());
+        uuids.remove(display.display().getUniqueId().toString());
         chunk.getPersistentDataContainer().set(Furniture.NEKO_FURNITURE_LIST_PDC_KEY, PersistentDataType.LIST.strings(), uuids);
 
-        display.remove();
+        display.display().remove();
         location.getBlock().setType(Material.AIR);
     }
 
@@ -81,7 +84,7 @@ public class CustomFurniture implements Furniture, Packable {
     }
 
     @Override
-    public @Nullable ItemDisplay display(@NotNull Location location) {
+    public @Nullable FurnitureDisplay display(@NotNull Location location) {
         Chunk chunk = location.getChunk();
         if(!chunk.getPersistentDataContainer().has(Furniture.NEKO_FURNITURE_LIST_PDC_KEY))
             return null;
@@ -99,13 +102,19 @@ public class CustomFurniture implements Furniture, Packable {
                 continue;
             }
 
-            if (entity.getLocation().toCenterLocation().equals(location.toCenterLocation()) && Objects.equals(entity.getPersistentDataContainer().get(Furniture.NEKO_FURNITURE_PDC_KEY, PersistentDataType.STRING), key.toString())) {
+            Location loc1 = entity.getLocation().toCenterLocation();
+            Location loc2 = location.toCenterLocation();
+            boolean isSameLocation = Double.compare(loc1.x(), loc2.x()) == 0 && Double.compare(loc1.y(), loc2.y()) == 0 && Double.compare(loc1.z(), loc2.z()) == 0;
+
+            if (isSameLocation && Objects.equals(entity.getPersistentDataContainer().get(Furniture.NEKO_FURNITURE_PDC_KEY, PersistentDataType.STRING), key.toString())) {
                 chunk.getPersistentDataContainer().set(Furniture.NEKO_FURNITURE_LIST_PDC_KEY, PersistentDataType.LIST.strings(), uuids);
-                return (ItemDisplay) entity;
+
+                return new FurnitureDisplay(this, location.toBlockLocation(), (ItemDisplay) entity);
             }
         }
 
         chunk.getPersistentDataContainer().set(Furniture.NEKO_FURNITURE_LIST_PDC_KEY, PersistentDataType.LIST.strings(), uuids);
+
         return null;
     }
 
