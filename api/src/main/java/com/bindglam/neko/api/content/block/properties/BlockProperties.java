@@ -3,7 +3,6 @@ package com.bindglam.neko.api.content.block.properties;
 import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.utils.Factory;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
-import net.kyori.adventure.key.Key;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -91,9 +90,4 @@ public sealed interface BlockProperties {
             return new Impl(model, renderer, hardness, correctTools, dropSilkTouch, drops, sounds);
         }
     }
-
-    record Sounds(
-            @NotNull Key placeSound,
-            @NotNull Key breakSound
-    ) {}
 }

@@ -4,6 +4,7 @@ import com.bindglam.neko.api.config.Configurable
 import com.bindglam.neko.api.content.block.properties.BlockProperties
 import com.bindglam.neko.api.content.block.properties.CorrectTools
 import com.bindglam.neko.api.content.block.properties.Drops
+import com.bindglam.neko.api.content.block.properties.Sounds
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.config.TagConfigurable
 import com.bindglam.neko.utils.ITEM_TYPE_CONFIGURABLE
@@ -54,8 +55,8 @@ class CustomBlockPropertiesConfigurable : Configurable<BlockProperties, Configur
         }
     }
 
-    private class SoundsConfigurable : Configurable<BlockProperties.Sounds, ConfigurationSection> {
-        override fun load(config: ConfigurationSection?): BlockProperties.Sounds? = config?.let { BlockProperties.Sounds(
+    private class SoundsConfigurable : Configurable<Sounds, ConfigurationSection> {
+        override fun load(config: ConfigurationSection?): Sounds? = config?.let { Sounds(
             KEY_CONFIGURABLE.load(config.getString("place"))!!,
             KEY_CONFIGURABLE.load(config.getString("break"))!!
         ) }
