@@ -99,7 +99,7 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
 
                     //NekoProvider.neko().contentManager().customBlock(CraftLocation.toBukkit(pos, player.world).block) ?: return this
 
-                    return null
+                    return this
                 }
             }
         }
