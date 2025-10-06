@@ -80,6 +80,8 @@ class NekoPlugin : Neko, JavaPlugin() {
     }
 
     override fun reload(sender: CommandSender): Neko.ReloadInfo {
+        config.load(File(dataFolder, "config.yml"))
+
         val reloadableList = managers.stream().filter { it is Reloadable }.toList()
 
         try {
