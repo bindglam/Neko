@@ -1,28 +1,28 @@
 package com.bindglam.neko.api.content.block.properties;
 
 import com.bindglam.neko.api.content.item.ItemStackHolder;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public sealed interface CorrectTools {
     @NotNull List<Tag<Material>> tags();
 
-    @NotNull List<ItemStackHolder> items();
+    @NotNull Multimap<ListType, ItemStackHolder> items();
 
     default boolean isCorrectTool(@Nullable ItemStack itemStack) {
         if(itemStack == null) return false;
 
-        if (tags().stream().anyMatch((tag) -> tag.isTagged(itemStack.getType())))
+        if (tags().stream().anyMatch((tag) -> tag.isTagged(itemStack.getType())) && items().get(ListType.BLACKLIST).stream().noneMatch((item) -> item.isSame(itemStack)))
             return true;
 
-        return items().stream().anyMatch((item) -> item.isSame(itemStack));
+        return items().get(ListType.WHITELIST).stream().anyMatch((item) -> item.isSame(itemStack));
     }
 
 
@@ -32,7 +32,7 @@ public sealed interface CorrectTools {
 
     final class Builder implements CorrectTools {
         private List<Tag<Material>> tags = new ArrayList<>();
-        private List<ItemStackHolder> items = new ArrayList<>();
+        private final Multimap<ListType, ItemStackHolder> items = ArrayListMultimap.create();
 
         public Builder tags(List<Tag<Material>> tags) {
             this.tags = tags;
@@ -45,13 +45,23 @@ public sealed interface CorrectTools {
             return this;
         }
 
-        public Builder items(List<ItemStackHolder> items) {
-            this.items = items;
+        public Builder whitelist(List<ItemStackHolder> items) {
+            this.items.putAll(ListType.WHITELIST, items);
             return this;
         }
 
-        public Builder items(ItemStackHolder... items) {
-            this.items = Arrays.stream(items).toList();
+        public Builder whitelist(ItemStackHolder... items) {
+            this.items.putAll(ListType.WHITELIST, Arrays.stream(items).toList());
+            return this;
+        }
+
+        public Builder blacklist(List<ItemStackHolder> items) {
+            this.items.putAll(ListType.BLACKLIST, items);
+            return this;
+        }
+
+        public Builder blacklist(ItemStackHolder... items) {
+            this.items.putAll(ListType.BLACKLIST, Arrays.stream(items).toList());
             return this;
         }
 
@@ -61,8 +71,13 @@ public sealed interface CorrectTools {
         }
 
         @Override
-        public @NotNull List<ItemStackHolder> items() {
+        public @NotNull Multimap<ListType, ItemStackHolder> items() {
             return items;
         }
+    }
+
+    enum ListType {
+        WHITELIST,
+        BLACKLIST
     }
 }

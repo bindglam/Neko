@@ -1,2 +1,3 @@
 - Fix a bug where the Neko config file is not loaded when executing the reload command.
 - Fix #15
+- Add whitelist and blacklist to CorrectTools options

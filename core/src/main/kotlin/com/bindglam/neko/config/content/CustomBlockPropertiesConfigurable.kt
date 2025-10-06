@@ -34,7 +34,8 @@ class CustomBlockPropertiesConfigurable : Configurable<BlockProperties, Configur
     private class CorrectToolsConfigurable : Configurable<CorrectTools, ConfigurationSection> {
         override fun load(config: ConfigurationSection?): CorrectTools? = config?.let { CorrectTools.builder()
             .tags(Configurable.parseAsList(config.getStringList("tags"), TagConfigurable("items", Material::class.java)))
-            .items(Configurable.parseAsList(config.getStringList("items"), ITEM_TYPE_CONFIGURABLE))
+            .whitelist(Configurable.parseAsList(config.getStringList("whitelist"), ITEM_TYPE_CONFIGURABLE))
+            .blacklist(Configurable.parseAsList(config.getStringList("blacklist"), ITEM_TYPE_CONFIGURABLE))
         }
     }
 
