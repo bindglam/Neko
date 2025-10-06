@@ -97,7 +97,7 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
                 if(action == ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK || action == ServerboundPlayerActionPacket.Action.STOP_DESTROY_BLOCK) {
                     if (player.gameMode != GameMode.SURVIVAL) return this
 
-                    NekoProvider.neko().contentManager().customBlock(CraftLocation.toBukkit(pos, player.world).block) ?: return this
+                    //NekoProvider.neko().contentManager().customBlock(CraftLocation.toBukkit(pos, player.world).block) ?: return this
 
                     return null
                 }
