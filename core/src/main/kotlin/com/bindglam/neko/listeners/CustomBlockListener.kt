@@ -180,7 +180,7 @@ class CustomBlockListener : Listener {
         }
 
         val efficiencyEffect = player.inventory.itemInMainHand.getEnchantmentLevel(Enchantment.EFFICIENCY).toFloat().pow(2f) + 1f
-        val attributeEffect = player.inventory.itemInMainHand.itemMeta.getAttributeModifiers(Attribute.BLOCK_BREAK_SPEED)?.sumOf { it.amount }?.toFloat() ?: 0f
+        val attributeEffect = player.inventory.itemInMainHand.itemMeta?.getAttributeModifiers(Attribute.BLOCK_BREAK_SPEED)?.sumOf { it.amount }?.toFloat() ?: 0f
 
         val blockBreakSpeed = (itemBlockBreakSpeed + efficiencyEffect + attributeEffect) / customBlock.properties().hardness() / if(isCorrectTool) 30f else 100f
 

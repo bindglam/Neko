@@ -1,1 +1,2 @@
-- 리로드시 콘피그가 리로드되지 않는 버그 수정
+- Fix a bug where the Neko config file is not loaded when executing the reload command.
+- Fix #15
