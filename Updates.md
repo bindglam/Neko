@@ -1,2 +1,3 @@
 - Fix #16
-- Change API
+- Change Event API
+- Change Furniture API
