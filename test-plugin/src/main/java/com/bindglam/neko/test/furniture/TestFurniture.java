@@ -2,6 +2,7 @@ package com.bindglam.neko.test.furniture;
 
 import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.content.furniture.CustomFurniture;
+import com.bindglam.neko.api.content.furniture.FurnitureDisplay;
 import com.bindglam.neko.api.content.furniture.properties.FurnitureProperties;
 import com.bindglam.neko.api.content.furniture.properties.Model;
 import net.kyori.adventure.text.Component;
@@ -25,7 +26,7 @@ public class TestFurniture extends CustomFurniture {
     }
 
     @Override
-    public EventState onInteract(Player player, Location location) {
+    public EventState onInteract(Player player, Location location, FurnitureDisplay display) {
         player.sendMessage(Component.text("앙"));
         return EventState.CANCEL;
     }

@@ -105,7 +105,7 @@ object CustomFurnitureListener : Listener {
 
         val customFurniture = NekoProvider.neko().contentManager().furniture(clickedBlock!!.location) ?: return
 
-        if(customFurniture.onInteract(player, clickedBlock!!.location) == EventState.CANCEL)
+        if(customFurniture.onInteract(player, clickedBlock!!.location, customFurniture.display(clickedBlock!!.location)) == EventState.CANCEL)
             isCancelled = true
     }
 }
