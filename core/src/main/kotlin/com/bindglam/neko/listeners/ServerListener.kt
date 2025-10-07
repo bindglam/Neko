@@ -7,7 +7,7 @@ import com.destroystokyo.paper.event.server.ServerTickStartEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 
-class ServerListener : Listener {
+object ServerListener : Listener {
     @EventHandler
     fun ServerTickStartEvent.tickHelpers() {
         CURRENT_TICK = tickNumber

@@ -3,7 +3,6 @@ package com.bindglam.neko.listeners
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
 import com.bindglam.neko.api.content.item.furniture.FurnitureItem
-import com.bindglam.neko.content.block.BlockHelper
 import com.bindglam.neko.content.furniture.FurnitureHelper
 import com.bindglam.neko.utils.CURRENT_TICK
 import com.bindglam.neko.utils.canPlaceBlock
@@ -24,7 +23,7 @@ import org.joml.Vector3f
 import kotlin.math.atan2
 import kotlin.math.roundToInt
 
-class CustomFurnitureListener : Listener {
+object CustomFurnitureListener : Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     fun PlayerInteractEvent.tryPlaceCustomFurniture() {
         item ?: return

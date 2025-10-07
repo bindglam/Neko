@@ -6,7 +6,7 @@ import com.bindglam.neko.utils.plugin
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 
-class NekoListener : Listener {
+object NekoListener : Listener {
     @EventHandler
     fun PackEvent.addDefaultAssets() {
         addPluginPack(NekoProvider.neko().plugin())

@@ -7,8 +7,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
-@Suppress("unstableApiUsage")
-class PlayerListener : Listener {
+object PlayerListener : Listener {
     @EventHandler
     fun PlayerJoinEvent.onJoin() {
         NekoProvider.neko().playerNetworkManager().inject(player)

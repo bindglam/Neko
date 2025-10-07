@@ -11,7 +11,6 @@ import com.bindglam.neko.utils.isReplaceable
 import com.bindglam.neko.utils.placeBlock
 import io.papermc.paper.datacomponent.DataComponentTypes
 import net.kyori.adventure.sound.Sound
-import org.bukkit.Bukkit
 import org.bukkit.FluidCollisionMode
 import org.bukkit.GameEvent
 import org.bukkit.GameMode
@@ -35,7 +34,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import kotlin.math.pow
 
-class CustomBlockListener : Listener {
+object CustomBlockListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun PlayerInteractEvent.tryPlaceBlockOnCustomBlock() {
         clickedBlock ?: return

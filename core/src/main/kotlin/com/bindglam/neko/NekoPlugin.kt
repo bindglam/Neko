@@ -39,13 +39,13 @@ class NekoPlugin : Neko, JavaPlugin() {
 
         saveDefaultConfig()
 
-        server.pluginManager.registerEvents(CustomItemListener(), this)
-        server.pluginManager.registerEvents(CustomBlockListener(), this)
-        server.pluginManager.registerEvents(CustomFurnitureListener(), this)
-        server.pluginManager.registerEvents(PlayerListener(), this)
-        server.pluginManager.registerEvents(InventoryListener(), this)
-        server.pluginManager.registerEvents(NekoListener(), this)
-        server.pluginManager.registerEvents(ServerListener(), this)
+        server.pluginManager.registerEvents(CustomItemListener, this)
+        server.pluginManager.registerEvents(CustomBlockListener, this)
+        server.pluginManager.registerEvents(CustomFurnitureListener, this)
+        server.pluginManager.registerEvents(PlayerListener, this)
+        server.pluginManager.registerEvents(InventoryListener, this)
+        server.pluginManager.registerEvents(NekoListener, this)
+        server.pluginManager.registerEvents(ServerListener, this)
 
         val version = MCVersion.parse(Bukkit.getBukkitVersion().substringBefore('-')).also {
             logger.info("Minecraft Version : $it")
