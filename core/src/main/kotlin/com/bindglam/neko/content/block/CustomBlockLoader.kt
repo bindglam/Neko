@@ -12,9 +12,9 @@ import org.bukkit.configuration.ConfigurationSection
 
 class CustomBlockLoader : ContentLoader {
     override fun load(key: Key, config: ConfigurationSection) {
-        CustomBlock(NamespacedKey(key.namespace(), key.value()), CUSTOM_BLOCK_PROPERTIES_CONFIGURABLE.load(config.getConfigurationSection("properties.block")!!)!!).also {
-            BuiltInRegistries.ITEMS.register(key, CustomBlockItem(it.key, CUSTOM_ITEM_PROPERTIES_CONFIGURABLE.load(config.getConfigurationSection("properties.item")!!)!!, it))
-            BuiltInRegistries.BLOCKS.register(key, it)
+        CustomBlock(NamespacedKey(key.namespace(), key.value()), CUSTOM_BLOCK_PROPERTIES_CONFIGURABLE.load(config.getConfigurationSection("properties.block")!!)!!).also { block ->
+            config.getConfigurationSection("properties.item")?.let { BuiltInRegistries.ITEMS.register(key, CustomBlockItem(block.key, CUSTOM_ITEM_PROPERTIES_CONFIGURABLE.load(it), block)) }
+            BuiltInRegistries.BLOCKS.register(key, block)
         }
     }
 
