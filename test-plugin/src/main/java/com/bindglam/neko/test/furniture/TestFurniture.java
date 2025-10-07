@@ -18,7 +18,8 @@ public class TestFurniture extends CustomFurniture {
         super(KEY, FurnitureProperties.builder()
                 .model(Model.builder()
                         .model(new NamespacedKey("defaultassets", "furniture/test_furniture"))
-                        .translation(new Vector3f(-0.5f, 0f, 0f))
+                        .translation(new Vector3f(0f, 0.7f, 0f))
+                        .scale(new Vector3f(2f, 2f, 2f))
                         .rotation(new Quaternionf()))
                 .build());
     }
