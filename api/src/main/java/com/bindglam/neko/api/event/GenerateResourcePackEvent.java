@@ -14,14 +14,13 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-@Deprecated(since = "0.0.6", forRemoval = true)
-public class PackEvent extends Event {
+public class GenerateResourcePackEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private final PackZipper zipper;
 
     @ApiStatus.Internal
-    public PackEvent(PackZipper zipper) {
+    public GenerateResourcePackEvent(PackZipper zipper) {
         this.zipper = zipper;
     }
 

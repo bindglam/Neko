@@ -8,7 +8,7 @@ import com.bindglam.neko.api.content.item.furniture.CustomFurnitureItem;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import com.bindglam.neko.api.content.item.block.CustomBlockItem;
 import com.bindglam.neko.api.event.ContentsLoadEvent;
-import com.bindglam.neko.api.event.PackEvent;
+import com.bindglam.neko.api.event.GenerateResourcePackEvent;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import com.bindglam.neko.test.blocks.DeepslateRubyOreBlock;
 import com.bindglam.neko.test.blocks.RubyBlock;
@@ -70,7 +70,7 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onPack(PackEvent event) {
+    public void onPack(GenerateResourcePackEvent event) {
         event.addPluginPack(this);
     }
 
