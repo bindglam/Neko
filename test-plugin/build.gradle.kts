@@ -24,6 +24,7 @@ paperPluginYaml {
     main = "$group.test.NekoTestPlugin"
     apiVersion = "1.21"
     author = "Bindglam"
+    authors = listOf("Bindglam")
     load = BukkitPluginYaml.PluginLoadOrder.POSTWORLD
     dependencies {
         server("Neko", PaperPluginYaml.Load.BEFORE, true, true)
