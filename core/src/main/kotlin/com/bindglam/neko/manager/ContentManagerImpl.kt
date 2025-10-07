@@ -14,6 +14,7 @@ import com.bindglam.neko.content.item.CustomItemLoader
 import com.bindglam.neko.content.block.CustomBlockLoader
 import com.bindglam.neko.content.block.renderer.NoteBlockRenderer
 import com.bindglam.neko.content.block.renderer.NoteBlockRendererFactory
+import com.bindglam.neko.content.furniture.FurnitureLoader
 import com.bindglam.neko.utils.listFilesRecursively
 import net.kyori.adventure.key.Key
 import org.bukkit.Location
@@ -28,7 +29,7 @@ object ContentManagerImpl : ContentManager {
 
     private val CONTENTS_FOLDER = File("plugins/Neko/contents")
 
-    private val CONTENT_LOADERS = listOf(CustomItemLoader(), CustomBlockLoader(), GlyphLoader())
+    private val CONTENT_LOADERS = listOf(CustomItemLoader(), CustomBlockLoader(), GlyphLoader(), FurnitureLoader)
 
     override fun start(process: Process) {
         registerInternalContents()

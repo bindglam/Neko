@@ -1,3 +1,4 @@
 - Fix #16
 - Change Event API
 - Change Furniture API
+- **Add Furniture**(Experimental)
