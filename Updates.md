@@ -1,1 +1,2 @@
 - Fix #16
+- Change API
