@@ -29,7 +29,7 @@ object ContentManagerImpl : ContentManager {
 
     private val CONTENTS_FOLDER = File("plugins/Neko/contents")
 
-    private val CONTENT_LOADERS = listOf(CustomItemLoader(), CustomBlockLoader(), GlyphLoader(), FurnitureLoader)
+    private val CONTENT_LOADERS = listOf(CustomItemLoader, CustomBlockLoader, GlyphLoader, FurnitureLoader)
 
     override fun start(process: Process) {
         registerInternalContents()
