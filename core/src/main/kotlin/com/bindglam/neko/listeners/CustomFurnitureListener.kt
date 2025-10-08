@@ -3,6 +3,8 @@ package com.bindglam.neko.listeners
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
 import com.bindglam.neko.api.content.item.furniture.FurnitureItem
+import com.bindglam.neko.api.event.FurnitureBreakEvent
+import com.bindglam.neko.api.event.FurniturePlaceEvent
 import com.bindglam.neko.content.furniture.FurnitureHelper
 import com.bindglam.neko.utils.CURRENT_TICK
 import com.bindglam.neko.utils.canPlaceBlock
@@ -12,11 +14,13 @@ import com.bindglam.neko.utils.placeBlock
 import com.bindglam.neko.utils.plugin
 import net.kyori.adventure.sound.Sound
 import org.bukkit.Bukkit
+import org.bukkit.GameEvent
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.util.Transformation
 import org.joml.Quaternionf
@@ -48,14 +52,16 @@ object CustomFurnitureListener : Listener {
             else
                 Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f)*/
 
-            player.placeBlock(location, {
-                val dLoc = it.clone().subtract(player.location)
-                it.yaw = (Math.toDegrees(atan2(dLoc.z, dLoc.x)) / 90f).roundToInt() * 90f + 90f
+            if(FurniturePlaceEvent(player, furniture, location).callEvent()) {
+                player.placeBlock(location, {
+                    val dLoc = it.clone().subtract(player.location)
+                    it.yaw = (Math.toDegrees(atan2(dLoc.z, dLoc.x)) / 90f).roundToInt() * 90f + 90f
 
-                furniture.place(it)
-            }, clickedBlock!!, hand!!, Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f))
+                    furniture.place(it)
+                }, clickedBlock!!, hand!!, Sound.sound(org.bukkit.Sound.BLOCK_METAL_PLACE, Sound.Source.BLOCK, 1f, 1f))
 
-            FurnitureHelper.updateLastPlaceFurniture(player)
+                FurnitureHelper.updateLastPlaceFurniture(player)
+            }
         }
     }
 
@@ -93,10 +99,15 @@ object CustomFurnitureListener : Listener {
         if(FurnitureHelper.breakProgress(player) >= 3) {
             FurnitureHelper.removeBreakProgress(player)
 
-            furniture.destroy(clickedBlock!!.location)
+            if(FurnitureBreakEvent(player, furniture, clickedBlock!!.location).callEvent()
+                    && BlockBreakEvent(clickedBlock!!, player).callEvent()) {
+                furniture.destroy(clickedBlock!!.location)
 
-            if(player.gameMode != GameMode.CREATIVE && furniture.item() != null) {
-                clickedBlock!!.world.dropItemNaturally(clickedBlock!!.location.toCenterLocation(), furniture.item()!!.itemStack())
+                if(player.gameMode != GameMode.CREATIVE && furniture.item() != null) {
+                    clickedBlock!!.world.dropItemNaturally(clickedBlock!!.location.toCenterLocation(), furniture.item()!!.itemStack())
+                }
+
+                clickedBlock!!.world.sendGameEvent(player, GameEvent.BLOCK_DESTROY, clickedBlock!!.location.toVector())
             }
         }
     }
