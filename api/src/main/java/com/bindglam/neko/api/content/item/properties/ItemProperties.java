@@ -14,7 +14,7 @@ import java.util.function.BiFunction;
 public sealed interface ItemProperties {
     @NotNull ItemType type();
 
-    @Nullable Integer durability();
+    int durability();
 
     @Nullable Component name();
 
@@ -29,7 +29,7 @@ public sealed interface ItemProperties {
     @Nullable Attributes attributes();
 
 
-    record Impl(ItemType type, Integer durability, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor, Attributes attributes) implements ItemProperties {
+    record Impl(ItemType type, int durability, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor, Attributes attributes) implements ItemProperties {
     }
 
     static Builder builder() {
@@ -38,7 +38,7 @@ public sealed interface ItemProperties {
 
     final class Builder implements com.bindglam.neko.api.utils.Builder<ItemProperties> {
         private ItemType type = ItemType.PAPER;
-        private Integer durability;
+        private int durability = 0;
         private Component name;
         private List<Component> lore;
         private BiFunction<ItemStack, Player, List<Component>> clientsideLore;
@@ -50,12 +50,12 @@ public sealed interface ItemProperties {
         }
 
 
-        public Builder type(ItemType type) {
+        public Builder type(@NotNull ItemType type) {
             this.type = type;
             return this;
         }
 
-        public Builder durability(Integer durability) {
+        public Builder durability(int durability) {
             this.durability = durability;
             return this;
         }
@@ -75,7 +75,7 @@ public sealed interface ItemProperties {
             return this;
         }
 
-        public Builder model(NamespacedKey model) {
+        public Builder model(@NotNull NamespacedKey model) {
             this.model = model;
             return this;
         }
@@ -95,6 +95,9 @@ public sealed interface ItemProperties {
         public @NotNull ItemProperties build() {
             if(type == null)
                 throw new IllegalStateException("Item type can not be null!");
+
+            if(model == null)
+                throw new IllegalStateException("Item model can not be null!");
 
             return new Impl(type, durability, name, lore, clientsideLore, model, armor, attributes);
         }

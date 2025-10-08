@@ -11,10 +11,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+@ApiStatus.Internal
 public final class ItemBuilder {
     private ItemBuilder() {
     }
@@ -28,8 +30,8 @@ public final class ItemBuilder {
             else
                 meta.itemName(item.properties().name());
             if(meta instanceof Damageable damageable) {
-                Integer durability = item.properties().durability();
-                if(durability != null && durability != 0)
+                int durability = item.properties().durability();
+                if(durability != 0)
                     damageable.setMaxDamage(durability);
             }
             meta.lore(item.properties().lore());

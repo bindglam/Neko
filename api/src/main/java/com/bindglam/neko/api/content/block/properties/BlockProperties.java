@@ -21,7 +21,7 @@ public sealed interface BlockProperties {
 
     @Nullable CorrectTools correctTools();
 
-    List<Enchantment> blacklistEnchantments();
+    @NotNull List<Enchantment> blacklistEnchantments();
 
     @Nullable Drops drops();
 
@@ -48,12 +48,12 @@ public sealed interface BlockProperties {
         }
 
 
-        public Builder model(NamespacedKey model) {
+        public Builder model(@NotNull NamespacedKey model) {
             this.model = model;
             return this;
         }
 
-        public Builder renderer(Factory<BlockRenderer, Block> renderer) {
+        public Builder renderer(@NotNull Factory<BlockRenderer, Block> renderer) {
             this.renderer = renderer;
             return this;
         }
@@ -68,12 +68,12 @@ public sealed interface BlockProperties {
             return this;
         }
 
-        public Builder blacklistEnchantments(List<Enchantment> blacklistEnchantments) {
+        public Builder blacklistEnchantments(@NotNull List<Enchantment> blacklistEnchantments) {
             this.blacklistEnchantments.addAll(blacklistEnchantments);
             return this;
         }
 
-        public Builder blacklistEnchantments(Enchantment... enchantment) {
+        public Builder blacklistEnchantments(@NotNull Enchantment... enchantment) {
             this.blacklistEnchantments.addAll(Arrays.stream(enchantment).toList());
             return this;
         }
