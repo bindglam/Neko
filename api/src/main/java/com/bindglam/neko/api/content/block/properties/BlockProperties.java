@@ -19,6 +19,8 @@ public sealed interface BlockProperties {
 
     float hardness();
 
+    float blastResistance();
+
     @Nullable CorrectTools correctTools();
 
     @NotNull List<Enchantment> blacklistEnchantments();
@@ -28,7 +30,7 @@ public sealed interface BlockProperties {
     @Nullable Sounds sounds();
 
 
-    record Impl(NamespacedKey model, Factory<BlockRenderer, Block> renderer, float hardness, CorrectTools correctTools, List<Enchantment> blacklistEnchantments, Drops drops, Sounds sounds) implements BlockProperties {
+    record Impl(NamespacedKey model, Factory<BlockRenderer, Block> renderer, float hardness, float blastResistance, CorrectTools correctTools, List<Enchantment> blacklistEnchantments, Drops drops, Sounds sounds) implements BlockProperties {
     }
 
     static Builder builder() {
@@ -38,7 +40,8 @@ public sealed interface BlockProperties {
     final class Builder implements com.bindglam.neko.api.utils.Builder<BlockProperties> {
         private NamespacedKey model;
         private Factory<BlockRenderer, Block> renderer;
-        private float hardness;
+        private float hardness = 1f;
+        private float blastResistance = 6f;
         private CorrectTools correctTools;
         private final List<Enchantment> blacklistEnchantments = new ArrayList<>();
         private Drops drops;
@@ -60,6 +63,11 @@ public sealed interface BlockProperties {
 
         public Builder hardness(float hardness) {
             this.hardness = hardness;
+            return this;
+        }
+
+        public Builder blastResistance(float blastResistance) {
+            this.blastResistance = blastResistance;
             return this;
         }
 
@@ -97,7 +105,7 @@ public sealed interface BlockProperties {
             if(renderer == null)
                 throw new IllegalStateException("Block renderer can not be null!");
 
-            return new Impl(model, renderer, hardness, correctTools, blacklistEnchantments, drops, sounds);
+            return new Impl(model, renderer, hardness, blastResistance, correctTools, blacklistEnchantments, drops, sounds);
         }
     }
 }

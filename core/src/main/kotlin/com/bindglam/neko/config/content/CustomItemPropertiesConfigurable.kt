@@ -23,7 +23,7 @@ object CustomItemPropertiesConfigurable : Configurable<ItemProperties, Configura
         .durability(config.getInt("durability"))
         .name(config.getRichMessage("name"))
         .lore(config.getStringList("lore").map { MiniMessage.miniMessage().deserialize(it) })
-        .model(KeyConfigurable.load(config.getString("model")))
+        .model(KeyConfigurable.load(config.getString("model")!!)!!)
         .armor(ArmorConfigurable.load(config.getConfigurationSection("armor")))
         .attributes(AttributesConfigurable.load(config.getConfigurationSection("attributes")))
         .build()

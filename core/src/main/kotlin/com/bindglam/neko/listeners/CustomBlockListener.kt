@@ -7,9 +7,11 @@ import com.bindglam.neko.api.content.item.block.BlockItem
 import com.bindglam.neko.content.block.BlockHelper
 import com.bindglam.neko.utils.CURRENT_TICK
 import com.bindglam.neko.utils.canPlaceBlock
+import com.bindglam.neko.utils.explosionPower
 import com.bindglam.neko.utils.isInteractable
 import com.bindglam.neko.utils.isReplaceable
 import com.bindglam.neko.utils.placeBlock
+import com.destroystokyo.paper.event.block.BlockDestroyEvent
 import io.papermc.paper.datacomponent.DataComponentTypes
 import net.kyori.adventure.sound.Sound
 import org.bukkit.FluidCollisionMode
@@ -19,14 +21,21 @@ import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.attribute.Attribute
 import org.bukkit.block.Block
+import org.bukkit.block.BlockType
+import org.bukkit.block.data.type.TNT
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.ExperienceOrb
+import org.bukkit.entity.Explosive
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockExplodeEvent
+import org.bukkit.event.entity.EntityExplodeEvent
+import org.bukkit.event.entity.FireworkExplodeEvent
 import org.bukkit.event.player.PlayerAnimationEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
@@ -98,6 +107,31 @@ object CustomBlockListener : Listener {
 
         if(customBlock.onInteract(player, clickedBlock) == EventState.CANCEL)
             isCancelled = true
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun BlockDestroyEvent.dropCustomBlockItem() {
+        if(willDrop()) {
+            setWillDrop(false)
+
+            val customBlock = NekoProvider.neko().contentManager().customBlock(block) ?: return
+
+            dropItems(null, block, customBlock)
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    fun EntityExplodeEvent.explodeCustomBlock() {
+        val power = if(entity is Explosive) (entity as Explosive).yield else 4f
+
+        blockList().clear()
+        blockList().addAll(BlockHelper.getBlocksToBlowUp(location, power, false))
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    fun BlockExplodeEvent.explodeCustomBlock() {
+        blockList().clear()
+        blockList().addAll(BlockHelper.getBlocksToBlowUp(block.location, explodedBlockState.type.explosionPower, true))
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -190,12 +224,14 @@ object CustomBlockListener : Listener {
         return BlockBreakSpeedData(blockBreakSpeed, isCorrectTool)
     }
 
-    private fun dropItems(player: Player, block: Block, customBlock: com.bindglam.neko.api.content.block.Block) {
+    private fun dropItems(player: Player?, block: Block, customBlock: com.bindglam.neko.api.content.block.Block) {
         fun dropItem(itemStack: ItemStack) {
             block.world.dropItemNaturally(block.location.toCenterLocation(), itemStack)
         }
 
-        val useSilkTouch = !customBlock.properties().blacklistEnchantments().contains(Enchantment.SILK_TOUCH) && player.inventory.itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)
+        val item = player?.inventory?.itemInMainHand
+
+        val useSilkTouch = !customBlock.properties().blacklistEnchantments().contains(Enchantment.SILK_TOUCH) && item?.containsEnchantment(Enchantment.SILK_TOUCH) == true
 
         if(customBlock.properties().drops() != null && !useSilkTouch) {
             customBlock.properties().drops()?.data()?.forEach { data ->
@@ -207,8 +243,8 @@ object CustomBlockListener : Listener {
                     is Drops.DropData.Item -> {
                         var dropAmount = data.amount()
 
-                        if(!customBlock.properties().blacklistEnchantments().contains(Enchantment.FORTUNE) && player.inventory.itemInMainHand.containsEnchantment(Enchantment.FORTUNE)) {
-                            val level = player.inventory.itemInMainHand.getEnchantmentLevel(Enchantment.FORTUNE)
+                        if(!customBlock.properties().blacklistEnchantments().contains(Enchantment.FORTUNE) && item?.containsEnchantment(Enchantment.FORTUNE) == true) {
+                            val level = item.getEnchantmentLevel(Enchantment.FORTUNE)
 
                             if (Math.random() < 2.0 / (level + 2)) {
                                 val multiplier = (2..level + 1).random()
