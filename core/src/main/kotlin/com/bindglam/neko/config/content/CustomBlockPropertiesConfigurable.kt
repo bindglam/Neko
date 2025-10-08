@@ -15,7 +15,7 @@ import org.bukkit.configuration.ConfigurationSection
 object CustomBlockPropertiesConfigurable : Configurable<BlockProperties, ConfigurationSection> {
     override fun load(config: ConfigurationSection?): BlockProperties? = config?.let { BlockProperties.builder()
         .model(KeyConfigurable.load(config.getString("model"))!!)
-        .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(KeyConfigurable.load(config.getString("renderer"))))
+        .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(KeyConfigurable.load(config.getString("renderer"))!!))
         .hardness(config.getDouble("hardness").toFloat())
         .correctTools(CorrectToolsConfigurable.load(config.getConfigurationSection("correct-tools")))
         .dropSilkTouch(config.getBoolean("drop-silk-touch"))
