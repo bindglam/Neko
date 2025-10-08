@@ -188,7 +188,7 @@ object CustomBlockListener : Listener {
 
     private fun dropItems(player: Player, block: Block, customBlock: com.bindglam.neko.api.content.block.Block) {
         fun dropItem(itemStack: ItemStack) {
-            block.world.dropItemNaturally(block.location.offset(0.5, 0.5, 0.5).toLocation(block.world), itemStack)
+            block.world.dropItemNaturally(block.location.toCenterLocation(), itemStack)
         }
 
         val useSilkTouch = customBlock.properties().dropSilkTouch() && player.inventory.itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)
