@@ -1,0 +1,1 @@
+- Fix a bug where the furniture item is not dropped
