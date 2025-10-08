@@ -5,9 +5,11 @@ import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.minecraft.model.ModelData;
 import com.bindglam.neko.api.utils.GsonUtils;
 import net.kyori.adventure.key.Key;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 
+@ApiStatus.Internal
 public final class AtlasesMaker {
     private static final AtlasesData BLOCK_ATLASES = new AtlasesData(new ArrayList<>());
 

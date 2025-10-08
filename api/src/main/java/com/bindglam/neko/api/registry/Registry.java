@@ -10,18 +10,15 @@ import java.util.Objects;
 import java.util.Set;
 
 public interface Registry<T> extends Iterable<T> {
-    @Nullable
-    T getOrNull(Key key);
+    @Nullable T getOrNull(@NotNull Key key);
 
-    default @NotNull T get(Key key) {
+    default @NotNull T get(@NotNull Key key) {
         return Objects.requireNonNull(getOrNull(key));
     }
 
-    @NotNull
-    @Unmodifiable
-    Set<Map.Entry<Key, T>> entrySet();
+    @NotNull @Unmodifiable Set<Map.Entry<Key, T>> entrySet();
 
-    void register(Key key, T value);
+    void register(@NotNull Key key, @NotNull T value);
 
     void clear();
 

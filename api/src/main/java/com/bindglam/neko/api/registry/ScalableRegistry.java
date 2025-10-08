@@ -17,7 +17,7 @@ public class ScalableRegistry<T> implements Registry<T> {
 
 
     @Override
-    public @Nullable T getOrNull(Key key) {
+    public @Nullable T getOrNull(@NotNull Key key) {
         return map.get(key);
     }
 
@@ -27,7 +27,7 @@ public class ScalableRegistry<T> implements Registry<T> {
     }
 
     @Override
-    public synchronized void register(Key key, T value) {
+    public synchronized void register(@NotNull Key key, @NotNull T value) {
         map.put(key, value);
     }
 

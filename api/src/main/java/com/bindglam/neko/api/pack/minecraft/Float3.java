@@ -3,7 +3,9 @@ package com.bindglam.neko.api.pack.minecraft;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonSerializer;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Internal
 public record Float3(
         float x,
         float y,
