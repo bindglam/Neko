@@ -1,2 +1,3 @@
 - Fix a bug where the furniture item is not dropped
 - Add furniture events
+- Fix #17

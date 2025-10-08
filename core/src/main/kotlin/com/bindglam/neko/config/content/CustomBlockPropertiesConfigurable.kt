@@ -9,6 +9,8 @@ import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.config.ItemTypeConfigurable
 import com.bindglam.neko.config.KeyConfigurable
 import com.bindglam.neko.config.TagConfigurable
+import io.papermc.paper.registry.RegistryAccess
+import io.papermc.paper.registry.RegistryKey
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 
@@ -18,7 +20,7 @@ object CustomBlockPropertiesConfigurable : Configurable<BlockProperties, Configu
         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(KeyConfigurable.load(config.getString("renderer"))!!))
         .hardness(config.getDouble("hardness").toFloat())
         .correctTools(CorrectToolsConfigurable.load(config.getConfigurationSection("correct-tools")))
-        .dropSilkTouch(config.getBoolean("drop-silk-touch"))
+        .blacklistEnchantments(Configurable.parseAsList(config.getStringList("blacklist-enchantments"), KeyConfigurable)?.map { RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(it) } ?: arrayListOf())
         .drops(DropsConfigurable.load(config.getConfigurationSection("drops")))
         .sounds(SoundsConfigurable.load(config.getConfigurationSection("sounds")))
         .build()
@@ -41,7 +43,10 @@ object CustomBlockPropertiesConfigurable : Configurable<BlockProperties, Configu
 
         object DropDataConfigurable : Configurable<Drops.DropData, ConfigurationSection> {
             override fun load(config: ConfigurationSection?): Drops.DropData? = config?.let {
-                Drops.DropData(ItemTypeConfigurable.load(config.getString("item")), config.getInt("experience"), config.getDouble("chance", 1.0).toFloat())
+                if(config.contains("item"))
+                    Drops.DropData.Item(ItemTypeConfigurable.load(config.getString("item")!!)!!, config.getInt("amount", 1), config.getDouble("chance", 1.0).toFloat())
+                else
+                    Drops.DropData.Experience(config.getInt("experience"), config.getDouble("chance", 1.0).toFloat())
             }
         }
     }

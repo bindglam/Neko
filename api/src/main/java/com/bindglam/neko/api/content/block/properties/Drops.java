@@ -35,17 +35,33 @@ public sealed interface Drops {
         }
     }
 
-    record DropData(
-            @Nullable ItemStackHolder item,
-            int experience,
-            float chance
-    ) {
-        public static @NotNull DropData of(@NotNull ItemStackHolder item, float chance) {
-            return new DropData(item, 0, chance);
+    sealed interface DropData {
+        float chance();
+
+
+        static @NotNull DropData of(@NotNull ItemStackHolder item, int amount, float chance) {
+            return new Item(item, amount, chance);
         }
 
-        public static @NotNull DropData of(int exp, float chance) {
-            return new DropData(null, exp, chance);
+        static @NotNull DropData of(@NotNull ItemStackHolder item, float chance) {
+            return of(item, 1, chance);
+        }
+
+        static @NotNull DropData of(int exp, float chance) {
+            return new Experience(exp, chance);
+        }
+
+        record Item(
+                @NotNull ItemStackHolder item,
+                int amount,
+                float chance
+        ) implements DropData {
+        }
+
+        record Experience(
+                int experience,
+                float chance
+        ) implements DropData {
         }
     }
 }

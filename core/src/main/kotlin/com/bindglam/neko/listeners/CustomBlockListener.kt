@@ -2,6 +2,7 @@ package com.bindglam.neko.listeners
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
+import com.bindglam.neko.api.content.block.properties.Drops
 import com.bindglam.neko.api.content.item.block.BlockItem
 import com.bindglam.neko.content.block.BlockHelper
 import com.bindglam.neko.utils.CURRENT_TICK
@@ -104,6 +105,8 @@ object CustomBlockListener : Listener {
         if (player.gameMode != GameMode.SURVIVAL) return
         if (CURRENT_TICK - BlockHelper.lastPlaceBlock(player) < 3) return
 
+        val item = player.inventory.itemInMainHand
+
         val result = player.rayTraceBlocks(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)?.value ?: 3.0, FluidCollisionMode.NEVER) ?: return
         val block = result.hitBlock ?: return
         val customBlock = NekoProvider.neko().contentManager().customBlock(block) ?: return
@@ -121,7 +124,7 @@ object CustomBlockListener : Listener {
             val event = BlockBreakEvent(block, player)
 
             if(event.callEvent()) {
-                player.inventory.itemInMainHand.editMeta {
+                item.editMeta {
                     if(it !is Damageable) return@editMeta
 
                     val unbreakingLevel = it.getEnchantLevel(Enchantment.UNBREAKING)
@@ -192,7 +195,7 @@ object CustomBlockListener : Listener {
             block.world.dropItemNaturally(block.location.toCenterLocation(), itemStack)
         }
 
-        val useSilkTouch = customBlock.properties().dropSilkTouch() && player.inventory.itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)
+        val useSilkTouch = !customBlock.properties().blacklistEnchantments().contains(Enchantment.SILK_TOUCH) && player.inventory.itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)
 
         if(customBlock.properties().drops() != null && !useSilkTouch) {
             customBlock.properties().drops()?.data()?.forEach { data ->
@@ -200,13 +203,26 @@ object CustomBlockListener : Listener {
 
                 if(random > data.chance()) return@forEach
 
-                if(data.item() != null) {
-                    dropItem(data.item()!!.itemStack().clone())
-                }
+                when(data) {
+                    is Drops.DropData.Item -> {
+                        var dropAmount = data.amount()
 
-                if(data.experience() > 0.0f) {
-                    block.world.spawn(block.location, ExperienceOrb::class.java) { orb ->
-                        orb.experience = data.experience()
+                        if(!customBlock.properties().blacklistEnchantments().contains(Enchantment.FORTUNE) && player.inventory.itemInMainHand.containsEnchantment(Enchantment.FORTUNE)) {
+                            val level = player.inventory.itemInMainHand.getEnchantmentLevel(Enchantment.FORTUNE)
+
+                            if (Math.random() < 2.0 / (level + 2)) {
+                                val multiplier = (2..level + 1).random()
+                                dropAmount *= multiplier
+                            }
+                        }
+
+                        dropItem(data.item().itemStack().clone().apply { amount = dropAmount })
+                    }
+
+                    is Drops.DropData.Experience -> {
+                        block.world.spawn(block.location, ExperienceOrb::class.java) { orb ->
+                            orb.experience = data.experience()
+                        }
                     }
                 }
             }

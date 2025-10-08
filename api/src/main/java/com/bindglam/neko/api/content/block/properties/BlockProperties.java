@@ -4,8 +4,13 @@ import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.utils.Factory;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public sealed interface BlockProperties {
     @NotNull NamespacedKey model();
@@ -16,14 +21,14 @@ public sealed interface BlockProperties {
 
     @Nullable CorrectTools correctTools();
 
-    boolean dropSilkTouch();
+    List<Enchantment> blacklistEnchantments();
 
     @Nullable Drops drops();
 
     @Nullable Sounds sounds();
 
 
-    record Impl(NamespacedKey model, Factory<BlockRenderer, Block> renderer, float hardness, CorrectTools correctTools, boolean dropSilkTouch, Drops drops, Sounds sounds) implements BlockProperties {
+    record Impl(NamespacedKey model, Factory<BlockRenderer, Block> renderer, float hardness, CorrectTools correctTools, List<Enchantment> blacklistEnchantments, Drops drops, Sounds sounds) implements BlockProperties {
     }
 
     static Builder builder() {
@@ -35,7 +40,7 @@ public sealed interface BlockProperties {
         private Factory<BlockRenderer, Block> renderer;
         private float hardness;
         private CorrectTools correctTools;
-        private boolean dropSilkTouch;
+        private final List<Enchantment> blacklistEnchantments = new ArrayList<>();
         private Drops drops;
         private Sounds sounds;
 
@@ -63,8 +68,13 @@ public sealed interface BlockProperties {
             return this;
         }
 
-        public Builder dropSilkTouch(boolean dropSilkTouch) {
-            this.dropSilkTouch = dropSilkTouch;
+        public Builder blacklistEnchantments(List<Enchantment> blacklistEnchantments) {
+            this.blacklistEnchantments.addAll(blacklistEnchantments);
+            return this;
+        }
+
+        public Builder blacklistEnchantments(Enchantment... enchantment) {
+            this.blacklistEnchantments.addAll(Arrays.stream(enchantment).toList());
             return this;
         }
 
@@ -87,7 +97,7 @@ public sealed interface BlockProperties {
             if(renderer == null)
                 throw new IllegalStateException("Block renderer can not be null!");
 
-            return new Impl(model, renderer, hardness, correctTools, dropSilkTouch, drops, sounds);
+            return new Impl(model, renderer, hardness, correctTools, blacklistEnchantments, drops, sounds);
         }
     }
 }

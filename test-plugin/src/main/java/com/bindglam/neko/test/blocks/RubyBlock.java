@@ -20,7 +20,6 @@ public class RubyBlock extends CustomBlock {
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(BlockRenderer.NOTE_BLOCK_RENDERER))
                         .hardness(5.0f)
                         .correctTools(CorrectTools.builder().tags(Tag.ITEMS_PICKAXES))
-                        .dropSilkTouch(true)
                         .drops(Drops.builder().data(Drops.DropData.of(ItemStackWrapper.of(new NamespacedKey("defaultassets", "ruby")), 1f)))
                         .build()
         );
