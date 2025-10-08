@@ -2,6 +2,8 @@ package com.bindglam.neko.api.content.furniture;
 
 import com.bindglam.neko.api.content.EventState;
 import com.bindglam.neko.api.content.furniture.properties.FurnitureProperties;
+import com.bindglam.neko.api.content.item.Item;
+import com.bindglam.neko.api.registry.BuiltInRegistries;
 import net.kyori.adventure.translation.Translatable;
 import org.bukkit.Keyed;
 import org.bukkit.Location;
@@ -29,6 +31,10 @@ public interface Furniture extends Keyed, Translatable {
     @Nullable FurnitureDisplay display(@NotNull Location location);
 
     @NotNull FurnitureProperties properties();
+
+    default @Nullable Item item() {
+        return BuiltInRegistries.ITEMS.getOrNull(getKey());
+    }
 
     @Override
     default @NotNull String translationKey() {
