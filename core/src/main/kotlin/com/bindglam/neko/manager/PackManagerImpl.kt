@@ -44,7 +44,7 @@ object PackManagerImpl : PackManager {
             }
         }
 
-        pack()
+        pack(process)
 
         buildPackInfo()
 
@@ -61,7 +61,7 @@ object PackManagerImpl : PackManager {
         packHost?.end()
     }
 
-    override fun pack() {
+    private fun pack(process: Process) {
         PackManager.BUILD_ZIP.deleteOnExit()
 
         val startMillis = System.currentTimeMillis()
@@ -75,7 +75,7 @@ object PackManagerImpl : PackManager {
 
         PackerApplier.apply(zipper)
 
-        zipper.build()
+        zipper.build(process)
         zipper.close()
 
         LOGGER.info("Successfully generated resourcepack (${System.currentTimeMillis() - startMillis}ms)")
@@ -114,7 +114,6 @@ object PackManagerImpl : PackManager {
         packInfo = ResourcePackInfo.resourcePackInfo().id(packUUID).hash(packHash)
     }
 
-    override fun getFile(path: String): File = File(RESOURCEPACK_FOLDER, path)
     override fun packInfo(uri: URI): ResourcePackInfo = packInfo.uri(uri).build()
     override fun packHost(): PackHost? = packHost
 }

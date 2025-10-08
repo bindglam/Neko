@@ -1,5 +1,6 @@
 package com.bindglam.neko.pack
 
+import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.utils.createIfNotExists
@@ -29,12 +30,12 @@ class PackZipperImpl(private val buildFile: File) : PackZipper {
 
     override fun file(path: String): PackFile? = entries[path]
 
-    override fun build() {
+    override fun build(process: Process) {
         buildFile.createIfNotExists()
 
         ZipOutputStream(FileOutputStream(buildFile)).apply {
         }.use { zipStream ->
-            pool.forEachParallel(entries.entries.toList(), { it.value.size }) { entry ->
+            process.forEachParallel(entries.entries.toList(), { it.value.size }) { entry ->
                 val bytes = entry.value.bytes.get()
 
                 synchronized(zipStream) {
