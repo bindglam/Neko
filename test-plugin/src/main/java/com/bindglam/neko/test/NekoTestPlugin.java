@@ -14,7 +14,7 @@ import com.bindglam.neko.test.blocks.DeepslateRubyOreBlock;
 import com.bindglam.neko.test.blocks.RubyBlock;
 import com.bindglam.neko.test.blocks.RubyOreBlock;
 import com.bindglam.neko.test.blocks.TestBlock;
-import com.bindglam.neko.test.furniture.TestFurniture;
+import com.bindglam.neko.test.furniture.TreasureChestFurniture;
 import com.bindglam.neko.test.glyphs.RubyGlyph;
 import com.bindglam.neko.test.items.*;
 import org.bukkit.Bukkit;
@@ -53,7 +53,7 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
         registerBlock(RubyOreBlock.KEY, new RubyOreBlock());
         registerBlock(DeepslateRubyOreBlock.KEY, new DeepslateRubyOreBlock());
 
-        registerFurniture(TestFurniture.KEY, new TestFurniture());
+        registerFurniture(TreasureChestFurniture.KEY, new TreasureChestFurniture());
 
         CustomBlockPopulator populator = new CustomBlockPopulator(PopulatorSettings.builder()
                 .veinSize(5)

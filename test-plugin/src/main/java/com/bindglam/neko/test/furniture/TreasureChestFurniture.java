@@ -12,14 +12,14 @@ import org.bukkit.entity.Player;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class TestFurniture extends CustomFurniture {
-    public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "test_furniture");
+public class TreasureChestFurniture extends CustomFurniture {
+    public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "treasure_chest");
 
-    public TestFurniture() {
+    public TreasureChestFurniture() {
         super(KEY, FurnitureProperties.builder()
                 .model(Model.builder()
-                        .model(new NamespacedKey("defaultassets", "furniture/test_furniture"))
-                        .translation(new Vector3f(0f, 0.7f, 0f))
+                        .model(new NamespacedKey("defaultassets", "furniture/treasure_chest"))
+                        .translation(new Vector3f(0f, 0.5f, 0f))
                         .scale(new Vector3f(2f, 2f, 2f))
                         .rotation(new Quaternionf()))
                 .build());
