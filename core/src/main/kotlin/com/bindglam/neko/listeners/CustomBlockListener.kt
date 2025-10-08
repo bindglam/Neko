@@ -34,6 +34,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import kotlin.math.pow
 
+@Suppress("unstableApiUsage")
 object CustomBlockListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun PlayerInteractEvent.tryPlaceBlockOnCustomBlock() {
