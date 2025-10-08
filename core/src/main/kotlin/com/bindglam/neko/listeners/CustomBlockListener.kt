@@ -128,10 +128,34 @@ object CustomBlockListener : Listener {
         blockList().addAll(BlockHelper.getBlocksToBlowUp(location, power, false))
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun EntityExplodeEvent.dropCustomBlockItemByExplosion() {
+        dropCustomBlockItemByExplosion(blockList())
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     fun BlockExplodeEvent.explodeCustomBlock() {
         blockList().clear()
         blockList().addAll(BlockHelper.getBlocksToBlowUp(block.location, explodedBlockState.type.explosionPower, true))
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun BlockExplodeEvent.dropCustomBlockItemByExplosion() {
+        dropCustomBlockItemByExplosion(blockList())
+    }
+
+    private fun dropCustomBlockItemByExplosion(blockList: MutableList<Block>) {
+        if(blockList.isEmpty()) return
+
+        for(i in blockList.size-1..0) {
+            val block = blockList[i]
+            val customBlock = NekoProvider.neko().contentManager().customBlock(block) ?: continue
+
+            block.type = Material.AIR
+            dropItems(null, block, customBlock)
+
+            blockList.removeAt(i)
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

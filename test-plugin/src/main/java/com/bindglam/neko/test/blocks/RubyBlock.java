@@ -1,8 +1,6 @@
 package com.bindglam.neko.test.blocks;
 
 import com.bindglam.neko.api.content.block.properties.CorrectTools;
-import com.bindglam.neko.api.content.block.properties.Drops;
-import com.bindglam.neko.api.content.item.ItemStackWrapper;
 import com.bindglam.neko.api.content.block.CustomBlock;
 import com.bindglam.neko.api.content.block.properties.BlockProperties;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
@@ -19,8 +17,8 @@ public class RubyBlock extends CustomBlock {
                         .model(new NamespacedKey("defaultassets", "block/ruby_block"))
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(BlockRenderer.NOTE_BLOCK_RENDERER))
                         .hardness(5.0f)
+                        .blastResistance(6.0f)
                         .correctTools(CorrectTools.builder().tags(Tag.ITEMS_PICKAXES))
-                        .drops(Drops.builder().data(Drops.DropData.of(ItemStackWrapper.of(new NamespacedKey("defaultassets", "ruby")), 1f)))
                         .build()
         );
     }

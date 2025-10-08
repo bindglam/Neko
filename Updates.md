@@ -1,3 +1,4 @@
 - Fix a bug where the furniture item is not dropped
 - Add furniture events
 - Fix #17
+- Fix a bug where the custom block item is not dropped by explosion
