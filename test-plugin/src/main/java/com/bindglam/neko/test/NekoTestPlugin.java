@@ -40,7 +40,7 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
     public void onContentsLoad(ContentsLoadEvent event) {
         BuiltInRegistries.GLYPHS.register(RubyGlyph.KEY, new RubyGlyph());
 
-        BuiltInRegistries.ITEMS.register(TestItem.KEY, new TestItem());
+        BuiltInRegistries.ITEMS.register(EnergyDrinkItem.KEY, new EnergyDrinkItem());
         BuiltInRegistries.ITEMS.register(RubyItem.KEY, new RubyItem());
 
         BuiltInRegistries.ITEMS.register(RubyHelmetItem.KEY, new RubyHelmetItem());

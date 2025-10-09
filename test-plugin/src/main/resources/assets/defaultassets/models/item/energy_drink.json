@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "defaultassets:item/testitem"
+    "layer0": "defaultassets:item/energy_drink"
   }
 }
