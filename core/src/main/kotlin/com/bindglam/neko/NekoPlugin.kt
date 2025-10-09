@@ -62,6 +62,12 @@ class NekoPlugin : Neko, JavaPlugin() {
             }
         }
 
+        YamlConfiguration.loadConfiguration(File("config/paper-global.yml")).also { paperConfig ->
+            if(!paperConfig.getBoolean("block-updates.disable-noteblock-updates")) {
+                logger.warning("Please enable block-updates.disable-noteblock-updates in paper-global.yml, or custom block will not work properly!")
+            }
+        }
+
         server.pluginManager.registerEvents(object : Listener {
             @EventHandler
             fun ServerLoadEvent.loadServices() {
@@ -72,12 +78,6 @@ class NekoPlugin : Neko, JavaPlugin() {
                 }
             }
         }, this)
-
-        YamlConfiguration.loadConfiguration(File("config/paper-global.yml")).also { paperConfig ->
-            if(!paperConfig.getBoolean("block-updates.disable-noteblock-updates")) {
-                logger.warning("Please enable block-updates.disable-noteblock-updates in paper-global.yml, or custom block will not work properly!")
-            }
-        }
     }
 
     override fun onDisable() {
