@@ -5,6 +5,7 @@ import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.glyph.GlyphBuilder
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.mojang.brigadier.Command
+import com.mojang.brigadier.arguments.IntegerArgumentType
 import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
@@ -36,22 +37,25 @@ object CommandManager {
                 .then(Commands.literal("give")
                     .then(Commands.argument("player", ArgumentTypes.player())
                         .then(Commands.argument("key", ArgumentTypes.namespacedKey())
-                            .executes { ctx ->
-                                val player = ctx.getArgument("player", PlayerSelectorArgumentResolver::class.java).resolve(ctx.source).first()
-                                val key = ctx.getArgument("key", NamespacedKey::class.java)
+                            .then(Commands.argument("amount", IntegerArgumentType.integer())
+                                .executes { ctx ->
+                                    val player = ctx.getArgument("player", PlayerSelectorArgumentResolver::class.java).resolve(ctx.source).first()
+                                    val key = ctx.getArgument("key", NamespacedKey::class.java)
+                                    val amount = ctx.getArgument("amount", Int::class.java)
 
-                                val customItem = BuiltInRegistries.ITEMS.getOrNull(key)
+                                    val customItem = BuiltInRegistries.ITEMS.getOrNull(key)
 
-                                if(customItem == null) {
-                                    ctx.source.sender.sendMessage(Component.text("Unknown item key").color(NamedTextColor.RED))
+                                    if(customItem == null) {
+                                        ctx.source.sender.sendMessage(Component.text("Unknown item key").color(NamedTextColor.RED))
+                                        return@executes Command.SINGLE_SUCCESS
+                                    }
+
+                                    player.inventory.addItem(customItem.itemStack().apply { this.amount = amount })
+                                    ctx.source.sender.sendMessage(Component.text("Successfully gave an item").color(NamedTextColor.GREEN))
+
                                     return@executes Command.SINGLE_SUCCESS
                                 }
-
-                                player.inventory.addItem(customItem.itemStack())
-                                ctx.source.sender.sendMessage(Component.text("Successfully gave an item").color(NamedTextColor.GREEN))
-
-                                return@executes Command.SINGLE_SUCCESS
-                            }
+                            )
                         )
                     )
                 )
