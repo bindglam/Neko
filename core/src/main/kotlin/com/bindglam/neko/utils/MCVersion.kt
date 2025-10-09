@@ -2,7 +2,7 @@ package com.bindglam.neko.utils
 
 data class MCVersion(private val major: Int, private val minor: Int, private val patch: Int) {
     companion object {
-        val v1_21_R6 = MCVersion(1, 21, 9)
+        val v1_21_R6 = MCVersion(1, 21, 10)
         val v1_21_R5 = MCVersion(1, 21, 8)
         val v1_21_R3 = MCVersion(1, 21, 4)
 
