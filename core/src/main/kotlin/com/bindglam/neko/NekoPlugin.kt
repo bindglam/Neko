@@ -54,7 +54,12 @@ class NekoPlugin : Neko, JavaPlugin() {
         nmsHook = when(version) {
             MCVersion.v1_21_9, MCVersion.v1_21_10 -> com.bindglam.neko.nms.v1_21_R6.NMSHookImpl
             MCVersion.v1_21_4 -> com.bindglam.neko.nms.v1_21_R3.NMSHookImpl
-            else -> throw IllegalStateException("Unsupported minecraft version")
+            else -> {
+                logger.warning("This version is untested officially!")
+                logger.warning("So you should use carefully!")
+
+                com.bindglam.neko.nms.v1_21_R3.NMSHookImpl
+            }
         }
 
         server.pluginManager.registerEvents(object : Listener {
