@@ -2,6 +2,7 @@ package com.bindglam.neko.api.content.item;
 
 import com.bindglam.neko.api.content.item.properties.Armor;
 import com.bindglam.neko.api.content.item.properties.Attributes;
+import com.bindglam.neko.api.content.item.properties.Food;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.kyori.adventure.text.Component;
@@ -10,6 +11,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.components.EquippableComponent;
+import org.bukkit.inventory.meta.components.FoodComponent;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -29,11 +31,13 @@ public final class ItemBuilder {
                 meta.itemName(Component.translatable(item));
             else
                 meta.itemName(item.properties().name());
+
             if(meta instanceof Damageable damageable) {
                 int durability = item.properties().durability();
                 if(durability != 0)
                     damageable.setMaxDamage(durability);
             }
+
             meta.lore(item.properties().lore());
             meta.setItemModel(item.getKey());
 
@@ -59,6 +63,15 @@ public final class ItemBuilder {
                 }
 
                 meta.setAttributeModifiers(modifiers);
+            }
+
+            if(item.properties().food() != null) {
+                Food food = Objects.requireNonNull(item.properties().food());
+                FoodComponent foodComponent = meta.getFood();
+
+                food.apply(foodComponent);
+
+                meta.setFood(foodComponent);
             }
         });
 

@@ -3,6 +3,7 @@ package com.bindglam.neko.config.content
 import com.bindglam.neko.api.config.Configurable
 import com.bindglam.neko.api.content.item.properties.Armor
 import com.bindglam.neko.api.content.item.properties.Attributes
+import com.bindglam.neko.api.content.item.properties.Food
 import com.bindglam.neko.api.content.item.properties.ItemProperties
 import com.bindglam.neko.config.ItemTypeConfigurable
 import com.bindglam.neko.config.KeyConfigurable
@@ -26,6 +27,7 @@ object CustomItemPropertiesConfigurable : Configurable<ItemProperties, Configura
         .model(KeyConfigurable.load(config.getString("model")!!)!!)
         .armor(ArmorConfigurable.load(config.getConfigurationSection("armor")))
         .attributes(AttributesConfigurable.load(config.getConfigurationSection("attributes")))
+        .food(FoodConfigurable.load(config.getConfigurationSection("food")))
         .build()
     }
 
@@ -57,6 +59,14 @@ object CustomItemPropertiesConfigurable : Configurable<ItemProperties, Configura
             }
 
             return@let builder
+        }
+    }
+
+    private object FoodConfigurable : Configurable<Food, ConfigurationSection> {
+        override fun load(config: ConfigurationSection?): Food? = config?.let { Food.builder()
+            .nutrition(config.getInt("nutrition"))
+            .saturation(config.getDouble("saturation").toFloat())
+            .canAlwaysEat(config.getBoolean("can-always-eat"))
         }
     }
 }

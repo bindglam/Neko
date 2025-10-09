@@ -28,8 +28,11 @@ public sealed interface ItemProperties {
 
     @Nullable Attributes attributes();
 
+    @Nullable Food food();
 
-    record Impl(ItemType type, int durability, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor, Attributes attributes) implements ItemProperties {
+
+    record Impl(ItemType type, int durability, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor, Attributes attributes,
+                Food food) implements ItemProperties {
     }
 
     static Builder builder() {
@@ -45,6 +48,7 @@ public sealed interface ItemProperties {
         private NamespacedKey model;
         private Armor armor;
         private Attributes attributes;
+        private Food food;
 
         private Builder() {
         }
@@ -90,6 +94,11 @@ public sealed interface ItemProperties {
             return this;
         }
 
+        public Builder food(Food food) {
+            this.food = food;
+            return this;
+        }
+
 
         @Override
         public @NotNull ItemProperties build() {
@@ -99,7 +108,7 @@ public sealed interface ItemProperties {
             if(model == null)
                 throw new IllegalStateException("Item model can not be null!");
 
-            return new Impl(type, durability, name, lore, clientsideLore, model, armor, attributes);
+            return new Impl(type, durability, name, lore, clientsideLore, model, armor, attributes, food);
         }
     }
 }
