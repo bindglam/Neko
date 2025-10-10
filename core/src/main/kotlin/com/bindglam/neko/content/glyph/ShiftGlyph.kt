@@ -37,9 +37,7 @@ class ShiftGlyph : Glyph(SHIFT_GLYPH_KEY, GlyphProperties.builder().texture(NULL
 
         data.providers.add(FontData.Space(CHARACTERS))
 
-        GSON.toJson(data).toByteArray().also {
-            zipper.addFile(path, PackFile({ it }, it.size.toLong()))
-        }
+        zipper.addFile(path, PackFile { GSON.toJson(data).toByteArray() })
     }
 
     override fun component(builder: GlyphBuilder): Component {

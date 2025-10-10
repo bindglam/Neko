@@ -35,11 +35,9 @@ public class CustomFurniture implements Furniture, Packable {
     public void pack(@NotNull PackZipper zipper) {
         AtlasesMaker.addAllFromModel(properties.model().model(), zipper);
 
-        byte[] data = GsonUtils.GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().model().toString()))).getBytes();
-
         String filePath = "assets/" + key.namespace() + "/items/" + key.value() + ".json";
 
-        zipper.addFile(filePath, new PackFile(() -> data, data.length));
+        zipper.addFile(filePath, new PackFile(() -> GsonUtils.GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().model().toString()))).getBytes()));
     }
 
     @Override

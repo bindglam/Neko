@@ -33,7 +33,7 @@ public class GenerateResourcePackEvent extends Event {
                 if(!entry.getName().startsWith("assets/") || entry.isDirectory()) continue;
 
                 byte[] data = jarFile.getInputStream(entry).readAllBytes();
-                zipper.addFile(entry.getName(), new PackFile(() -> data, entry.getSize()));
+                zipper.addFile(entry.getName(), new PackFile(() -> data));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

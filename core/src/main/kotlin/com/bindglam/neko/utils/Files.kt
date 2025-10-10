@@ -23,4 +23,4 @@ fun File.getRelativePath(root: String, separator: String): String = getRelativeP
 
 fun File.getRelativePath(root: String): String = getRelativePath(root, File.separator)
 
-fun File.toPackFile(): PackFile = PackFile({ inputStream().readBytes() }, Files.size(toPath()))
+fun File.toPackFile(): PackFile = PackFile({ inputStream().readBytes() })

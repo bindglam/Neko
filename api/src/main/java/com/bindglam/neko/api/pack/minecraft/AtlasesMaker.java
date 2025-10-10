@@ -21,9 +21,7 @@ public final class AtlasesMaker {
     }
 
     private static void createAtlasFile(String name, AtlasesData atlasesData, PackZipper zipper) {
-        byte[] data = GsonUtils.GSON.toJson(atlasesData).getBytes();
-
-        zipper.addFile("assets/minecraft/atlases/" + name + ".json", new PackFile(() -> data, data.length));
+        zipper.addFile("assets/minecraft/atlases/" + name + ".json", new PackFile(() -> GsonUtils.GSON.toJson(atlasesData).getBytes()));
     }
 
     public static void addBlock(AtlasesData.Source source) {

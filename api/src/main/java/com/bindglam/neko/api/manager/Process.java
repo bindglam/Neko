@@ -7,5 +7,5 @@ import java.util.function.Function;
 public interface Process extends AutoCloseable {
     void start(List<ManagerBase> list);
 
-    <T> void forEachParallel(List<T> list, Function<T, Long> sizeAssume, Consumer<T> block);
+    <T> void forEachParallel(List<T> list, Consumer<T> block);
 }
