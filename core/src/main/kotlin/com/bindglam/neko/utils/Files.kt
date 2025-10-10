@@ -11,19 +11,7 @@ fun File.createIfNotExists() {
         createNewFile()
 }
 
-fun File.listFilesRecursively(): List<File> = arrayListOf<File>().apply {
-    val queue = arrayListOf<File>()
-    queue.addAll(listFiles())
-
-    while(queue.isNotEmpty()) {
-        val file = queue.removeFirst()
-
-        if(file.isDirectory)
-            queue.addAll(file.listFiles())
-        else
-            add(file)
-    }
-}
+fun File.listFilesRecursively(): Sequence<File> = walk(FileWalkDirection.TOP_DOWN).filter { it.isFile }
 
 fun File.getRelativePath(root: String, newRoot: String, separator: String): String {
     val rootPath = if(newRoot.isEmpty()) "" else "${newRoot}${separator}"
