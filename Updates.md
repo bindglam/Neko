@@ -1,1 +1,2 @@
 - Add Food
+- Optimize the process to generate resource pack
