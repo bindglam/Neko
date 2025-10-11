@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.bindglam.Neko:api:0.0.1")
+    implementation("com.github.bindglam.Neko:api:<VERSION>")
 }
 ```
 
