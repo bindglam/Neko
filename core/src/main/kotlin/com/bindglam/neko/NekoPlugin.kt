@@ -84,7 +84,7 @@ class NekoPlugin : Neko, JavaPlugin() {
         ShutdownProcess().use { it.start(managers) }
     }
 
-    override fun reload(sender: CommandSender): Neko.ReloadInfo {
+    override fun reload(sender: CommandSender) {
         config.load(File(dataFolder, "config.yml"))
 
         val reloadableList = managers.stream().filter { it is Reloadable }.toList()
@@ -94,8 +94,6 @@ class NekoPlugin : Neko, JavaPlugin() {
         }.apply {
             uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { t, e -> slF4JLogger.error("Failed to reload", e) }
         }.start()
-
-        return Neko.ReloadInfo.SUCCESS
     }
 
     override fun cacheManager(): CacheManager = CacheManagerImpl

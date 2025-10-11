@@ -10,10 +10,10 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 public interface Neko {
-    ReloadInfo reload(CommandSender sender);
+    void reload(CommandSender sender);
 
-    default ReloadInfo reload() {
-        return reload(Bukkit.getConsoleSender());
+    default void reload() {
+        reload(Bukkit.getConsoleSender());
     }
 
     @NotNull CacheManager cacheManager();
@@ -25,9 +25,4 @@ public interface Neko {
     @NotNull PlayerNetworkManager playerNetworkManager();
 
     @NotNull NMSHook nms();
-
-    enum ReloadInfo {
-        SUCCESS,
-        FAIL
-    }
 }
