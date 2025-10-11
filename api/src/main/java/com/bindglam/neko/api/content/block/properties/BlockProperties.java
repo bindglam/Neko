@@ -3,6 +3,7 @@ package com.bindglam.neko.api.content.block.properties;
 import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.utils.Factory;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.NotNull;
@@ -99,11 +100,8 @@ public sealed interface BlockProperties {
 
         @Override
         public @NotNull BlockProperties build() {
-            if(model == null)
-                throw new IllegalStateException("Block model can not be null!");
-
-            if(renderer == null)
-                throw new IllegalStateException("Block renderer can not be null!");
+            Validate.notNull(model, "Block model can not be null!");
+            Validate.notNull(renderer, "Block renderer can not be null!");
 
             return new Impl(model, renderer, hardness, blastResistance, correctTools, blacklistEnchantments, drops, sounds);
         }

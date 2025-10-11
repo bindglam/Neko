@@ -1,6 +1,7 @@
 package com.bindglam.neko.api.content.item.properties;
 
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -102,11 +103,8 @@ public sealed interface ItemProperties {
 
         @Override
         public @NotNull ItemProperties build() {
-            if(type == null)
-                throw new IllegalStateException("Item type can not be null!");
-
-            if(model == null)
-                throw new IllegalStateException("Item model can not be null!");
+            Validate.notNull(type, "Item type can not be null!");
+            Validate.notNull(model, "Item model can not be null!");
 
             return new Impl(type, durability, name, lore, clientsideLore, model, armor, attributes, food);
         }

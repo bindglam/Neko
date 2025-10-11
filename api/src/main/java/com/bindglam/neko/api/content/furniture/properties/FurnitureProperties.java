@@ -1,5 +1,6 @@
 package com.bindglam.neko.api.content.furniture.properties;
 
+import org.apache.commons.lang3.Validate;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,8 +28,7 @@ public sealed interface FurnitureProperties {
 
         @Override
         public @NotNull FurnitureProperties build() {
-            if(model == null)
-                throw new IllegalStateException("Furniture model can not be null");
+            Validate.notNull(model, "Furniture model can not be null");
 
             return new Impl(model);
         }
