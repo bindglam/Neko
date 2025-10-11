@@ -23,13 +23,7 @@ object CommandManager {
                 .requires { it.sender.isOp }
                 .then(Commands.literal("reload")
                     .executes { ctx ->
-                        ctx.source.sender.sendMessage(Component.text("Reloading...").color(NamedTextColor.YELLOW))
-                        NekoProvider.neko().reload(ctx.source.sender).also { info ->
-                            if(info == Neko.ReloadInfo.SUCCESS)
-                                ctx.source.sender.sendMessage(Component.text("Successfully reloaded!").color(NamedTextColor.GREEN))
-                            else
-                                ctx.source.sender.sendMessage(Component.text("Failed to reload").color(NamedTextColor.RED))
-                        }
+                        NekoProvider.neko().reload(ctx.source.sender)
 
                         return@executes Command.SINGLE_SUCCESS
                     }

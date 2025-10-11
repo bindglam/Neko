@@ -5,6 +5,7 @@ import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.utils.parallelIOThreadPool
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandSender
 import java.util.function.Consumer
 import java.util.function.Function
@@ -20,6 +21,8 @@ class ReloadProcess(private val sender: CommandSender) : Process {
     private val bar = BossBar.bossBar(Component.text(status), 0f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS).also { sender.showBossBar(it) }
 
     override fun start(list: List<ManagerBase>) {
+        sender.sendMessage(Component.text("Reloading...").color(NamedTextColor.YELLOW))
+
         goal = list.size
 
         list.forEach {
@@ -34,6 +37,7 @@ class ReloadProcess(private val sender: CommandSender) : Process {
         }
 
         sender.hideBossBar(bar)
+        sender.sendMessage(Component.text("Successfully reloaded!").color(NamedTextColor.GREEN))
     }
 
     override fun close() {
