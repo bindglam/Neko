@@ -5,11 +5,12 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-public class ContentsLoadEvent extends Event {
+public class AsyncContentsLoadEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     @ApiStatus.Internal
-    public ContentsLoadEvent() {
+    public AsyncContentsLoadEvent() {
+        super(true);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.NekoProvider
-import com.bindglam.neko.api.event.GenerateResourcePackEvent
-import com.bindglam.neko.api.event.PackEvent
+import com.bindglam.neko.api.event.AsyncGenerateResourcePackEvent
 import com.bindglam.neko.api.manager.PackManager
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.pack.host.PackHost
@@ -70,8 +69,7 @@ object PackManagerImpl : PackManager {
 
         mergeResourcePacks(zipper)
 
-        GenerateResourcePackEvent(zipper).callEvent()
-        PackEvent(zipper).callEvent()
+        AsyncGenerateResourcePackEvent(zipper).callEvent()
 
         PackerApplier.apply(zipper)
 

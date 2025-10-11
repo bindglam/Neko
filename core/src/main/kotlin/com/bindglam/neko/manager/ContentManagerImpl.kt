@@ -4,7 +4,7 @@ import com.bindglam.neko.api.content.block.Block
 import com.bindglam.neko.api.content.furniture.Furniture
 import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.item.Item
-import com.bindglam.neko.api.event.ContentsLoadEvent
+import com.bindglam.neko.api.event.AsyncContentsLoadEvent
 import com.bindglam.neko.api.manager.ContentManager
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.registry.BuiltInRegistries
@@ -34,7 +34,7 @@ object ContentManagerImpl : ContentManager {
     override fun start(process: Process) {
         registerInternalContents()
 
-        ContentsLoadEvent().callEvent()
+        AsyncContentsLoadEvent().callEvent()
 
         val startMillis = System.currentTimeMillis()
 

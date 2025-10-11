@@ -71,11 +71,11 @@ class NekoPlugin : Neko, JavaPlugin() {
         server.pluginManager.registerEvents(object : Listener {
             @EventHandler
             fun ServerLoadEvent.loadServices() {
-                try {
+                Thread {
                     StartupProcess().use { it.start(managers) }
-                } catch (e: Exception) {
-                    slF4JLogger.error("Failed to load", e)
-                }
+                }.apply {
+                    uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { t, e -> slF4JLogger.error("Failed to load", e) }
+                }.start()
             }
         }, this)
     }
@@ -89,12 +89,11 @@ class NekoPlugin : Neko, JavaPlugin() {
 
         val reloadableList = managers.stream().filter { it is Reloadable }.toList()
 
-        try {
+        Thread {
             ReloadProcess(sender).use { it.start(reloadableList) }
-        } catch (e: Exception) {
-            slF4JLogger.error("Failed to reload", e)
-            return Neko.ReloadInfo.FAIL
-        }
+        }.apply {
+            uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { t, e -> slF4JLogger.error("Failed to reload", e) }
+        }.start()
 
         return Neko.ReloadInfo.SUCCESS
     }

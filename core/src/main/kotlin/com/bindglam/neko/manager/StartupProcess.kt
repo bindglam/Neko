@@ -3,11 +3,7 @@ package com.bindglam.neko.manager
 import com.bindglam.neko.api.manager.ManagerBase
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.utils.parallelIOThreadPool
-import net.kyori.adventure.bossbar.BossBar
-import net.kyori.adventure.text.Component
-import org.bukkit.command.CommandSender
 import java.util.function.Consumer
-import java.util.function.Function
 
 class StartupProcess : Process {
     private val parallelThreadPool = parallelIOThreadPool()

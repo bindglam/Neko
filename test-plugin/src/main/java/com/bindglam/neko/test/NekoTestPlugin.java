@@ -7,8 +7,8 @@ import com.bindglam.neko.api.content.furniture.CustomFurniture;
 import com.bindglam.neko.api.content.item.furniture.CustomFurnitureItem;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import com.bindglam.neko.api.content.item.block.CustomBlockItem;
-import com.bindglam.neko.api.event.ContentsLoadEvent;
-import com.bindglam.neko.api.event.GenerateResourcePackEvent;
+import com.bindglam.neko.api.event.AsyncContentsLoadEvent;
+import com.bindglam.neko.api.event.AsyncGenerateResourcePackEvent;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import com.bindglam.neko.test.blocks.DeepslateRubyOreBlock;
 import com.bindglam.neko.test.blocks.RubyBlock;
@@ -37,7 +37,7 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onContentsLoad(ContentsLoadEvent event) {
+    public void onContentsLoad(AsyncContentsLoadEvent event) {
         BuiltInRegistries.GLYPHS.register(RubyGlyph.KEY, new RubyGlyph());
 
         BuiltInRegistries.ITEMS.register(EnergyDrinkItem.KEY, new EnergyDrinkItem());
@@ -71,7 +71,7 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onPack(GenerateResourcePackEvent event) {
+    public void onPack(AsyncGenerateResourcePackEvent event) {
         event.addPluginPack(this);
     }
 
