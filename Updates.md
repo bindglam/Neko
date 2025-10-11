@@ -1,3 +1,4 @@
 - **Add Food component**
 - Optimize the process to generate resource pack
 - **Add Enchantments component**
+- **BIG Update API**
