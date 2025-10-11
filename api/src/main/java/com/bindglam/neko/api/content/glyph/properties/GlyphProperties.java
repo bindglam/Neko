@@ -3,22 +3,13 @@ package com.bindglam.neko.api.content.glyph.properties;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
-public sealed interface GlyphProperties {
-    @NotNull NamespacedKey texture();
+public record GlyphProperties(@NotNull NamespacedKey texture, int offsetY, int scale) {
 
-    int offsetY();
-
-    int scale();
-
-
-    record Impl(NamespacedKey texture, int offsetY, int scale) implements GlyphProperties {
-    }
-
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements com.bindglam.neko.api.utils.Builder<GlyphProperties> {
+    public static final class Builder implements com.bindglam.neko.api.utils.Builder<GlyphProperties> {
         private NamespacedKey texture;
         private int offsetY;
         private int scale;
@@ -45,10 +36,7 @@ public sealed interface GlyphProperties {
 
         @Override
         public @NotNull GlyphProperties build() {
-            if(texture == null)
-                throw new IllegalStateException("Texture can not be null");
-
-            return new Impl(texture, offsetY, scale);
+            return new GlyphProperties(texture, offsetY, scale);
         }
     }
 }

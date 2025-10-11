@@ -1,7 +1,6 @@
 package com.bindglam.neko.api.content.item.properties;
 
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang3.Validate;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -15,37 +14,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-public sealed interface ItemProperties {
-    @NotNull ItemType type();
+public record ItemProperties(@NotNull ItemType type, int durability, @Nullable Component name, @Nullable List<Component> lore, @Nullable BiFunction<ItemStack, Player, List<Component>> clientsideLore,
+                             @NotNull NamespacedKey model, @Nullable Armor armor, @Nullable Attributes attributes, @Nullable Food food, @NotNull Map<Enchantment, Integer> enchantments) {
 
-    int durability();
-
-    @Nullable Component name();
-
-    @Nullable List<Component> lore();
-
-    @Nullable BiFunction<ItemStack, Player, List<Component>> clientsideLore();
-
-    @NotNull NamespacedKey model();
-
-    @Nullable Armor armor();
-
-    @Nullable Attributes attributes();
-
-    @Nullable Food food();
-
-    @NotNull Map<Enchantment, Integer> enchantments();
-
-
-    record Impl(ItemType type, int durability, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor, Attributes attributes,
-                Food food, Map<Enchantment, Integer> enchantments) implements ItemProperties {
-    }
-
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements com.bindglam.neko.api.utils.Builder<ItemProperties> {
+    public static final class Builder implements com.bindglam.neko.api.utils.Builder<ItemProperties> {
         private ItemType type = ItemType.PAPER;
         private int durability = 0;
         private Component name;
@@ -119,10 +95,7 @@ public sealed interface ItemProperties {
 
         @Override
         public @NotNull ItemProperties build() {
-            Validate.notNull(type, "Item type can not be null!");
-            Validate.notNull(model, "Item model can not be null!");
-
-            return new Impl(type, durability, name, lore, clientsideLore, model, armor, attributes, food, enchantments);
+            return new ItemProperties(type, durability, name, lore, clientsideLore, model, armor, attributes, food, enchantments);
         }
     }
 }

@@ -3,36 +3,18 @@ package com.bindglam.neko.api.content.block.populator;
 import com.bindglam.neko.api.content.block.Block;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
-public sealed interface PopulatorSettings {
-    Block block();
+public record PopulatorSettings(Block block, int maxLevel, int minLevel, double chance, List<Material> replace, List<Biome> biomes, int iterations, int veinSize, double clusterChance) {
 
-    int maxLevel();
-
-    int minLevel();
-
-    double chance();
-
-    List<Material> replace();
-
-    List<Biome> biomes();
-
-    int iterations();
-
-    int veinSize();
-
-    double clusterChance();
-
-
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements PopulatorSettings {
+    public static final class Builder implements com.bindglam.neko.api.utils.Builder<PopulatorSettings> {
         private Block block;
         private int maxLevel = 0;
         private int minLevel = 0;
@@ -92,49 +74,10 @@ public sealed interface PopulatorSettings {
             return this;
         }
 
-        @Override
-        public Block block() {
-            return block;
-        }
 
         @Override
-        public int maxLevel() {
-            return maxLevel;
-        }
-
-        @Override
-        public int minLevel() {
-            return minLevel;
-        }
-
-        @Override
-        public double chance() {
-            return chance;
-        }
-
-        @Override
-        public List<Material> replace() {
-            return replace;
-        }
-
-        @Override
-        public List<Biome> biomes() {
-            return biomes;
-        }
-
-        @Override
-        public int iterations() {
-            return iterations;
-        }
-
-        @Override
-        public int veinSize() {
-            return veinSize;
-        }
-
-        @Override
-        public double clusterChance() {
-            return clusterChance;
+        public @NotNull PopulatorSettings build() {
+            return new PopulatorSettings(block, maxLevel, minLevel, chance, replace, biomes, iterations, veinSize, clusterChance);
         }
     }
 }

@@ -3,7 +3,6 @@ package com.bindglam.neko.api.content.block.properties;
 import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.utils.Factory;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
-import org.apache.commons.lang3.Validate;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.NotNull;
@@ -13,32 +12,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public sealed interface BlockProperties {
-    @NotNull NamespacedKey model();
+public record BlockProperties(@NotNull NamespacedKey model, @NotNull Factory<BlockRenderer, Block> renderer, float hardness, float blastResistance,
+                              @Nullable CorrectTools correctTools, @NotNull List<Enchantment> blacklistEnchantments, @Nullable Drops drops, @Nullable Sounds sounds) {
 
-    @NotNull Factory<BlockRenderer, Block> renderer();
-
-    float hardness();
-
-    float blastResistance();
-
-    @Nullable CorrectTools correctTools();
-
-    @NotNull List<Enchantment> blacklistEnchantments();
-
-    @Nullable Drops drops();
-
-    @Nullable Sounds sounds();
-
-
-    record Impl(NamespacedKey model, Factory<BlockRenderer, Block> renderer, float hardness, float blastResistance, CorrectTools correctTools, List<Enchantment> blacklistEnchantments, Drops drops, Sounds sounds) implements BlockProperties {
-    }
-
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements com.bindglam.neko.api.utils.Builder<BlockProperties> {
+    public static final class Builder implements com.bindglam.neko.api.utils.Builder<BlockProperties> {
         private NamespacedKey model;
         private Factory<BlockRenderer, Block> renderer;
         private float hardness = 1f;
@@ -100,10 +81,7 @@ public sealed interface BlockProperties {
 
         @Override
         public @NotNull BlockProperties build() {
-            Validate.notNull(model, "Block model can not be null!");
-            Validate.notNull(renderer, "Block renderer can not be null!");
-
-            return new Impl(model, renderer, hardness, blastResistance, correctTools, blacklistEnchantments, drops, sounds);
+            return new BlockProperties(model, renderer, hardness, blastResistance, correctTools, blacklistEnchantments, drops, sounds);
         }
     }
 }

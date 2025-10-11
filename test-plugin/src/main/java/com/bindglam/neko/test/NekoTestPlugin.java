@@ -64,6 +64,7 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
                 .iterations(10)
                 .chance(1.0)
                 .block(BuiltInRegistries.BLOCKS.get(RubyBlock.KEY))
+                .build()
         );
 
         Bukkit.getWorlds().forEach(world -> world.getPopulators().add(populator));
