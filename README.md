@@ -18,13 +18,7 @@ A powerful and easy-to-use Paper plugin that allows you to create fully custom i
 - **Developer API**: Provides a simple API for other plugins to interact with your custom content.
 
 ## ⛓️ Requirements
-- **Server Version**: Paper (or a fork of Paper) for Minecraft 1.21.4 or higher.
-
-## 📥 Installation
-1. Download the latest version of the plugin from the [Releases](https://https://github.com/bindglam/Neko/releases) page.
-2. Place the downloaded `.jar` file into your server's `plugins` folder.
-3. Install any required dependencies.
-4. Restart your server. The plugin will generate its default configuration files.
+- **Server Software**: Paper (or a fork of Paper)
 
 ## 🧑‍💻 For Developers (API)
 build.gradle.kts
