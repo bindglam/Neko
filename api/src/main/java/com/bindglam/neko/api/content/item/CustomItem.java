@@ -36,12 +36,10 @@ public class CustomItem implements Item, Packable {
     private void buildModel(PackZipper zipper) {
         AtlasesMaker.addAllFromModel(properties.model(), zipper);
 
-        byte[] data = GsonUtils.GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().asString()))).getBytes();
-
         String filePath = "assets/" + key.namespace() + "/items/" + key.value() + ".json";
 
         if(zipper.file(filePath) == null)
-            zipper.addFile(filePath, new PackFile(() -> data, data.length));
+            zipper.addFile(filePath, new PackFile(() -> GsonUtils.GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().asString()))).getBytes()));
     }
 
     private void buildArmor(PackZipper zipper) {
@@ -56,13 +54,11 @@ public class CustomItem implements Item, Packable {
 
         List<EquipmentData.Model> modelData = List.of(new EquipmentData.Model(model.toString()));
 
-        byte[] data = GsonUtils.GSON.toJson(new EquipmentData(Map.of(
+        zipper.addFile(filePath, new PackFile(() -> GsonUtils.GSON.toJson(new EquipmentData(Map.of(
                 "horse_body", modelData,
                 "humanoid", modelData,
                 "humanoid_leggings", modelData
-        ))).getBytes();
-
-        zipper.addFile(filePath, new PackFile(() -> data, data.length));
+        ))).getBytes()));
     }
 
     @NotNull

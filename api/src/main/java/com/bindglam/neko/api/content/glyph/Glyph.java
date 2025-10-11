@@ -58,15 +58,15 @@ public class Glyph implements Keyed, Packable {
 
         PackFile fontFile = zipper.file(path);
 
-        FontData data = new FontData(new ArrayList<>());
+        FontData data;
         if(fontFile != null)
             data = GsonUtils.GSON.fromJson(new String(fontFile.bytes().get()), FontData.class);
+        else
+            data = new FontData(new ArrayList<>());
 
         data.providers().add(new FontData.Bitmap(properties.texture().asString() + ".png", properties.scale(), properties.offsetY(), List.of(character)));
 
-        byte[] output = GsonUtils.GSON.toJson(data).getBytes();
-
-        zipper.addFile(path, new PackFile(() -> output, output.length));
+        zipper.addFile(path, new PackFile(() -> GsonUtils.GSON.toJson(data).getBytes()));
     }
 
     @NotNull
