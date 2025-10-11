@@ -28,6 +28,16 @@ public final class ItemStackWrapper implements ItemStackHolder {
         return Objects.requireNonNull(NekoProvider.neko().contentManager().customItem(key)).itemStack();
     }
 
+    @Override
+    public boolean isSame(ItemStack other) {
+        Item customItem = NekoProvider.neko().contentManager().customItem(key);
+
+        if(customItem != null)
+            return customItem.isSame(other);
+        
+        return other.getType().getKey().equals(key);
+    }
+
     public static ItemStackWrapper of(NamespacedKey key) {
         return new ItemStackWrapper(key);
     }

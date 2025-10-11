@@ -6,7 +6,5 @@ import org.jetbrains.annotations.NotNull;
 public interface ItemStackHolder {
     @NotNull ItemStack itemStack();
 
-    default boolean isSame(ItemStack other) {
-        return itemStack().isSimilar(other);
-    }
+    boolean isSame(ItemStack other);
 }
