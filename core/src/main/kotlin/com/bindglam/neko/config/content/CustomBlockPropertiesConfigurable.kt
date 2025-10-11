@@ -33,6 +33,7 @@ object CustomBlockPropertiesConfigurable : Configurable<BlockProperties, Configu
             .tags(Configurable.parseAsList(config.getStringList("tags"), TagConfigurable("items", Material::class.java)))
             .whitelist(Configurable.parseAsList(config.getStringList("whitelist"), ItemTypeConfigurable))
             .blacklist(Configurable.parseAsList(config.getStringList("blacklist"), ItemTypeConfigurable))
+            .build()
         }
     }
 
@@ -40,6 +41,7 @@ object CustomBlockPropertiesConfigurable : Configurable<BlockProperties, Configu
         override fun load(config: ConfigurationSection?): Drops? = config?.let {
             Drops.builder()
                 .data(config.getKeys(false).map { key -> DropDataConfigurable.load(config.getConfigurationSection(key)) })
+                .build()
         }
 
         object DropDataConfigurable : Configurable<Drops.DropData, ConfigurationSection> {

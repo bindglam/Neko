@@ -1,4 +1,4 @@
-package com.bindglam.neko.api.content.glyph;
+package com.bindglam.neko.api.content.glyph.properties;
 
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;

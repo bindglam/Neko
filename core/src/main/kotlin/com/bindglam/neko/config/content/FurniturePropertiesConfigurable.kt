@@ -20,6 +20,7 @@ object FurniturePropertiesConfigurable : Configurable<FurnitureProperties, Confi
             .translation(Vector3fConfigurable.load(config.getConfigurationSection("translation")))
             .rotation(QuaternionfConfigurable.load(config.getConfigurationSection("rotation")))
             .scale(Vector3fConfigurable.load(config.getConfigurationSection("scale")))
+            .build()
         }
     }
 }

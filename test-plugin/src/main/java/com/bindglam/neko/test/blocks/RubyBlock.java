@@ -18,7 +18,7 @@ public class RubyBlock extends CustomBlock {
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(BlockRenderer.NOTE_BLOCK_RENDERER))
                         .hardness(5.0f)
                         .blastResistance(6.0f)
-                        .correctTools(CorrectTools.builder().tags(Tag.ITEMS_PICKAXES))
+                        .correctTools(CorrectTools.builder().tags(Tag.ITEMS_PICKAXES).build())
                         .build()
         );
     }

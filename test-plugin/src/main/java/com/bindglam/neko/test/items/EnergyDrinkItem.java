@@ -33,7 +33,8 @@ public class EnergyDrinkItem extends CustomItem {
                 .food(Food.builder()
                         .nutrition(10)
                         .saturation(10)
-                        .canAlwaysEat(true))
+                        .canAlwaysEat(true)
+                        .build())
                 .enchantment(Enchantment.MENDING, 1)
                 .build());
     }

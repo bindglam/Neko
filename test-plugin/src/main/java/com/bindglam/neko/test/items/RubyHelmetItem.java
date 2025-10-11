@@ -24,10 +24,12 @@ public class RubyHelmetItem extends CustomItem {
                         .isDispensable(true)
                         .isDamageOnHurt(true)
                         .isSwappable(true)
-                        .isEquipOnInteract(true))
+                        .isEquipOnInteract(true)
+                        .build())
                 .attributes(Attributes.builder()
                         .modifier(Attribute.ARMOR, 100.0, EquipmentSlotGroup.HEAD)
-                        .resetWhenApply(true))
+                        .resetWhenApply(true)
+                        .build())
                 .build());
     }
 }

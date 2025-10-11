@@ -1,7 +1,7 @@
 package com.bindglam.neko.config.content
 
 import com.bindglam.neko.api.config.Configurable
-import com.bindglam.neko.api.content.glyph.GlyphProperties
+import com.bindglam.neko.api.content.glyph.properties.GlyphProperties
 import com.bindglam.neko.config.KeyConfigurable
 import org.bukkit.configuration.ConfigurationSection
 

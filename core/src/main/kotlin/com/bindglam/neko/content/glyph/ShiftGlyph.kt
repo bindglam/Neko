@@ -3,7 +3,7 @@ package com.bindglam.neko.content.glyph
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.glyph.GlyphBuilder
-import com.bindglam.neko.api.content.glyph.GlyphProperties
+import com.bindglam.neko.api.content.glyph.properties.GlyphProperties
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.api.pack.minecraft.font.FontData

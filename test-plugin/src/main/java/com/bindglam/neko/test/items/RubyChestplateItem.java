@@ -21,7 +21,8 @@ public class RubyChestplateItem extends CustomItem {
                         .isDispensable(true)
                         .isDamageOnHurt(true)
                         .isSwappable(true)
-                        .isEquipOnInteract(true))
+                        .isEquipOnInteract(true)
+                        .build())
                 .build());
     }
 }

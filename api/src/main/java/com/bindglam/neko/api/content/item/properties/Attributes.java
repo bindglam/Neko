@@ -9,19 +9,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public sealed interface Attributes {
-    @NotNull Map<Attribute, AttributeModifier> modifiers();
+public record Attributes(@NotNull Map<Attribute, AttributeModifier> modifiers, boolean resetWhenApply) {
 
-    boolean resetWhenApply();
-
-
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements Attributes {
+    public static final class Builder implements com.bindglam.neko.api.utils.Builder<Attributes> {
         private final Map<Attribute, AttributeModifier> modifiers = new HashMap<>();
         private boolean resetWhenApply = false;
+
+        private Builder() {
+        }
 
 
         public Builder modifier(Attribute attribute, double value, EquipmentSlotGroup slot) {
@@ -40,13 +39,8 @@ public sealed interface Attributes {
 
 
         @Override
-        public @NotNull Map<Attribute, AttributeModifier> modifiers() {
-            return modifiers;
-        }
-
-        @Override
-        public boolean resetWhenApply() {
-            return resetWhenApply;
+        public @NotNull Attributes build() {
+            return new Attributes(modifiers, resetWhenApply);
         }
     }
 }

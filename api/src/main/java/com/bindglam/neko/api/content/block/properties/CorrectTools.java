@@ -11,12 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public sealed interface CorrectTools {
-    @NotNull List<Tag<Material>> tags();
+public record CorrectTools(@NotNull List<Tag<Material>> tags, @NotNull Multimap<ListType, ItemStackHolder> items) {
 
-    @NotNull Multimap<ListType, ItemStackHolder> items();
-
-    default boolean isCorrectTool(@Nullable ItemStack itemStack) {
+    public boolean isCorrectTool(@Nullable ItemStack itemStack) {
         if(itemStack == null) return false;
 
         if (tags().stream().anyMatch((tag) -> tag.isTagged(itemStack.getType())) && items().get(ListType.BLACKLIST).stream().noneMatch((item) -> item.isSame(itemStack)))
@@ -26,13 +23,17 @@ public sealed interface CorrectTools {
     }
 
 
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements CorrectTools {
+    public static final class Builder implements com.bindglam.neko.api.utils.Builder<CorrectTools> {
         private List<Tag<Material>> tags = new ArrayList<>();
         private final Multimap<ListType, ItemStackHolder> items = ArrayListMultimap.create();
+
+        private Builder() {
+        }
+
 
         public Builder tags(List<Tag<Material>> tags) {
             this.tags = tags;
@@ -65,14 +66,10 @@ public sealed interface CorrectTools {
             return this;
         }
 
-        @Override
-        public @NotNull List<Tag<Material>> tags() {
-            return tags;
-        }
 
         @Override
-        public @NotNull Multimap<ListType, ItemStackHolder> items() {
-            return items;
+        public @NotNull CorrectTools build() {
+            return new CorrectTools(tags, items);
         }
     }
 

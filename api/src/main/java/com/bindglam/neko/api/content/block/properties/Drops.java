@@ -2,22 +2,23 @@ package com.bindglam.neko.api.content.block.properties;
 
 import com.bindglam.neko.api.content.item.ItemStackHolder;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public sealed interface Drops {
-    @NotNull List<DropData> data();
+public record Drops(@NotNull List<DropData> data) {
 
-
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements Drops {
+    public static final class Builder implements com.bindglam.neko.api.utils.Builder<Drops> {
         private List<DropData> data = new ArrayList<>();
+
+        private Builder() {
+        }
+
 
         public Builder data(List<DropData> data) {
             this.data = data;
@@ -29,13 +30,14 @@ public sealed interface Drops {
             return this;
         }
 
+
         @Override
-        public @NotNull List<DropData> data() {
-            return data;
+        public @NotNull Drops build() {
+            return new Drops(data);
         }
     }
 
-    sealed interface DropData {
+    public sealed interface DropData {
         float chance();
 
 

@@ -21,7 +21,8 @@ public class TreasureChestFurniture extends CustomFurniture {
                         .model(new NamespacedKey("defaultassets", "furniture/treasure_chest"))
                         .translation(new Vector3f(0f, 0.5f, 0f))
                         .scale(new Vector3f(2f, 2f, 2f))
-                        .rotation(new Quaternionf()))
+                        .rotation(new Quaternionf())
+                        .build())
                 .build());
     }
 

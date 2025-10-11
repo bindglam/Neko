@@ -1,6 +1,7 @@
 package com.bindglam.neko.api.content.glyph;
 
 import com.bindglam.neko.api.NekoProvider;
+import com.bindglam.neko.api.content.glyph.properties.GlyphProperties;
 import com.bindglam.neko.api.data.Cache;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;

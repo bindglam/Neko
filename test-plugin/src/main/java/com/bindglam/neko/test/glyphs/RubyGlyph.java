@@ -1,7 +1,7 @@
 package com.bindglam.neko.test.glyphs;
 
 import com.bindglam.neko.api.content.glyph.Glyph;
-import com.bindglam.neko.api.content.glyph.GlyphProperties;
+import com.bindglam.neko.api.content.glyph.properties.GlyphProperties;
 import org.bukkit.NamespacedKey;
 
 public class RubyGlyph extends Glyph {

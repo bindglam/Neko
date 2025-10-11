@@ -8,19 +8,24 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 @ApiStatus.Experimental
-public sealed interface Model {
-    @NotNull NamespacedKey model();
+public record Model(@NotNull NamespacedKey model, @NotNull Transformation transformation) {
 
-    @NotNull Transformation transformation();
+    @Override
+    public @NotNull Transformation transformation() {
+        return new Transformation(new Vector3f(transformation.getTranslation()), new Quaternionf(transformation.getLeftRotation()), new Vector3f(transformation.getScale()), new Quaternionf(transformation.getRightRotation()));
+    }
 
 
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements Model {
+    public static final class Builder implements com.bindglam.neko.api.utils.Builder<Model> {
         private NamespacedKey model;
         private Transformation transformation = new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1f), new Quaternionf());
+
+        private Builder() {
+        }
 
 
         public Builder model(NamespacedKey model) {
@@ -49,15 +54,9 @@ public sealed interface Model {
         }
 
 
-
         @Override
-        public @NotNull NamespacedKey model() {
-            return model;
-        }
-
-        @Override
-        public @NotNull Transformation transformation() {
-            return new Transformation(new Vector3f(transformation.getTranslation()), new Quaternionf(transformation.getLeftRotation()), new Vector3f(transformation.getScale()), new Quaternionf(transformation.getRightRotation()));
+        public @NotNull Model build() {
+            return new Model(model, transformation);
         }
     }
 }

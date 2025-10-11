@@ -46,6 +46,7 @@ object CustomItemPropertiesConfigurable : Configurable<ItemProperties, Configura
             .isSwappable(config.getBoolean("is-swappable"))
             .isDamageOnHurt(config.getBoolean("damage-on-hurt"))
             .isEquipOnInteract(config.getBoolean("equip-on-interact"))
+            .build()
         }
     }
 
@@ -62,7 +63,7 @@ object CustomItemPropertiesConfigurable : Configurable<ItemProperties, Configura
                 builder.modifier(attribute, value, slot)
             }
 
-            return@let builder
+            return@let builder.build()
         }
     }
 
@@ -71,6 +72,7 @@ object CustomItemPropertiesConfigurable : Configurable<ItemProperties, Configura
             .nutrition(config.getInt("nutrition"))
             .saturation(config.getDouble("saturation").toFloat())
             .canAlwaysEat(config.getBoolean("can-always-eat"))
+            .build()
         }
     }
 }

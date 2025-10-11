@@ -3,28 +3,27 @@ package com.bindglam.neko.api.content.item.properties;
 import org.bukkit.inventory.meta.components.FoodComponent;
 import org.jetbrains.annotations.NotNull;
 
-public sealed interface Food {
-    int nutrition();
+public record Food(int nutrition, float saturation, boolean canAlwaysEat) {
 
-    float saturation();
-
-    boolean canAlwaysEat();
-
-    default void apply(@NotNull FoodComponent component) {
+    public void apply(@NotNull FoodComponent component) {
         component.setNutrition(nutrition());
         component.setSaturation(saturation());
         component.setCanAlwaysEat(canAlwaysEat());
     }
 
 
-    static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
-    final class Builder implements Food {
+    public static final class Builder implements com.bindglam.neko.api.utils.Builder<Food> {
         private int nutrition;
         private float saturation;
         private boolean canAlwaysEat;
+
+        private Builder() {
+        }
+
 
         public Builder nutrition(int nutrition) {
             this.nutrition = nutrition;
@@ -43,18 +42,8 @@ public sealed interface Food {
 
 
         @Override
-        public int nutrition() {
-            return nutrition;
-        }
-
-        @Override
-        public float saturation() {
-            return saturation;
-        }
-
-        @Override
-        public boolean canAlwaysEat() {
-            return canAlwaysEat;
+        public @NotNull Food build() {
+            return new Food(nutrition, saturation, canAlwaysEat);
         }
     }
 }
