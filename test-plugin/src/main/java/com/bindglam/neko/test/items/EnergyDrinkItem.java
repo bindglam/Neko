@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -33,6 +34,7 @@ public class EnergyDrinkItem extends CustomItem {
                         .nutrition(10)
                         .saturation(10)
                         .canAlwaysEat(true))
+                .enchantment(Enchantment.MENDING, 1)
                 .build());
     }
 

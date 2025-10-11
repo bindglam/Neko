@@ -10,6 +10,7 @@ import com.bindglam.neko.config.KeyConfigurable
 import com.bindglam.neko.config.SoundConfigurable
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.ConfigurationSection
@@ -28,6 +29,9 @@ object CustomItemPropertiesConfigurable : Configurable<ItemProperties, Configura
         .armor(ArmorConfigurable.load(config.getConfigurationSection("armor")))
         .attributes(AttributesConfigurable.load(config.getConfigurationSection("attributes")))
         .food(FoodConfigurable.load(config.getConfigurationSection("food")))
+        .enchantments(config.getConfigurationSection("enchantments")?.let {
+            it.getKeys(false).associate { key -> RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).getOrThrow(Key.key(key)) to it.getInt(key) }
+        } ?: hashMapOf())
         .build()
     }
 

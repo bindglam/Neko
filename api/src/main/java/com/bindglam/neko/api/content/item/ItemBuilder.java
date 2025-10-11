@@ -73,6 +73,8 @@ public final class ItemBuilder {
 
                 meta.setFood(foodComponent);
             }
+
+            item.properties().enchantments().forEach(((enchantment, level) -> meta.addEnchant(enchantment, level, true)));
         });
 
         itemStack.editPersistentDataContainer((dataContainer) -> dataContainer.set(Item.NEKO_ITEM_PDC_KEY, PersistentDataType.STRING, item.getKey().toString()));

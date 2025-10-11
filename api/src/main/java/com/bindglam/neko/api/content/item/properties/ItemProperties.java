@@ -3,13 +3,16 @@ package com.bindglam.neko.api.content.item.properties;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 public sealed interface ItemProperties {
@@ -31,9 +34,11 @@ public sealed interface ItemProperties {
 
     @Nullable Food food();
 
+    @NotNull Map<Enchantment, Integer> enchantments();
+
 
     record Impl(ItemType type, int durability, Component name, List<Component> lore, BiFunction<ItemStack, Player, List<Component>> clientsideLore, NamespacedKey model, Armor armor, Attributes attributes,
-                Food food) implements ItemProperties {
+                Food food, Map<Enchantment, Integer> enchantments) implements ItemProperties {
     }
 
     static Builder builder() {
@@ -50,6 +55,7 @@ public sealed interface ItemProperties {
         private Armor armor;
         private Attributes attributes;
         private Food food;
+        private final Map<Enchantment, Integer> enchantments = new HashMap<>();
 
         private Builder() {
         }
@@ -100,13 +106,23 @@ public sealed interface ItemProperties {
             return this;
         }
 
+        public Builder enchantments(Map<Enchantment, Integer> enchantments) {
+            this.enchantments.putAll(enchantments);
+            return this;
+        }
+
+        public Builder enchantment(Enchantment enchantment, int level) {
+            this.enchantments.put(enchantment, level);
+            return this;
+        }
+
 
         @Override
         public @NotNull ItemProperties build() {
             Validate.notNull(type, "Item type can not be null!");
             Validate.notNull(model, "Item model can not be null!");
 
-            return new Impl(type, durability, name, lore, clientsideLore, model, armor, attributes, food);
+            return new Impl(type, durability, name, lore, clientsideLore, model, armor, attributes, food, enchantments);
         }
     }
 }

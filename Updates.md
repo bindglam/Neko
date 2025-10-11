@@ -1,2 +1,3 @@
-- Add Food
+- **Add Food component**
 - Optimize the process to generate resource pack
+- **Add Enchantments component**
