@@ -3,6 +3,7 @@ package com.bindglam.neko.pack
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
+import com.bindglam.neko.api.pack.PackComponent
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.getRelativePath
 import com.bindglam.neko.utils.listFilesRecursively
@@ -26,6 +27,10 @@ class PackZipperImpl(private val buildFile: File) : PackZipper {
         folder.listFilesRecursively().forEach {
             entries[it.getRelativePath(folder.path, "/")] = it.toPackFile()
         }
+    }
+
+    override fun addComponent(path: String, component: PackComponent) {
+        component.apply(path, this)
     }
 
     override fun file(path: String): PackFile? = entries[path]

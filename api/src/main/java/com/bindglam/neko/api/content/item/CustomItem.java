@@ -39,7 +39,7 @@ public class CustomItem implements Item, Packable {
         String filePath = "assets/" + key.namespace() + "/items/" + key.value() + ".json";
 
         if(zipper.file(filePath) == null)
-            zipper.addFile(filePath, new PackFile(() -> GsonUtils.GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().asString()))).getBytes()));
+            zipper.addComponent(filePath, new ItemData(new ItemData.BasicModel(properties.model().asString())));
     }
 
     private void buildArmor(PackZipper zipper) {

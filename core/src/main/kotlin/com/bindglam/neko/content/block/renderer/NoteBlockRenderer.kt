@@ -77,7 +77,7 @@ class NoteBlockRenderer(private val block: Block) : BlockRenderer, Packable {
 
         blockStateData.variants["instrument=${instrument.name.lowercase()},note=${note},powered=${powered}"] = BlockStateData.Variant(block.properties().model().asString())
 
-        zipper.addFile(BLOCKSTATE_FILE, PackFile { GsonUtils.GSON.toJson(blockStateData).toByteArray() })
+        zipper.addComponent(BLOCKSTATE_FILE, blockStateData)
     }
 
     override fun createBlockState(): BlockState = BlockType.NOTE_BLOCK.createBlockData().also {

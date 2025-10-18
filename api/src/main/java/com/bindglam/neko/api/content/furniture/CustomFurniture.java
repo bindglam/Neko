@@ -37,7 +37,7 @@ public class CustomFurniture implements Furniture, Packable {
 
         String filePath = "assets/" + key.namespace() + "/items/" + key.value() + ".json";
 
-        zipper.addFile(filePath, new PackFile(() -> GsonUtils.GSON.toJson(new ItemData(new ItemData.BasicModel(properties.model().model().toString()))).getBytes()));
+        zipper.addComponent(filePath, new ItemData(new ItemData.BasicModel(properties.model().model().toString())));
     }
 
     @Override

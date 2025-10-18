@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public interface PackZipper extends AutoCloseable {
     void addFile(String path, PackFile file);
@@ -22,6 +21,8 @@ public interface PackZipper extends AutoCloseable {
     }
 
     void addDirectory(File directory);
+
+    void addComponent(String path, PackComponent component);
 
     @Nullable PackFile file(String path);
 

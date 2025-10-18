@@ -67,7 +67,7 @@ public class Glyph implements Keyed, Packable {
 
         data.providers().add(new FontData.Bitmap(properties.texture().asString() + ".png", properties.scale(), properties.offsetY(), List.of(character)));
 
-        zipper.addFile(path, new PackFile(() -> GsonUtils.GSON.toJson(data).getBytes()));
+        zipper.addComponent(path, data);
     }
 
     @NotNull
