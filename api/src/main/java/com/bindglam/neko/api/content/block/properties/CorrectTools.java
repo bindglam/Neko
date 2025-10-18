@@ -1,6 +1,6 @@
 package com.bindglam.neko.api.content.block.properties;
 
-import com.bindglam.neko.api.content.item.ItemStackHolder;
+import com.bindglam.neko.api.content.item.ItemStackReference;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import org.bukkit.Material;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public record CorrectTools(@NotNull List<Tag<Material>> tags, @NotNull Multimap<ListType, ItemStackHolder> items) {
+public record CorrectTools(@NotNull List<Tag<Material>> tags, @NotNull Multimap<ListType, ItemStackReference> items) {
 
     public boolean isCorrectTool(@Nullable ItemStack itemStack) {
         if(itemStack == null) return false;
@@ -29,7 +29,7 @@ public record CorrectTools(@NotNull List<Tag<Material>> tags, @NotNull Multimap<
 
     public static final class Builder implements com.bindglam.neko.api.utils.Builder<CorrectTools> {
         private List<Tag<Material>> tags = new ArrayList<>();
-        private final Multimap<ListType, ItemStackHolder> items = ArrayListMultimap.create();
+        private final Multimap<ListType, ItemStackReference> items = ArrayListMultimap.create();
 
         private Builder() {
         }
@@ -46,22 +46,22 @@ public record CorrectTools(@NotNull List<Tag<Material>> tags, @NotNull Multimap<
             return this;
         }
 
-        public Builder whitelist(List<ItemStackHolder> items) {
+        public Builder whitelist(List<ItemStackReference> items) {
             this.items.putAll(ListType.WHITELIST, items);
             return this;
         }
 
-        public Builder whitelist(ItemStackHolder... items) {
+        public Builder whitelist(ItemStackReference... items) {
             this.items.putAll(ListType.WHITELIST, Arrays.stream(items).toList());
             return this;
         }
 
-        public Builder blacklist(List<ItemStackHolder> items) {
+        public Builder blacklist(List<ItemStackReference> items) {
             this.items.putAll(ListType.BLACKLIST, items);
             return this;
         }
 
-        public Builder blacklist(ItemStackHolder... items) {
+        public Builder blacklist(ItemStackReference... items) {
             this.items.putAll(ListType.BLACKLIST, Arrays.stream(items).toList());
             return this;
         }

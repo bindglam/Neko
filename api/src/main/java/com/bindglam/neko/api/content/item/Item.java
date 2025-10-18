@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public interface Item extends Keyed, ItemStackHolder, Translatable {
+public interface Item extends Keyed, ItemStackReference, Translatable {
     NamespacedKey NEKO_ITEM_PDC_KEY = new NamespacedKey("neko", "item");
 
     default EventState onUse(Player player, @NotNull ItemStack itemStack) {

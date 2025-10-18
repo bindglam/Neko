@@ -1,6 +1,6 @@
 package com.bindglam.neko.api.content.block.properties;
 
-import com.bindglam.neko.api.content.item.ItemStackHolder;
+import com.bindglam.neko.api.content.item.ItemStackReference;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -41,11 +41,11 @@ public record Drops(@NotNull List<DropData> data) {
         float chance();
 
 
-        static @NotNull DropData of(@NotNull ItemStackHolder item, int amount, float chance) {
+        static @NotNull DropData of(@NotNull ItemStackReference item, int amount, float chance) {
             return new Item(item, amount, chance);
         }
 
-        static @NotNull DropData of(@NotNull ItemStackHolder item, float chance) {
+        static @NotNull DropData of(@NotNull ItemStackReference item, float chance) {
             return of(item, 1, chance);
         }
 
@@ -54,7 +54,7 @@ public record Drops(@NotNull List<DropData> data) {
         }
 
         record Item(
-                @NotNull ItemStackHolder item,
+                @NotNull ItemStackReference item,
                 int amount,
                 float chance
         ) implements DropData {

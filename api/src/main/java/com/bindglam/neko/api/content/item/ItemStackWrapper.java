@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public final class ItemStackWrapper implements ItemStackHolder {
+public final class ItemStackWrapper implements ItemStackReference {
     private final NamespacedKey key;
 
     private ItemStackWrapper(NamespacedKey key) {
