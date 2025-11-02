@@ -31,7 +31,7 @@ public final class AtlasesMaker {
     public static void addAllFromModel(Key key, PackZipper zipper) {
         PackFile modelFile = zipper.file("assets/" + key.namespace() + "/models/" + key.value() + ".json");
         if(modelFile != null) {
-            byte[] data = modelFile.bytes().get();
+            byte[] data = modelFile.bytes();
             ModelData model = GsonUtils.GSON.fromJson(new String(data), ModelData.class);
 
             model.textures().forEach((name, path) -> AtlasesMaker.addBlock(new AtlasesData.Source(AtlasesData.Source.Type.SINGLE, path)));

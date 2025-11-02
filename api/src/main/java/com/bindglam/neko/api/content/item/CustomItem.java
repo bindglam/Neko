@@ -13,6 +13,7 @@ import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -54,12 +55,11 @@ public class CustomItem implements Item, Packable {
 
         List<EquipmentData.Model> modelData = List.of(new EquipmentData.Model(model.toString()));
 
-        byte[] data = GsonUtils.GSON.toJson(new EquipmentData(Map.of(
+        zipper.addFile(filePath, new PackFile(() -> GsonUtils.GSON.toJson(new EquipmentData(Map.of(
                 "horse_body", modelData,
                 "humanoid", modelData,
                 "humanoid_leggings", modelData
-        ))).getBytes();
-        zipper.addFile(filePath, new PackFile(() -> data, data.length));
+        ))).getBytes(StandardCharsets.UTF_8), -1));
     }
 
     @NotNull

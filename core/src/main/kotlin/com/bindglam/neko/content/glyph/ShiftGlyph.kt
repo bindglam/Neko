@@ -31,7 +31,7 @@ class ShiftGlyph : Glyph(SHIFT_GLYPH_KEY, GlyphProperties.builder().texture(NULL
 
         val fontFile = zipper.file(path)
         val data = if(fontFile != null)
-            GSON.fromJson(fontFile.bytes.get().decodeToString(), FontData::class.java)
+            GSON.fromJson(fontFile.bytes().decodeToString(), FontData::class.java)
         else
             FontData(arrayListOf())
 

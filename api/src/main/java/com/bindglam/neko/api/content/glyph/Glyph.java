@@ -61,7 +61,7 @@ public class Glyph implements Keyed, Packable {
 
         FontData data;
         if(fontFile != null)
-            data = GsonUtils.GSON.fromJson(new String(fontFile.bytes().get()), FontData.class);
+            data = GsonUtils.GSON.fromJson(new String(fontFile.bytes()), FontData.class);
         else
             data = new FontData(new ArrayList<>());
 

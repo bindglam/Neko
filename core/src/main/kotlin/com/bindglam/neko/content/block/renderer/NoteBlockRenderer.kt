@@ -71,7 +71,7 @@ class NoteBlockRenderer(private val block: Block) : BlockRenderer, Packable {
         val data = zipper.file(BLOCKSTATE_FILE)
 
         val blockStateData = if(data != null)
-            GsonUtils.GSON.fromJson(data.bytes.get().decodeToString(), BlockStateData::class.java)
+            GsonUtils.GSON.fromJson(data.bytes().decodeToString(), BlockStateData::class.java)
         else
             BlockStateData(hashMapOf())
 

@@ -14,8 +14,7 @@ public record AtlasesData(List<Source> sources) implements PackComponent {
 
     @Override
     public void apply(String path, PackZipper zipper) {
-        byte[] data = GsonUtils.GSON.toJson(this).getBytes();
-        zipper.addFile(path, new PackFile(() -> data, data.length));
+        zipper.addFile(path, new PackFile(() -> GsonUtils.GSON.toJson(this).getBytes(), -1));
     }
 
     public record Source(Type type, String resource) {
