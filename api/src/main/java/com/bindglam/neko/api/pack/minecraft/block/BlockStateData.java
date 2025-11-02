@@ -15,7 +15,8 @@ public record BlockStateData(
 
     @Override
     public void apply(String path, PackZipper zipper) {
-        zipper.addFile(path, new PackFile(() -> GsonUtils.GSON.toJson(this).getBytes()));
+        byte[] data = GsonUtils.GSON.toJson(this).getBytes();
+        zipper.addFile(path, new PackFile(() -> data, data.length));
     }
 
     public record Variant(

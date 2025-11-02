@@ -22,7 +22,7 @@ class ShutdownProcess : Process {
         parallelThreadPool.close()
     }
 
-    override fun <T : Any> forEachParallel(list: List<T>, block: Consumer<T>) {
-        parallelThreadPool.forEachParallel(list) { block.accept(it) }
+    override fun <T : Any> forEachParallel(list: List<T>, sizeAssume: Function<T, Long>, block: Consumer<T>) {
+        parallelThreadPool.forEachParallel(list, { e -> sizeAssume.apply(e) }) { block.accept(it) }
     }
 }

@@ -40,7 +40,7 @@ class PackZipperImpl(private val buildFile: File) : PackZipper {
 
         ZipOutputStream(FileOutputStream(buildFile)).apply {
         }.use { zipStream ->
-            process.forEachParallel(entries.entries.toList()) { entry ->
+            process.forEachParallel(entries.entries.toList(), { file -> file.value.size }) { entry ->
                 val bytes = entry.value.bytes.get()
 
                 synchronized(zipStream) {

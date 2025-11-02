@@ -14,7 +14,8 @@ public record EquipmentData(Map<String, List<Model>> layers) implements PackComp
 
     @Override
     public void apply(String path, PackZipper zipper) {
-        zipper.addFile(path, new PackFile(() -> GsonUtils.GSON.toJson(this).getBytes()));
+        byte[] data = GsonUtils.GSON.toJson(this).getBytes();
+        zipper.addFile(path, new PackFile(() -> data, data.length));
     }
 
     public record Model(String texture) {

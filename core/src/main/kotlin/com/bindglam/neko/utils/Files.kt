@@ -3,6 +3,7 @@ package com.bindglam.neko.utils
 import com.bindglam.neko.api.pack.PackFile
 import java.io.File
 import java.nio.file.Files
+import kotlin.io.path.fileSize
 
 fun File.createIfNotExists() {
     if(!parentFile.exists())
@@ -23,4 +24,4 @@ fun File.getRelativePath(root: String, separator: String): String = getRelativeP
 
 fun File.getRelativePath(root: String): String = getRelativePath(root, File.separator)
 
-fun File.toPackFile(): PackFile = PackFile({ inputStream().readBytes() })
+fun File.toPackFile(): PackFile = PackFile({ inputStream().readBytes() }, toPath().fileSize())

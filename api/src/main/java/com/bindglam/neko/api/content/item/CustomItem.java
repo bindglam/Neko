@@ -54,11 +54,12 @@ public class CustomItem implements Item, Packable {
 
         List<EquipmentData.Model> modelData = List.of(new EquipmentData.Model(model.toString()));
 
-        zipper.addFile(filePath, new PackFile(() -> GsonUtils.GSON.toJson(new EquipmentData(Map.of(
+        byte[] data = GsonUtils.GSON.toJson(new EquipmentData(Map.of(
                 "horse_body", modelData,
                 "humanoid", modelData,
                 "humanoid_leggings", modelData
-        ))).getBytes()));
+        ))).getBytes();
+        zipper.addFile(filePath, new PackFile(() -> data, data.length));
     }
 
     @NotNull

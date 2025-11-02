@@ -4,6 +4,7 @@ import com.bindglam.neko.api.manager.ManagerBase
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.utils.parallelIOThreadPool
 import java.util.function.Consumer
+import java.util.function.Function
 
 class StartupProcess : Process {
     private val parallelThreadPool = parallelIOThreadPool()
@@ -18,7 +19,7 @@ class StartupProcess : Process {
         parallelThreadPool.close()
     }
 
-    override fun <T : Any> forEachParallel(list: List<T>, block: Consumer<T>) {
-        parallelThreadPool.forEachParallel(list) { block.accept(it) }
+    override fun <T : Any> forEachParallel(list: List<T>, sizeAssume: Function<T, Long>, block: Consumer<T>) {
+        parallelThreadPool.forEachParallel(list, { e -> sizeAssume.apply(e) }) { block.accept(it) }
     }
 }
