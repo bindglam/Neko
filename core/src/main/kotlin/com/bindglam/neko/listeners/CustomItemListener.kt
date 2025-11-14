@@ -21,7 +21,7 @@ object CustomItemListener : Listener {
 
         val customItem = NekoProvider.neko().contentManager().customItem(item) ?: return
 
-        if(customItem.onUse(player, item!!) == EventState.CANCEL)
+        if(customItem.eventHandler().onUse(player, item!!) == EventState.CANCEL)
             isCancelled = true
     }
 }

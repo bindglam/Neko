@@ -1,16 +1,14 @@
 package com.bindglam.neko.api.content.furniture;
 
+import com.bindglam.neko.api.content.EventHandler;
 import com.bindglam.neko.api.content.furniture.properties.FurnitureProperties;
-import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
 import com.bindglam.neko.api.pack.minecraft.AtlasesMaker;
 import com.bindglam.neko.api.pack.minecraft.item.ItemData;
-import com.bindglam.neko.api.utils.GsonUtils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -25,10 +23,21 @@ import java.util.UUID;
 public class CustomFurniture implements Furniture, Packable {
     private final NamespacedKey key;
     private final FurnitureProperties properties;
+    private final EventHandler eventHandler;
 
-    public CustomFurniture(NamespacedKey key, FurnitureProperties properties) {
+    public CustomFurniture(NamespacedKey key, FurnitureProperties properties, EventHandler eventHandler) {
         this.key = key;
         this.properties = properties;
+        this.eventHandler = eventHandler;
+    }
+
+    public CustomFurniture(NamespacedKey key, FurnitureProperties properties) {
+        this(key, properties, EventHandler.EMPTY);
+    }
+
+    @Override
+    public @NotNull EventHandler eventHandler() {
+        return eventHandler;
     }
 
     @Override

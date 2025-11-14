@@ -23,12 +23,17 @@ public class TreasureChestFurniture extends CustomFurniture {
                         .scale(new Vector3f(2f, 2f, 2f))
                         .rotation(new Quaternionf())
                         .build())
-                .build());
+                .build(),
+                new EventHandler()
+        );
     }
 
-    @Override
-    public EventState onInteract(Player player, Location location, FurnitureDisplay display) {
-        player.sendMessage(Component.text("앙"));
-        return EventState.CANCEL;
+
+    private static final class EventHandler implements com.bindglam.neko.api.content.EventHandler {
+        @Override
+        public EventState onInteract(Player player, Location location, FurnitureDisplay display) {
+            player.sendMessage(Component.text("앙"));
+            return EventState.CANCEL;
+        }
     }
 }

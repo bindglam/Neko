@@ -1,5 +1,6 @@
 package com.bindglam.neko.api.content.block;
 
+import com.bindglam.neko.api.content.EventHandler;
 import com.bindglam.neko.api.content.block.properties.BlockProperties;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.pack.PackZipper;
@@ -13,14 +14,25 @@ import org.jetbrains.annotations.NotNull;
 public class CustomBlock implements Block, Packable {
     private final NamespacedKey key;
     private final BlockProperties properties;
+    private final EventHandler eventHandler;
 
     private final BlockRenderer renderer;
 
-    public CustomBlock(NamespacedKey key, BlockProperties blockProperties) {
+    public CustomBlock(NamespacedKey key, BlockProperties blockProperties, EventHandler eventHandler) {
         this.key = key;
         this.properties = blockProperties;
+        this.eventHandler = eventHandler;
 
         this.renderer = properties.renderer().create(this);
+    }
+
+    public CustomBlock(NamespacedKey key, BlockProperties blockProperties) {
+        this(key, blockProperties, EventHandler.EMPTY);
+    }
+
+    @Override
+    public @NotNull EventHandler eventHandler() {
+        return eventHandler;
     }
 
     @ApiStatus.Internal

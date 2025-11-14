@@ -105,7 +105,7 @@ object CustomBlockListener : Listener {
 
         val customBlock = NekoProvider.neko().contentManager().customBlock(clickedBlock) ?: return
 
-        if(customBlock.onInteract(player, clickedBlock) == EventState.CANCEL)
+        if(customBlock.eventHandler().onInteract(player, clickedBlock) == EventState.CANCEL)
             isCancelled = true
     }
 
@@ -287,7 +287,7 @@ object CustomBlockListener : Listener {
                 }
             }
         } else {
-            customBlock.item()?.itemStack()?.let { dropItem(it) }
+            customBlock.asItem()?.itemStack()?.let { dropItem(it) }
         }
     }
 }

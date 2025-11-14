@@ -18,13 +18,16 @@ public class TestBlock extends CustomBlock {
                 BlockProperties.builder()
                         .model(new NamespacedKey("defaultassets", "block/testblock"))
                         .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(BlockRenderer.NOTE_BLOCK_RENDERER))
-                        .build()
+                        .build(),
+                new EventHandler()
         );
     }
 
-    @Override
-    public EventState onInteract(Player player, Block block) {
-        player.sendMessage(Component.text("씨봉방아"));
-        return EventState.CANCEL;
+    private static final class EventHandler implements com.bindglam.neko.api.content.EventHandler {
+        @Override
+        public EventState onInteract(Player player, Block block) {
+            player.sendMessage(Component.text("씨봉방아"));
+            return EventState.CANCEL;
+        }
     }
 }

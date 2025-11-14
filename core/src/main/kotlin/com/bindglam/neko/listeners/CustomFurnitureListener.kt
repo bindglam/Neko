@@ -103,8 +103,8 @@ object CustomFurnitureListener : Listener {
                     && BlockBreakEvent(clickedBlock!!, player).callEvent()) {
                 furniture.destroy(clickedBlock!!.location)
 
-                if(player.gameMode != GameMode.CREATIVE && furniture.item() != null) {
-                    clickedBlock!!.world.dropItemNaturally(clickedBlock!!.location.toCenterLocation(), furniture.item()!!.itemStack())
+                if(player.gameMode != GameMode.CREATIVE && furniture.asItem() != null) {
+                    clickedBlock!!.world.dropItemNaturally(clickedBlock!!.location.toCenterLocation(), furniture.asItem()!!.itemStack())
                 }
 
                 clickedBlock!!.world.sendGameEvent(player, GameEvent.BLOCK_DESTROY, clickedBlock!!.location.toVector())
@@ -121,7 +121,7 @@ object CustomFurnitureListener : Listener {
 
         val customFurniture = NekoProvider.neko().contentManager().furniture(clickedBlock!!.location) ?: return
 
-        if(customFurniture.onInteract(player, clickedBlock!!.location, customFurniture.display(clickedBlock!!.location)) == EventState.CANCEL)
+        if(customFurniture.eventHandler().onInteract(player, clickedBlock!!.location, customFurniture.display(clickedBlock!!.location)) == EventState.CANCEL)
             isCancelled = true
     }
 }

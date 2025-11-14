@@ -22,26 +22,30 @@ public class EnergyDrinkItem extends CustomItem {
 
     public EnergyDrinkItem() {
         super(KEY, ItemProperties.builder()
-                .type(ItemType.APPLE)
-                .lore(List.of(Component.text("진짜 로어")))
-                .clientsideLore((itemStack, player) -> {
-                    Objects.requireNonNull(itemStack.getItemMeta().lore()).forEach(player::sendMessage);
+                        .type(ItemType.APPLE)
+                        .lore(List.of(Component.text("진짜 로어")))
+                        .clientsideLore((itemStack, player) -> {
+                            Objects.requireNonNull(itemStack.getItemMeta().lore()).forEach(player::sendMessage);
 
-                    return List.of(Component.text("테스트 아이템이다. " + player.getName() + "님아."));
-                })
-                .model(new NamespacedKey("defaultassets", "item/energy_drink"))
-                .food(Food.builder()
-                        .nutrition(10)
-                        .saturation(10)
-                        .canAlwaysEat(true)
-                        .build())
-                .enchantment(Enchantment.MENDING, 1)
-                .build());
+                            return List.of(Component.text("테스트 아이템이다. " + player.getName() + "님아."));
+                        })
+                        .model(new NamespacedKey("defaultassets", "item/energy_drink"))
+                        .food(Food.builder()
+                                .nutrition(10)
+                                .saturation(10)
+                                .canAlwaysEat(true)
+                                .build())
+                        .enchantment(Enchantment.MENDING, 1)
+                        .build(),
+                new EventHandler()
+        );
     }
 
-    @Override
-    public EventState onUse(Player player, @NotNull ItemStack itemStack) {
-        player.sendMessage(Component.text("냠냠 쩝쩝").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD));
-        return EventState.CONTINUE;
+    private static final class EventHandler implements com.bindglam.neko.api.content.EventHandler {
+        @Override
+        public EventState onUse(Player player, @NotNull ItemStack itemStack) {
+            player.sendMessage(Component.text("냠냠 쩝쩝").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD));
+            return EventState.CONTINUE;
+        }
     }
 }

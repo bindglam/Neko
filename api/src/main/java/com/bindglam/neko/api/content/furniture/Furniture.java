@@ -1,26 +1,22 @@
 package com.bindglam.neko.api.content.furniture;
 
-import com.bindglam.neko.api.content.EventState;
+import com.bindglam.neko.api.content.EventContainer;
 import com.bindglam.neko.api.content.furniture.properties.FurnitureProperties;
 import com.bindglam.neko.api.content.item.Item;
+import com.bindglam.neko.api.content.item.ItemLike;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import net.kyori.adventure.translation.Translatable;
 import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @ApiStatus.Experimental
-public interface Furniture extends Keyed, Translatable {
+public interface Furniture extends Keyed, ItemLike, Translatable, EventContainer {
     NamespacedKey NEKO_FURNITURE_PDC_KEY = new NamespacedKey("neko", "furniture");
     NamespacedKey NEKO_FURNITURE_LIST_PDC_KEY = new NamespacedKey("neko", "furniture-list");
-
-    default EventState onInteract(Player player, Location location, FurnitureDisplay display) {
-        return EventState.CONTINUE;
-    }
 
     @NotNull FurnitureDisplay place(@NotNull Location location);
 
@@ -32,7 +28,8 @@ public interface Furniture extends Keyed, Translatable {
 
     @NotNull FurnitureProperties properties();
 
-    default @Nullable Item item() {
+    @Override
+    default @Nullable Item asItem() {
         return BuiltInRegistries.ITEMS.getOrNull(getKey());
     }
 

@@ -1,5 +1,6 @@
 package com.bindglam.neko.api.content.item;
 
+import com.bindglam.neko.api.content.EventHandler;
 import com.bindglam.neko.api.content.item.properties.Armor;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import com.bindglam.neko.api.pack.PackFile;
@@ -20,10 +21,21 @@ import java.util.Map;
 public class CustomItem implements Item, Packable {
     private final NamespacedKey key;
     private final ItemProperties properties;
+    private final EventHandler eventHandler;
 
-    public CustomItem(NamespacedKey key, ItemProperties itemProperties) {
+    public CustomItem(NamespacedKey key, ItemProperties itemProperties, EventHandler eventHandler) {
         this.key = key;
         this.properties = itemProperties;
+        this.eventHandler = eventHandler;
+    }
+
+    public CustomItem(NamespacedKey key, ItemProperties itemProperties) {
+        this(key, itemProperties, EventHandler.EMPTY);
+    }
+
+    @Override
+    public @NotNull EventHandler eventHandler() {
+        return eventHandler;
     }
 
     @ApiStatus.Internal
