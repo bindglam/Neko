@@ -30,7 +30,7 @@ public interface Furniture extends Keyed, ItemLike, Translatable, EventContainer
 
     @Override
     default @Nullable Item asItem() {
-        return BuiltInRegistries.ITEMS.getOrNull(getKey());
+        return BuiltInRegistries.ITEMS.get(getKey()).orElse(null);
     }
 
     @Override

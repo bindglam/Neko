@@ -17,7 +17,7 @@ import org.bukkit.configuration.ConfigurationSection
 object CustomBlockPropertiesConfigurable : Configurable<BlockProperties, ConfigurationSection> {
     override fun load(config: ConfigurationSection?): BlockProperties? = config?.let { BlockProperties.builder()
         .model(KeyConfigurable.load(config.getString("model"))!!)
-        .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(KeyConfigurable.load(config.getString("renderer"))!!))
+        .renderer(BuiltInRegistries.BLOCK_RENDERERS.getOrThrow(KeyConfigurable.load(config.getString("renderer"))!!))
         .hardness(config.getDouble("hardness", 1.0).toFloat())
         .blastResistance(config.getDouble("blast-resistance", 6.0).toFloat())
         .correctTools(CorrectToolsConfigurable.load(config.getConfigurationSection("correct-tools")))

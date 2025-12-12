@@ -69,11 +69,11 @@ object ContentManagerImpl : ContentManager {
         BuiltInRegistries.GLYPHS.clear()
     }
 
-    override fun customItem(key: Key): Item? = BuiltInRegistries.ITEMS.getOrNull(key)
+    override fun customItem(key: Key): Item? = BuiltInRegistries.ITEMS.get(key).orElse(null)
     override fun customItem(itemStack: ItemStack): Item? = BuiltInRegistries.ITEMS.find { it.isSame(itemStack) }
-    override fun customBlock(key: Key): Block? = BuiltInRegistries.BLOCKS.getOrNull(key)
+    override fun customBlock(key: Key): Block? = BuiltInRegistries.BLOCKS.get(key).orElse(null)
     override fun customBlock(block: BlockState): Block? = BuiltInRegistries.BLOCKS.find { it.isSame(block) }
-    override fun glyph(key: Key): Glyph? = BuiltInRegistries.GLYPHS.getOrNull(key)
-    override fun furniture(key: Key): Furniture? = BuiltInRegistries.FURNITURE.getOrNull(key)
+    override fun glyph(key: Key): Glyph? = BuiltInRegistries.GLYPHS.get(key).orElse(null)
+    override fun furniture(key: Key): Furniture? = BuiltInRegistries.FURNITURE.get(key).orElse(null)
     override fun furniture(location: Location): Furniture? = BuiltInRegistries.FURNITURE.find { it.isSame(location) }
 }

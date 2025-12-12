@@ -63,7 +63,7 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
                 .clusterChance(0.5)
                 .iterations(10)
                 .chance(1.0)
-                .block(BuiltInRegistries.BLOCKS.get(RubyBlock.KEY))
+                .block(BuiltInRegistries.BLOCKS.getOrThrow(RubyBlock.KEY))
                 .build()
         );
 

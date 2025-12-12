@@ -91,6 +91,6 @@ public class Glyph implements Keyed, Packable {
         if(!builder.shadow())
             shadow = 0;
 
-        return BuiltInRegistries.GLYPHS.get(Glyph.SHIFT_GLYPH_KEY).component(builder).append(Component.text(character).font(fontKey).shadowColor(ShadowColor.shadowColor(0, 0, 0, shadow)));
+        return BuiltInRegistries.GLYPHS.getOrThrow(Glyph.SHIFT_GLYPH_KEY).component(builder).append(Component.text(character).font(fontKey).shadowColor(ShadowColor.shadowColor(0, 0, 0, shadow)));
     }
 }

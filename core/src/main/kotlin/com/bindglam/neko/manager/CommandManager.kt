@@ -1,6 +1,5 @@
 package com.bindglam.neko.manager
 
-import com.bindglam.neko.api.Neko
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.glyph.GlyphBuilder
 import com.bindglam.neko.api.registry.BuiltInRegistries
@@ -37,15 +36,12 @@ object CommandManager {
                                     val key = ctx.getArgument("key", NamespacedKey::class.java)
                                     val amount = ctx.getArgument("amount", Int::class.java)
 
-                                    val customItem = BuiltInRegistries.ITEMS.getOrNull(key)
-
-                                    if(customItem == null) {
+                                    BuiltInRegistries.ITEMS.get(key).ifPresentOrElse({ customItem ->
+                                        player.inventory.addItem(customItem.itemStack().apply { this.amount = amount })
+                                        ctx.source.sender.sendMessage(Component.text("Successfully gave an item").color(NamedTextColor.GREEN))
+                                    }) {
                                         ctx.source.sender.sendMessage(Component.text("Unknown item key").color(NamedTextColor.RED))
-                                        return@executes Command.SINGLE_SUCCESS
                                     }
-
-                                    player.inventory.addItem(customItem.itemStack().apply { this.amount = amount })
-                                    ctx.source.sender.sendMessage(Component.text("Successfully gave an item").color(NamedTextColor.GREEN))
 
                                     return@executes Command.SINGLE_SUCCESS
                                 }
@@ -58,14 +54,12 @@ object CommandManager {
                         .executes { ctx ->
                             val key = ctx.getArgument("key", NamespacedKey::class.java)
 
-                            val glyph = BuiltInRegistries.GLYPHS.getOrNull(key)
-
-                            if(glyph == null) {
+                            BuiltInRegistries.GLYPHS.get(key).ifPresentOrElse({ glyph ->
+                                ctx.source.sender.sendMessage(glyph.component(GlyphBuilder.builder().offsetX(0)))
+                            }) {
                                 ctx.source.sender.sendMessage(Component.text("Unknown glyph key").color(NamedTextColor.RED))
-                                return@executes Command.SINGLE_SUCCESS
                             }
 
-                            ctx.source.sender.sendMessage(glyph.component(GlyphBuilder.builder().offsetX(0)))
                             return@executes Command.SINGLE_SUCCESS
                         })
                 )

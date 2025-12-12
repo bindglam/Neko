@@ -13,7 +13,7 @@ public class RubyOreBlock extends CustomBlock {
         super(KEY,
                 BlockProperties.builder()
                         .model(new NamespacedKey("defaultassets", "block/ruby_ore"))
-                        .renderer(BuiltInRegistries.BLOCK_RENDERERS.get(BlockRenderer.NOTE_BLOCK_RENDERER))
+                        .renderer(BuiltInRegistries.BLOCK_RENDERERS.getOrThrow(BlockRenderer.NOTE_BLOCK_RENDERER))
                         .build()
         );
     }

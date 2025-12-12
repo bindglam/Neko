@@ -3,22 +3,17 @@ package com.bindglam.neko.api.registry;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @ApiStatus.Internal
 public class ScalableRegistry<T> implements Registry<T> {
     private final Map<Key, T> map = new HashMap<>();
 
-
     @Override
-    public @Nullable T getOrNull(@NotNull Key key) {
-        return map.get(key);
+    public Optional<T> get(@NotNull Key key) {
+        return Optional.ofNullable(map.get(key));
     }
 
     @Override
