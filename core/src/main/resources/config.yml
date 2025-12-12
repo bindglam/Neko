@@ -6,8 +6,6 @@ pack:
       port: 1980
 
   merge-resource-packs:
-    merge-after-packing: true
-
     packs:
       - BetterModel/build
 

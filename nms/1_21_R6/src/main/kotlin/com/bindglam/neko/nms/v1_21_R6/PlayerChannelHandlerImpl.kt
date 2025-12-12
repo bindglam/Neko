@@ -84,7 +84,7 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
         return this
     }
 
-    private fun <T : ServerGamePacketListener> Packet<in T>.handleServerbound(): Packet<in T>? {
+    private fun <T : ServerGamePacketListener> Packet<in T>.handleServerbound(): Packet<in T> {
         when (this) {
             is ServerboundPlayerActionPacket -> {
                 if(action == ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK || action == ServerboundPlayerActionPacket.Action.STOP_DESTROY_BLOCK) {

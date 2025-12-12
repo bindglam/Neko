@@ -4,7 +4,10 @@ import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.event.AsyncGenerateResourcePackEvent
 import com.bindglam.neko.api.manager.PackManager
 import com.bindglam.neko.api.manager.Process
+import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.host.PackHost
+import com.bindglam.neko.api.pack.minecraft.PackMeta
+import com.bindglam.neko.api.utils.GsonUtils
 import com.bindglam.neko.pack.PackZipperImpl
 import com.bindglam.neko.pack.PackerApplier
 import com.bindglam.neko.pack.host.selfhost.SelfHost
@@ -24,6 +27,7 @@ object PackManagerImpl : PackManager {
     private val LOGGER = LoggerFactory.getLogger(PackManager::class.java)
 
     private val RESOURCEPACK_FOLDER = File("plugins/Neko/resourcepack")
+    private val RESOURCEPACK_META_FILE = File(RESOURCEPACK_FOLDER, "pack.mcmeta")
     private val HASH_DIGEST = MessageDigest.getInstance("MD5")
 
     private val PACK_HOSTS = listOf(SelfHost())
@@ -36,7 +40,7 @@ object PackManagerImpl : PackManager {
         if(!RESOURCEPACK_FOLDER.exists()) {
             RESOURCEPACK_FOLDER.mkdirs()
 
-            File(RESOURCEPACK_FOLDER, "pack.mcmeta").apply { createIfNotExists() }.bufferedWriter().use { writer ->
+            RESOURCEPACK_META_FILE.apply { createIfNotExists() }.bufferedWriter().use { writer ->
                 NekoProvider.neko().plugin().getResource("pack.mcmeta")!!.bufferedReader().use { preset ->
                     writer.write(preset.lines().collect(Collectors.joining(System.lineSeparator())))
                 }
@@ -80,23 +84,26 @@ object PackManagerImpl : PackManager {
     }
 
     private fun mergeResourcePacks(zipper: PackZipperImpl) {
-        val mergeAfterPacking = NekoProvider.neko().plugin().config.getBoolean("pack.merge-resource-packs.merge-after-packing")
         val mergePacks = NekoProvider.neko().plugin().config.getStringList("pack.merge-resource-packs.packs")
 
-        if(!mergeAfterPacking) {
-            mergePacks.map { File("plugins/${it}") }.forEach { pack ->
-                zipper.addDirectory(pack)
+        var currentMeta = GsonUtils.GSON.fromJson(RESOURCEPACK_META_FILE.bufferedReader().readText(), PackMeta::class.java)
+
+        mergePacks.map { File("plugins/${it}") }.forEach { pack ->
+            val externalMetaFile = File(pack, "pack.mcmeta")
+
+            if(externalMetaFile.exists()) {
+                val externalMeta = GsonUtils.GSON.fromJson(externalMetaFile.bufferedReader().readText(), PackMeta::class.java)
+
+                currentMeta = PackMeta(currentMeta.pack(),
+                    PackMeta.Overlays(ArrayList(currentMeta.overlays()?.entries() ?: listOf()).apply { addAll(externalMeta.overlays()?.entries() ?: listOf()) }))
             }
+
+            zipper.addDirectory(pack)
         }
 
         zipper.addDirectory(RESOURCEPACK_FOLDER)
 
-        if(mergeAfterPacking) {
-            mergePacks.map { File("plugins/${it}") }.forEach { pack ->
-                if(pack.exists())
-                    zipper.addDirectory(pack)
-            }
-        }
+        zipper.addFile("pack.mcmeta", PackFile(GsonUtils.GSON.toJson(currentMeta).toByteArray()))
     }
 
     private fun buildPackInfo() {
