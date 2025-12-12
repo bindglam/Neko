@@ -7,6 +7,7 @@ import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -22,7 +23,7 @@ public class EnergyDrinkItem extends CustomItem {
 
     public EnergyDrinkItem() {
         super(KEY, ItemProperties.builder()
-                        .type(ItemType.APPLE)
+                        .type(Material.APPLE)
                         .lore(List.of(Component.text("진짜 로어")))
                         .clientsideLore((itemStack, player) -> {
                             Objects.requireNonNull(itemStack.getItemMeta().lore()).forEach(player::sendMessage);

@@ -30,7 +30,7 @@ object FurnitureHelper {
 
     fun updateBreakProgress(player: Player, speed: Int) {
         if(!hasBreakProgress(player))
-            breakProgress.put(player.uniqueId, 0)
+            breakProgress[player.uniqueId] = 0
 
         breakProgress[player.uniqueId] = breakProgress(player) + speed
         lastBreakProgressUpdated[player.uniqueId] = CURRENT_TICK

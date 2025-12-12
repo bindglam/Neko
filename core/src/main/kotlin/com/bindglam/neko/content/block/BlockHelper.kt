@@ -35,7 +35,7 @@ object BlockHelper {
 
     fun updateBreakProgress(player: Player, speed: Float) {
         if(!hasBreakProgress(player))
-            breakProgress.put(player.uniqueId, 0f)
+            breakProgress[player.uniqueId] = 0f
 
         breakProgress[player.uniqueId] = breakProgress(player) + speed
         lastBreakProgressUpdated[player.uniqueId] = CURRENT_TICK

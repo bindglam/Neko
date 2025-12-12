@@ -1,6 +1,7 @@
 package com.bindglam.neko.api.content.item.properties;
 
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 public record ItemProperties(@NotNull ItemType type, int durability, @Nullable Component name, @Nullable List<Component> lore, @Nullable BiFunction<ItemStack, Player, List<Component>> clientsideLore,
@@ -39,6 +41,11 @@ public record ItemProperties(@NotNull ItemType type, int durability, @Nullable C
 
         public Builder type(@NotNull ItemType type) {
             this.type = type;
+            return this;
+        }
+
+        public Builder type(@NotNull Material type) {
+            this.type = Objects.requireNonNull(type.asItemType(), "Item type cannot be null");
             return this;
         }
 
