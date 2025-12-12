@@ -1,1 +1,2 @@
 - Fixed an issue with pack.mcmeta merging.
+- Support 1.21.11

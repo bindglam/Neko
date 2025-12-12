@@ -21,7 +21,7 @@ tasks {
                 it.archiveFile
             })
             hangar("BetterModel", "1.13.2")
-            hangar("BetterHud", "1.14.0")
+            //hangar("BetterHud", "1.14.0")
             //modrinth("fastasyncworldedit", "2.13.1")
             //modrinth("worldguard", "7.0.14")
         }

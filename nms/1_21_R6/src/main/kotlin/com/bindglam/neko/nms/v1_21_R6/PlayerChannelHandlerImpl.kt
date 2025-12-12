@@ -39,7 +39,7 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
         }
     }
 
-    private fun <T : ClientGamePacketListener> Packet<in T>.handleClientbound(): Packet<in T>? {
+    private fun <T : ClientGamePacketListener> Packet<in T>.handleClientbound(): Packet<in T> {
         fun mapClientsideLore(itemStack: ItemStack, function: BiFunction<org.bukkit.inventory.ItemStack, Player, List<Component>>?) {
             function ?: return
             val lore = function.apply(itemStack.bukkitStack, player)
@@ -100,10 +100,10 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
     }
 
     override fun write(ctx: ChannelHandlerContext, msg: Any, promise: ChannelPromise) {
-        super.write(ctx, if (msg is Packet<*>) msg.handleClientbound() ?: return else msg, promise)
+        super.write(ctx, if (msg is Packet<*>) msg.handleClientbound() else msg, promise)
     }
 
     override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {
-        super.channelRead(ctx, if (msg is Packet<*>) msg.handleServerbound() ?: return else msg)
+        super.channelRead(ctx, if (msg is Packet<*>) msg.handleServerbound() else msg)
     }
 }

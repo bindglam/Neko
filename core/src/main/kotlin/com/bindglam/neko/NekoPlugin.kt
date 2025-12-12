@@ -52,6 +52,7 @@ class NekoPlugin : Neko, JavaPlugin() {
         }
 
         nmsHook = when(version) {
+            MCVersion.v1_21_11 -> com.bindglam.neko.nms.v1_21_R7.NMSHookImpl
             MCVersion.v1_21_9, MCVersion.v1_21_10 -> com.bindglam.neko.nms.v1_21_R6.NMSHookImpl
             MCVersion.v1_21_4 -> com.bindglam.neko.nms.v1_21_R3.NMSHookImpl
             else -> {
