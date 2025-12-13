@@ -6,7 +6,9 @@ import com.bindglam.neko.api.manager.PackManager
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.host.PackHost
+import com.bindglam.neko.api.pack.minecraft.Float2
 import com.bindglam.neko.api.pack.minecraft.PackMeta
+import com.bindglam.neko.api.pack.minecraft.font.FontData
 import com.bindglam.neko.api.utils.GsonUtils
 import com.bindglam.neko.pack.PackZipperImpl
 import com.bindglam.neko.pack.PackerApplier
@@ -16,6 +18,7 @@ import com.bindglam.neko.utils.plugin
 import net.kyori.adventure.resource.ResourcePackInfo
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -36,12 +39,18 @@ object PackManagerImpl : PackManager {
 
     private var packHost: PackHost? = null
 
+    private lateinit var config: FileConfiguration
     private lateinit var promptMessage: Component
     private lateinit var mergePacks: List<String>
+    private var minecraftFont: FontData.TTF? = null
 
     override fun start(process: Process) {
-        promptMessage = NekoProvider.neko().plugin().config.getRichMessage("pack.prompt-message")!!
-        mergePacks = NekoProvider.neko().plugin().config.getStringList("pack.merge-resource-packs.packs")
+        config = NekoProvider.neko().plugin().config
+        promptMessage = config.getRichMessage("pack.prompt-message")!!
+        mergePacks = config.getStringList("pack.merge-resource-packs.packs")
+        if(File("plugins/Neko", config.getString("pack.font.file")!!).exists())
+            minecraftFont = FontData.TTF(config.getString("pack.font.file")!!, config.getFloatList("pack.font.shift").let { Float2(it[0], it[1]) },
+                config.getDouble("pack.font.size").toFloat(), config.getDouble("pack.font.oversample").toFloat(), config.getString("pack.font.skip") ?: "")
 
         if(!RESOURCEPACK_FOLDER.exists()) {
             RESOURCEPACK_FOLDER.mkdirs()
@@ -57,13 +66,10 @@ object PackManagerImpl : PackManager {
 
         buildPackInfo()
 
-        NekoProvider.neko().plugin().config.also { config ->
-            packHost = PACK_HOSTS.find { config.getBoolean("pack.host.${it.id()}.enabled") }
+        packHost = PACK_HOSTS.find { config.getBoolean("pack.host.${it.id()}.enabled") }
+        config.getConfigurationSection("pack.host.${packHost?.id()}")?.let { packHost?.start(it) }
 
-            config.getConfigurationSection("pack.host.${packHost?.id()}")?.let { packHost?.start(it) }
-
-            Bukkit.getOnlinePlayers().forEach { sendPack(it) }
-        }
+        Bukkit.getOnlinePlayers().forEach { sendPack(it) }
     }
 
     override fun end(process: Process) {
@@ -78,10 +84,13 @@ object PackManagerImpl : PackManager {
         val zipper = PackZipperImpl(PackManager.BUILD_ZIP)
 
         mergeResourcePacks(zipper)
-
         AsyncGenerateResourcePackEvent(zipper).callEvent()
-
         PackerApplier.apply(zipper)
+
+        if(minecraftFont != null) {
+            zipper.addFile("assets/minecraft/font/${minecraftFont!!.file()}", PackFile(File("plugins/Neko", minecraftFont!!.file()).readBytes()))
+            zipper.addComponent("assets/minecraft/font/default.json", FontData(listOf(minecraftFont!!)))
+        }
 
         zipper.build(process)
         zipper.close()

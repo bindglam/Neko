@@ -9,4 +9,11 @@ pack:
     packs:
       - BetterModel/build
 
+  font:
+    file: font.ttf
+    shift: [0, 1]
+    size: 9.0
+    oversample: 4.0
+    #skip: ""
+
   prompt-message: <white><bold>Neko <yellow>requires resource pack for high-quality gameplay.

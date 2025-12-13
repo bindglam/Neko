@@ -3,6 +3,7 @@ package com.bindglam.neko.api.pack.minecraft.font;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.PackComponent;
+import com.bindglam.neko.api.pack.minecraft.Float2;
 import com.bindglam.neko.api.utils.GsonUtils;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.ApiStatus;
@@ -37,6 +38,9 @@ public record FontData(
 
             @SerializedName("space")
             SPACE,
+
+            @SerializedName("ttf")
+            TTF,
         }
     }
 
@@ -81,6 +85,43 @@ public record FontData(
 
         public Map<Character, Integer> advances() {
             return advances;
+        }
+    }
+
+    public static class TTF extends Provider {
+        private final String file;
+        private final Float2 shift;
+        private final float size;
+        private final float oversample;
+        private final String skip;
+
+        public TTF(String file, Float2 shift, float size, float oversample, String skip) {
+            super(Type.TTF);
+            this.file = file;
+            this.shift = shift;
+            this.size = size;
+            this.oversample = oversample;
+            this.skip = skip;
+        }
+
+        public String file() {
+            return file;
+        }
+
+        public Float2 shift() {
+            return shift;
+        }
+
+        public float size() {
+            return size;
+        }
+
+        public float oversample() {
+            return oversample;
+        }
+
+        public String skip() {
+            return skip;
         }
     }
 }
