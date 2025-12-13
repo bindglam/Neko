@@ -1,1 +1,2 @@
 - 커스텀 폰트 추가
+- PlaceholderAPI 지원
