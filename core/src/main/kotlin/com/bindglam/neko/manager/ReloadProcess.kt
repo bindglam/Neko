@@ -1,6 +1,7 @@
 package com.bindglam.neko.manager
 
-import com.bindglam.neko.api.manager.ManagerBase
+import com.bindglam.neko.api.manager.LifecycleContext
+import com.bindglam.neko.api.manager.Managerial
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.utils.parallelIOThreadPool
 import net.kyori.adventure.bossbar.BossBar
@@ -20,7 +21,7 @@ class ReloadProcess(private val sender: CommandSender) : Process {
 
     private val bar = BossBar.bossBar(Component.text(status), 0f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS).also { sender.showBossBar(it) }
 
-    override fun start(list: List<ManagerBase>) {
+    override fun start(context: LifecycleContext, list: List<Managerial>) {
         sender.sendMessage(Component.text("Reloading...").color(NamedTextColor.YELLOW))
 
         goal = list.size
@@ -29,8 +30,8 @@ class ReloadProcess(private val sender: CommandSender) : Process {
             progress++
             status = "Reloading... ( $progress / $goal )"
 
-            it.end(this)
-            it.start(this)
+            it.end(context, this)
+            it.start(context, this)
 
             bar.name(Component.text(status))
             bar.progress(progress.toFloat() / goal)

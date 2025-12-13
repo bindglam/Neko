@@ -6,6 +6,7 @@ import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.item.Item
 import com.bindglam.neko.api.event.AsyncContentsLoadEvent
 import com.bindglam.neko.api.manager.ContentManager
+import com.bindglam.neko.api.manager.LifecycleContext
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.content.glyph.GlyphLoader
@@ -31,7 +32,7 @@ object ContentManagerImpl : ContentManager {
 
     private val CONTENT_LOADERS = listOf(CustomItemLoader, CustomBlockLoader, GlyphLoader, FurnitureLoader)
 
-    override fun start(process: Process) {
+    override fun start(context: LifecycleContext, process: Process) {
         registerInternalContents()
 
         AsyncContentsLoadEvent().callEvent()
@@ -63,7 +64,7 @@ object ContentManagerImpl : ContentManager {
         BuiltInRegistries.GLYPHS.register(Glyph.SHIFT_GLYPH_KEY, ShiftGlyph())
     }
 
-    override fun end(process: Process) {
+    override fun end(context: LifecycleContext, process: Process) {
         BuiltInRegistries.ITEMS.clear()
         BuiltInRegistries.BLOCKS.clear()
         BuiltInRegistries.GLYPHS.clear()

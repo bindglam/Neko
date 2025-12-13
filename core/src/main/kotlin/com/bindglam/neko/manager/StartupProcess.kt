@@ -1,6 +1,7 @@
 package com.bindglam.neko.manager
 
-import com.bindglam.neko.api.manager.ManagerBase
+import com.bindglam.neko.api.manager.LifecycleContext
+import com.bindglam.neko.api.manager.Managerial
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.utils.parallelIOThreadPool
 import java.util.function.Consumer
@@ -9,9 +10,9 @@ import java.util.function.Function
 class StartupProcess : Process {
     private val parallelThreadPool = parallelIOThreadPool()
 
-    override fun start(list: List<ManagerBase>) {
+    override fun start(context: LifecycleContext, list: List<Managerial>) {
         list.forEach {
-            it.start(this)
+            it.start(context, this)
         }
     }
 

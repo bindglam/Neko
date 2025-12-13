@@ -1,18 +1,15 @@
 package com.bindglam.neko.content.glyph
 
-import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.glyph.GlyphBuilder
 import com.bindglam.neko.api.content.glyph.properties.GlyphProperties
-import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.api.pack.minecraft.font.FontData
 import com.bindglam.neko.utils.NULL_KEY
-import com.bindglam.neko.utils.plugin
+import com.bindglam.neko.utils.neko
 import com.bindglam.neko.utils.toPackPath
 import com.google.gson.Gson
 import net.kyori.adventure.text.Component
-import org.bukkit.NamespacedKey
 
 class ShiftGlyph : Glyph(SHIFT_GLYPH_KEY, GlyphProperties.builder().texture(NULL_KEY).offsetY(0).scale(0).build()) {
     companion object {
@@ -23,7 +20,7 @@ class ShiftGlyph : Glyph(SHIFT_GLYPH_KEY, GlyphProperties.builder().texture(NULL
 
         private val GSON = Gson()
 
-        private val FONT_FILE = NamespacedKey(NekoProvider.neko().plugin(), "font/shift")
+        private val FONT_FILE = neko("font/shift")
     }
 
     override fun pack(zipper: PackZipper) {

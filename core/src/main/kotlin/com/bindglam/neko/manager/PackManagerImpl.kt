@@ -2,6 +2,7 @@ package com.bindglam.neko.manager
 
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.event.AsyncGenerateResourcePackEvent
+import com.bindglam.neko.api.manager.LifecycleContext
 import com.bindglam.neko.api.manager.PackManager
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.api.pack.PackFile
@@ -39,24 +40,22 @@ object PackManagerImpl : PackManager {
 
     private var packHost: PackHost? = null
 
-    private lateinit var config: FileConfiguration
     private lateinit var promptMessage: Component
     private lateinit var mergePacks: List<String>
     private var minecraftFont: FontData.TTF? = null
 
-    override fun start(process: Process) {
-        config = NekoProvider.neko().plugin().config
-        promptMessage = config.getRichMessage("pack.prompt-message")!!
-        mergePacks = config.getStringList("pack.merge-resource-packs.packs")
-        if(File("plugins/Neko", config.getString("pack.font.file")!!).exists())
-            minecraftFont = FontData.TTF(config.getString("pack.font.file")!!, config.getFloatList("pack.font.shift").let { Float2(it[0], it[1]) },
-                config.getDouble("pack.font.size").toFloat(), config.getDouble("pack.font.oversample").toFloat(), config.getString("pack.font.skip") ?: "")
+    override fun start(context: LifecycleContext, process: Process) {
+        promptMessage = context.config().getRichMessage("pack.prompt-message")!!
+        mergePacks = context.config().getStringList("pack.merge-resource-packs.packs")
+        if(File("plugins/Neko", context.config().getString("pack.font.file")!!).exists())
+            minecraftFont = FontData.TTF(context.config().getString("pack.font.file")!!, context.config().getFloatList("pack.font.shift").let { Float2(it[0], it[1]) },
+                context.config().getDouble("pack.font.size").toFloat(), context.config().getDouble("pack.font.oversample").toFloat(), context.config().getString("pack.font.skip") ?: "")
 
         if(!RESOURCEPACK_FOLDER.exists()) {
             RESOURCEPACK_FOLDER.mkdirs()
 
             RESOURCEPACK_META_FILE.apply { createIfNotExists() }.bufferedWriter().use { writer ->
-                NekoProvider.neko().plugin().getResource("pack.mcmeta")!!.bufferedReader().use { preset ->
+                context.plugin().getResource("pack.mcmeta")!!.bufferedReader().use { preset ->
                     writer.write(preset.lines().collect(Collectors.joining(System.lineSeparator())))
                 }
             }
@@ -66,13 +65,13 @@ object PackManagerImpl : PackManager {
 
         buildPackInfo()
 
-        packHost = PACK_HOSTS.find { config.getBoolean("pack.host.${it.id()}.enabled") }
-        config.getConfigurationSection("pack.host.${packHost?.id()}")?.let { packHost?.start(it) }
+        packHost = PACK_HOSTS.find { context.config().getBoolean("pack.host.${it.id()}.enabled") }
+        context.config().getConfigurationSection("pack.host.${packHost?.id()}")?.let { packHost?.start(it) }
 
         Bukkit.getOnlinePlayers().forEach { sendPack(it) }
     }
 
-    override fun end(process: Process) {
+    override fun end(context: LifecycleContext, process: Process) {
         packHost?.end()
     }
 

@@ -3,17 +3,15 @@ package com.bindglam.neko.content.block.renderer
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.block.Block
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer
-import com.bindglam.neko.api.pack.PackFile
 import com.bindglam.neko.api.pack.PackZipper
 import com.bindglam.neko.api.pack.Packable
 import com.bindglam.neko.api.pack.minecraft.block.BlockStateData
 import com.bindglam.neko.api.pack.minecraft.block.VanillaInstruments
 import com.bindglam.neko.api.utils.GsonUtils
-import com.bindglam.neko.utils.plugin
+import com.bindglam.neko.utils.neko
 import com.bindglam.neko.utils.toPackPath
 import net.kyori.adventure.key.Key
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
 import org.bukkit.Note
 import org.bukkit.block.BlockState
 import org.bukkit.block.BlockType
@@ -21,7 +19,7 @@ import org.bukkit.block.data.type.NoteBlock
 
 class NoteBlockRenderer(private val block: Block) : BlockRenderer, Packable {
     companion object {
-        val KEY = NamespacedKey(NekoProvider.neko().plugin(), "note_block")
+        val KEY = neko("note_block")
 
         private const val MAX_NOTE = 24
         private val BLOCKSTATE_FILE = Key.key("minecraft:blockstates/note_block").toPackPath("json")

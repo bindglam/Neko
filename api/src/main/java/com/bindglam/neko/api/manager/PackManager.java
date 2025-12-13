@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.net.URI;
 
-public interface PackManager extends ManagerBase, Reloadable {
+public interface PackManager extends Managerial, Reloadable {
     File BUILD_ZIP = new File("plugins/Neko/build.zip");
 
     @NotNull ResourcePackInfo packInfo(URI uri);

@@ -15,6 +15,7 @@ import com.bindglam.neko.manager.*
 import com.bindglam.neko.utils.MCVersion
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -22,7 +23,7 @@ import org.bukkit.event.server.ServerLoadEvent
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
-class NekoPlugin : Neko, JavaPlugin() {
+class NekoPlugin : Neko, LifecycleContext, JavaPlugin() {
     private val managers by lazy {
         listOf(
             CacheManagerImpl,
@@ -74,7 +75,7 @@ class NekoPlugin : Neko, JavaPlugin() {
             @EventHandler
             fun ServerLoadEvent.loadServices() {
                 Thread {
-                    StartupProcess().use { it.start(managers) }
+                    StartupProcess().use { it.start(this@NekoPlugin, managers) }
                 }.apply {
                     uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { t, e -> slF4JLogger.error("Failed to load", e) }
                 }.start()
@@ -83,7 +84,7 @@ class NekoPlugin : Neko, JavaPlugin() {
     }
 
     override fun onDisable() {
-        ShutdownProcess().use { it.start(managers) }
+        ShutdownProcess().use { it.start(this, managers) }
     }
 
     override fun reload(sender: CommandSender) {
@@ -92,7 +93,7 @@ class NekoPlugin : Neko, JavaPlugin() {
         val reloadableList = managers.stream().filter { it is Reloadable }.toList()
 
         Thread {
-            ReloadProcess(sender).use { it.start(reloadableList) }
+            ReloadProcess(sender).use { it.start(this, reloadableList) }
         }.apply {
             uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { t, e -> slF4JLogger.error("Failed to reload", e) }
         }.start()
@@ -103,4 +104,7 @@ class NekoPlugin : Neko, JavaPlugin() {
     override fun packManager(): PackManager = PackManagerImpl
     override fun playerNetworkManager(): PlayerNetworkManager = PlayerNetworkManagerImpl
     override fun nms(): NMSHook = nmsHook
+
+    override fun plugin(): JavaPlugin = this
+    override fun config(): FileConfiguration = config
 }

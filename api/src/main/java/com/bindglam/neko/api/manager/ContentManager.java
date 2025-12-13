@@ -10,7 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public interface ContentManager extends ManagerBase, Reloadable {
+public interface ContentManager extends Managerial, Reloadable {
     @Nullable Item customItem(Key key);
 
     @Nullable Item customItem(ItemStack itemStack);
