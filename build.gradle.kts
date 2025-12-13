@@ -20,7 +20,8 @@ tasks {
             pluginJars(project("test-plugin").tasks.jar.flatMap {
                 it.archiveFile
             })
-            hangar("BetterModel", "1.13.2")
+            hangar("BetterModel", "1.15.0")
+            hangar("PlaceholderAPI", "2.11.7")
             //hangar("BetterHud", "1.14.0")
             //modrinth("fastasyncworldedit", "2.13.1")
             //modrinth("worldguard", "7.0.14")

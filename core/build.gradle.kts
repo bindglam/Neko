@@ -1,4 +1,5 @@
 import xyz.jpenilla.resourcefactory.bukkit.BukkitPluginYaml
+import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 
 plugins {
     id("paper-conventions")
@@ -6,7 +7,7 @@ plugins {
 }
 
 repositories {
-    maven("https://repo.codemc.io/repository/maven-public/")
+    maven("https://repo.extendedclip.com/releases/")
 }
 
 dependencies {
@@ -14,6 +15,7 @@ dependencies {
     rootProject.project("nms").subprojects.forEach {
         implementation(project(":nms:${it.name}"))
     }
+    compileOnly("me.clip:placeholderapi:2.11.7")
 }
 
 paperPluginYaml {
@@ -25,4 +27,7 @@ paperPluginYaml {
     apiVersion = "1.21"
     author = "Bindglam"
     load = BukkitPluginYaml.PluginLoadOrder.STARTUP
+    dependencies {
+        server(name = "PlaceholderAPI", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
+    }
 }

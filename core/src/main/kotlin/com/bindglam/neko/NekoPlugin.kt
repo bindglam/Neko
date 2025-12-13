@@ -28,7 +28,8 @@ class NekoPlugin : Neko, JavaPlugin() {
             CacheManagerImpl,
             ContentManagerImpl,
             PackManagerImpl,
-            PlayerNetworkManagerImpl
+            PlayerNetworkManagerImpl,
+            CompatibilityManager
         )
     }
 
