@@ -14,7 +14,9 @@ import com.bindglam.neko.pack.host.selfhost.SelfHost
 import com.bindglam.neko.utils.createIfNotExists
 import com.bindglam.neko.utils.plugin
 import net.kyori.adventure.resource.ResourcePackInfo
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.math.BigInteger
@@ -25,18 +27,22 @@ import java.util.stream.Collectors
 
 object PackManagerImpl : PackManager {
     private val LOGGER = LoggerFactory.getLogger(PackManager::class.java)
-
     private val RESOURCEPACK_FOLDER = File("plugins/Neko/resourcepack")
     private val RESOURCEPACK_META_FILE = File(RESOURCEPACK_FOLDER, "pack.mcmeta")
     private val HASH_DIGEST = MessageDigest.getInstance("MD5")
-
     private val PACK_HOSTS = listOf(SelfHost())
 
     private lateinit var packInfo: ResourcePackInfo.Builder
 
     private var packHost: PackHost? = null
 
+    private lateinit var promptMessage: Component
+    private lateinit var mergePacks: List<String>
+
     override fun start(process: Process) {
+        promptMessage = NekoProvider.neko().plugin().config.getRichMessage("pack.prompt-message")!!
+        mergePacks = NekoProvider.neko().plugin().config.getStringList("pack.merge-resource-packs.packs")
+
         if(!RESOURCEPACK_FOLDER.exists()) {
             RESOURCEPACK_FOLDER.mkdirs()
 
@@ -56,7 +62,7 @@ object PackManagerImpl : PackManager {
 
             config.getConfigurationSection("pack.host.${packHost?.id()}")?.let { packHost?.start(it) }
 
-            Bukkit.getOnlinePlayers().forEach { packHost?.sendPack(it, NekoProvider.neko().plugin().config.getRichMessage("pack.prompt-message")!!) }
+            Bukkit.getOnlinePlayers().forEach { sendPack(it) }
         }
     }
 
@@ -84,8 +90,6 @@ object PackManagerImpl : PackManager {
     }
 
     private fun mergeResourcePacks(zipper: PackZipperImpl) {
-        val mergePacks = NekoProvider.neko().plugin().config.getStringList("pack.merge-resource-packs.packs")
-
         var currentMeta = GsonUtils.GSON.fromJson(RESOURCEPACK_META_FILE.bufferedReader().readText(), PackMeta::class.java)
 
         mergePacks.map { File("plugins/${it}") }.forEach { pack ->
@@ -117,6 +121,10 @@ object PackManagerImpl : PackManager {
             cache["id"] = packUUID.toString()
 
         packInfo = ResourcePackInfo.resourcePackInfo().id(packUUID).hash(packHash)
+    }
+
+    override fun sendPack(player: Player) {
+        packHost?.sendPack(player, promptMessage)
     }
 
     override fun packInfo(uri: URI): ResourcePackInfo = packInfo.uri(uri).build()

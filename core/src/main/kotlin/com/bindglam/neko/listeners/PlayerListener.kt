@@ -12,7 +12,7 @@ object PlayerListener : Listener {
     fun PlayerJoinEvent.onJoin() {
         NekoProvider.neko().playerNetworkManager().inject(player)
 
-        NekoProvider.neko().packManager().packHost()?.sendPack(player, NekoProvider.neko().plugin().config.getRichMessage("pack.prompt-message")!!)
+        NekoProvider.neko().packManager().sendPack(player)
     }
 
     @EventHandler

@@ -2,6 +2,7 @@ package com.bindglam.neko.api.manager;
 
 import com.bindglam.neko.api.pack.host.PackHost;
 import net.kyori.adventure.resource.ResourcePackInfo;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,4 +15,6 @@ public interface PackManager extends ManagerBase, Reloadable {
     @NotNull ResourcePackInfo packInfo(URI uri);
 
     @Nullable PackHost packHost();
+
+    void sendPack(Player player);
 }
