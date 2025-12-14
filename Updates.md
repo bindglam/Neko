@@ -1,3 +1,4 @@
 - **Add Custom Font**
 - Add Placeholder compatibility
+- Add MiniPlaceholders compatibility
 - **Add SoundEvent**

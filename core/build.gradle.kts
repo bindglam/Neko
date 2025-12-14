@@ -15,7 +15,9 @@ dependencies {
     rootProject.project("nms").subprojects.forEach {
         implementation(project(":nms:${it.name}"))
     }
+
     compileOnly("me.clip:placeholderapi:2.11.7")
+    compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
 }
 
 paperPluginYaml {
@@ -29,5 +31,6 @@ paperPluginYaml {
     load = BukkitPluginYaml.PluginLoadOrder.STARTUP
     dependencies {
         server(name = "PlaceholderAPI", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
+        server(name = "MiniPlaceholders", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
     }
 }

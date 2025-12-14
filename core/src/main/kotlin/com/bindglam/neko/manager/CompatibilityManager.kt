@@ -4,11 +4,12 @@ import com.bindglam.neko.api.manager.LifecycleContext
 import com.bindglam.neko.api.manager.Managerial
 import com.bindglam.neko.api.manager.Process
 import com.bindglam.neko.compatibility.Compatibility
+import com.bindglam.neko.compatibility.miniplaceholders.MiniPlaceholdersCompatibility
 import com.bindglam.neko.compatibility.placeholderapi.PlaceholderAPICompatibility
 import org.bukkit.Bukkit
 
 object CompatibilityManager : Managerial {
-    private val compatibilities = listOf(PlaceholderAPICompatibility)
+    private val compatibilities = listOf(PlaceholderAPICompatibility, MiniPlaceholdersCompatibility)
 
     private val enabledCompatibilities = arrayListOf<Compatibility>()
 
