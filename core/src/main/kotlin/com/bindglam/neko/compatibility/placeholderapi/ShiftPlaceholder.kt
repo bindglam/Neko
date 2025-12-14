@@ -1,16 +1,16 @@
 package com.bindglam.neko.compatibility.placeholderapi
 
 import com.bindglam.neko.api.NekoProvider
+import com.bindglam.neko.api.content.glyph.Glyph
 import com.bindglam.neko.api.content.glyph.GlyphBuilder
 import com.bindglam.neko.api.registry.BuiltInRegistries
 import com.bindglam.neko.utils.plugin
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import net.kyori.adventure.text.minimessage.MiniMessage
-import org.bukkit.NamespacedKey
 import org.bukkit.OfflinePlayer
 
-object GlyphPlaceholder : PlaceholderExpansion() {
-    override fun getIdentifier(): String = "glyph"
+object ShiftPlaceholder : PlaceholderExpansion() {
+    override fun getIdentifier(): String = "shift"
 
     override fun getAuthor(): String = "Bindglam"
 
@@ -21,13 +21,13 @@ object GlyphPlaceholder : PlaceholderExpansion() {
     }
 
     override fun onRequest(player: OfflinePlayer?, params: String): String? {
-        val key = NamespacedKey.fromString(params)!!
+        val offset = params.toInt()
 
-        val wrapper = BuiltInRegistries.GLYPHS.get(key)
+        val wrapper = BuiltInRegistries.GLYPHS.get(Glyph.SHIFT_GLYPH_KEY)
 
         if(wrapper.isEmpty)
             return null
 
-        return "<reset>" + MiniMessage.miniMessage().serialize(wrapper.get().component(GlyphBuilder.builder())) + "<reset>"
+        return "<reset>" + MiniMessage.miniMessage().serialize(wrapper.get().component(GlyphBuilder.builder().offsetX(offset))) + "<reset>"
     }
 }

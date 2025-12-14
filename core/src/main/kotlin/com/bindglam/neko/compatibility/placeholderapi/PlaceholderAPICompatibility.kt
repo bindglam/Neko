@@ -11,7 +11,7 @@ object PlaceholderAPICompatibility : Compatibility {
 
     override fun start() {
         Bukkit.getScheduler().runTask(NekoProvider.neko().plugin()) { _ ->
-            listOf(GlyphPlaceholder)
+            listOf(GlyphPlaceholder, ShiftPlaceholder)
                 .forEach { it.register() }
         }
     }
