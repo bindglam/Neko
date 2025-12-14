@@ -7,16 +7,34 @@ import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.content.glyph.Glyph;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.content.item.Item;
+import it.unimi.dsi.fastutil.Pair;
+import net.kyori.adventure.key.Key;
 
-public interface BuiltInRegistries {
-    Registry<Item> ITEMS = empty();
-    Registry<Block> BLOCKS = empty();
-    Registry<Factory<BlockRenderer, Block>> BLOCK_RENDERERS = empty();
-    Registry<Glyph> GLYPHS = empty();
-    Registry<Furniture> FURNITURE = empty();
-    Registry<SoundEvent> SOUNDS = empty();
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-    private static <T> Registry<T> empty() {
+public final class BuiltInRegistries {
+    public static final WritableRegistry<Item> ITEMS = writable();
+    public static final WritableRegistry<Block> BLOCKS = writable();
+    public static final WritableRegistry<Factory<BlockRenderer, Block>> BLOCK_RENDERERS = writable();
+    public static final WritableRegistry<Glyph> GLYPHS = writable();
+    public static final WritableRegistry<Furniture> FURNITURE = writable();
+    public static final WritableRegistry<SoundEvent> SOUNDS = writable();
+
+    private BuiltInRegistries() {
+    }
+
+    private static <T> Registry<T> of(Map<Key, T> preset) {
+        return new ReadOnlyRegistry<>(preset);
+    }
+
+    @SafeVarargs
+    private static <T> Registry<T> of(Pair<Key, T>... preset) {
+        return new ReadOnlyRegistry<>(Arrays.stream(preset).collect(HashMap::new, (map, entry) -> map.put(entry.key(), entry.value()), HashMap::putAll));
+    }
+
+    private static <T> WritableRegistry<T> writable() {
         return new ScalableRegistry<>();
     }
 }

@@ -8,10 +8,11 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.util.*;
 
 @ApiStatus.Internal
-public final class ScalableRegistry<T> implements WritableRegistry<T> {
-    private final Map<Key, T> map = new HashMap<>();
+public final class ReadOnlyRegistry<T> implements Registry<T> {
+    private final Map<Key, T> map;
 
-    ScalableRegistry() {
+    ReadOnlyRegistry(Map<Key, T> preset) {
+        this.map = Map.copyOf(preset);
     }
 
     @Override
@@ -22,16 +23,6 @@ public final class ScalableRegistry<T> implements WritableRegistry<T> {
     @Override
     public @NotNull @Unmodifiable Set<Map.Entry<Key, T>> entrySet() {
         return map.entrySet();
-    }
-
-    @Override
-    public synchronized void register(@NotNull Key key, @NotNull T value) {
-        map.put(key, value);
-    }
-
-    @Override
-    public void clear() {
-        map.clear();
     }
 
     @Override

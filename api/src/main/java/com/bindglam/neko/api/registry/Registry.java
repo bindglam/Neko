@@ -17,9 +17,5 @@ public interface Registry<T> extends Iterable<T> {
 
     @NotNull @Unmodifiable Set<Map.Entry<Key, T>> entrySet();
 
-    void register(@NotNull Key key, @NotNull T value);
-
-    void clear();
-
     int size();
 }
