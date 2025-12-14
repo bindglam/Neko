@@ -29,6 +29,7 @@ paperPluginYaml {
     apiVersion = "1.21"
     author = "Bindglam"
     load = BukkitPluginYaml.PluginLoadOrder.STARTUP
+    foliaSupported = true
     dependencies {
         server(name = "PlaceholderAPI", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)
         server(name = "MiniPlaceholders", load = PaperPluginYaml.Load.BEFORE, required = false, joinClasspath = true)

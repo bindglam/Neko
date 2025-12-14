@@ -26,6 +26,7 @@ paperPluginYaml {
     author = "Bindglam"
     authors = listOf("Bindglam")
     load = BukkitPluginYaml.PluginLoadOrder.POSTWORLD
+    foliaSupported = true
     dependencies {
         server("Neko", PaperPluginYaml.Load.BEFORE, true, true)
     }

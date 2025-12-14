@@ -12,9 +12,12 @@ val groupString = group.toString()
 val versionString = version.toString()
 val mcVersionString = property("minecraft_version").toString()
 
+runPaper.folia.registerTask()
+
 tasks {
     runServer {
-        version(mcVersionString)
+        //version(mcVersionString)
+        version("1.21.4")
 
         downloadPlugins {
             pluginJars(project("test-plugin").tasks.jar.flatMap {
