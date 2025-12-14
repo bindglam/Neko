@@ -32,8 +32,13 @@ object PackerApplier {
                 furniture.pack(zipper)
         }
 
+        BuiltInRegistries.SOUNDS.entrySet().forEach { entry ->
+            val sound = entry.value
+
+            if(sound is Packable)
+                sound.pack(zipper)
+        }
+
         AtlasesMaker.pack(zipper)
-
-
     }
 }
