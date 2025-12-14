@@ -1,3 +1,3 @@
-- 커스텀 폰트 추가
-- PlaceholderAPI 지원
+- **Add Custom Font**
+- Add Placeholder compatibility
 - **Add SoundEvent**
