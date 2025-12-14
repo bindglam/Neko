@@ -8,10 +8,11 @@ import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.*;
 
-public record CorrectTools(@NotNull List<Tag<Material>> tags, @NotNull Multimap<ListType, ItemStackReference> items) {
+public record CorrectTools(@NotNull @Unmodifiable List<Tag<Material>> tags, @NotNull @Unmodifiable Multimap<ListType, ItemStackReference> items) {
 
     public boolean isCorrectTool(@Nullable ItemStack itemStack) {
         if(itemStack == null) return false;
@@ -19,7 +20,7 @@ public record CorrectTools(@NotNull List<Tag<Material>> tags, @NotNull Multimap<
         if (tags().stream().anyMatch((tag) -> tag.isTagged(itemStack.getType())) && items().get(ListType.BLACKLIST).stream().noneMatch((item) -> item.isSame(itemStack)))
             return true;
 
-        return items().get(ListType.WHITELIST).stream().anyMatch((item) -> item.isSame(itemStack));
+        return items().get(ListType.WHITELIST).stream().filter(Objects::nonNull).anyMatch((item) -> item.isSame(itemStack));
     }
 
 

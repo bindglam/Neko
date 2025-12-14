@@ -2,12 +2,13 @@ package com.bindglam.neko.api.content.block.properties;
 
 import com.bindglam.neko.api.content.item.ItemStackReference;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public record Drops(@NotNull List<DropData> data) {
+public record Drops(@NotNull @Unmodifiable List<DropData> data) {
 
     public static Builder builder() {
         return new Builder();

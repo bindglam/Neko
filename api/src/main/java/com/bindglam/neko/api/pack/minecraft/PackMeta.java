@@ -6,6 +6,7 @@ import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.utils.GsonUtils;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 
@@ -18,20 +19,20 @@ public record PackMeta(Pack pack, @Nullable Overlays overlays) implements PackCo
     public record Pack(
             @SerializedName("pack_format") int packFormat,
             String description,
-            @SerializedName("supported_formats") @Nullable List<Integer> supportedFormats,
+            @SerializedName("supported_formats") @Nullable @Unmodifiable List<Integer> supportedFormats,
             @SerializedName("min_format") @Nullable Integer minFormat,
             @SerializedName("max_format") @Nullable Integer maxFormat
     ) {
     }
 
     public record Overlays(
-            List<Entry> entries
+            @Unmodifiable List<Entry> entries
     ) {
         public record Entry(
-            List<Integer> formats,
-            String directory,
-            @SerializedName("min_format") int minFormat,
-            @SerializedName("max_format") int maxFormat
+                @Unmodifiable List<Integer> formats,
+                String directory,
+                @SerializedName("min_format") int minFormat,
+                @SerializedName("max_format") int maxFormat
         ) {
         }
     }

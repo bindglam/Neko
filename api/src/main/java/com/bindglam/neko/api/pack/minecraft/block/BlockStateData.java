@@ -5,12 +5,13 @@ import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.utils.GsonUtils;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Map;
 
 @ApiStatus.Internal
 public record BlockStateData(
-        Map<String, Variant> variants
+        @Unmodifiable Map<String, Variant> variants
 ) implements PackComponent {
 
     @Override

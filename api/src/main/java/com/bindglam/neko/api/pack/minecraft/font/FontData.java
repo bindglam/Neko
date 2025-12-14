@@ -7,13 +7,14 @@ import com.bindglam.neko.api.pack.minecraft.Float2;
 import com.bindglam.neko.api.utils.GsonUtils;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 import java.util.Map;
 
 @ApiStatus.Internal
 public record FontData(
-        List<Provider> providers
+        @Unmodifiable List<Provider> providers
 ) implements PackComponent {
 
     @Override
@@ -70,7 +71,7 @@ public record FontData(
             return ascent;
         }
 
-        public List<Character> chars() {
+        public @Unmodifiable List<Character> chars() {
             return chars;
         }
     }
@@ -83,7 +84,7 @@ public record FontData(
             this.advances = advances;
         }
 
-        public Map<Character, Integer> advances() {
+        public @Unmodifiable Map<Character, Integer> advances() {
             return advances;
         }
     }

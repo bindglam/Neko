@@ -7,13 +7,14 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public record BlockProperties(@NotNull NamespacedKey model, @NotNull Factory<BlockRenderer, Block> renderer, float hardness, float blastResistance,
-                              @Nullable CorrectTools correctTools, @NotNull List<Enchantment> blacklistEnchantments, @Nullable Drops drops, @Nullable Sounds sounds) {
+                              @Nullable CorrectTools correctTools, @NotNull @Unmodifiable List<Enchantment> blacklistEnchantments, @Nullable Drops drops, @Nullable Sounds sounds) {
 
     public static Builder builder() {
         return new Builder();

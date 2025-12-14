@@ -40,7 +40,7 @@ public record SoundEventProperties(@Nullable String subtitle, @Unmodifiable List
 
         @Override
         public @NotNull SoundEventProperties build() {
-            return new SoundEventProperties(subtitle, List.copyOf(sounds));
+            return new SoundEventProperties(subtitle, sounds);
         }
     }
 }

@@ -6,11 +6,12 @@ import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.utils.GsonUtils;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 
 @ApiStatus.Internal
-public record AtlasesData(List<Source> sources) implements PackComponent {
+public record AtlasesData(@Unmodifiable List<Source> sources) implements PackComponent {
 
     @Override
     public void apply(String path, PackZipper zipper) {

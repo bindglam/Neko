@@ -7,11 +7,12 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 
 public record Armor(@NotNull EquipmentSlot slot, @Nullable Sound equipSound, @Nullable NamespacedKey model, @Nullable NamespacedKey cameraOverlay,
-                    @Nullable List<EntityType> allowedEntities, boolean isDispensable, boolean isSwappable, boolean isDamageOnHurt, boolean isEquipOnInteract) {
+                    @Nullable @Unmodifiable List<EntityType> allowedEntities, boolean isDispensable, boolean isSwappable, boolean isDamageOnHurt, boolean isEquipOnInteract) {
 
     public void apply(@NotNull EquippableComponent component) {
         component.setSlot(slot());

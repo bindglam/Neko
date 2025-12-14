@@ -5,13 +5,14 @@ import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.utils.GsonUtils;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
 @ApiStatus.Internal
-public record EquipmentData(Map<String, List<Model>> layers) implements PackComponent {
+public record EquipmentData(@Unmodifiable Map<String, List<Model>> layers) implements PackComponent {
 
     @Override
     public void apply(String path, PackZipper zipper) {

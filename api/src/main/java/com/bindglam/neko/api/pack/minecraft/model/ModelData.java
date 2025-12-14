@@ -7,6 +7,7 @@ import com.bindglam.neko.api.pack.minecraft.Float2;
 import com.bindglam.neko.api.utils.GsonUtils;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 import java.util.Map;
@@ -15,10 +16,10 @@ import java.util.Map;
 public record ModelData(
         String credit,
         @SerializedName("texture_size") Float2 textureSize,
-        Map<String, String> textures,
-        List<Element> elements,
+        @Unmodifiable Map<String, String> textures,
+        @Unmodifiable List<Element> elements,
         @SerializedName("gui_light") GuiLight guiLight,
-        Map<ModelDisplay.Type, ModelDisplay> display
+        @Unmodifiable Map<ModelDisplay.Type, ModelDisplay> display
 ) implements PackComponent {
 
     @Override

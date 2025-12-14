@@ -3,15 +3,17 @@ package com.bindglam.neko.api.pack.minecraft;
 import com.bindglam.neko.api.pack.PackFile;
 import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.minecraft.model.ModelData;
+import com.bindglam.neko.api.utils.CollectionUtils;
 import com.bindglam.neko.api.utils.GsonUtils;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @ApiStatus.Internal
 public final class AtlasesMaker {
-    private static final AtlasesData BLOCK_ATLASES = new AtlasesData(new ArrayList<>());
+    private static AtlasesData BLOCK_ATLASES = new AtlasesData(List.of());
 
     private AtlasesMaker() {
     }
@@ -25,7 +27,7 @@ public final class AtlasesMaker {
     }
 
     public static void addBlock(AtlasesData.Source source) {
-        BLOCK_ATLASES.sources().add(source);
+        BLOCK_ATLASES = new AtlasesData(CollectionUtils.copyAndAdd(BLOCK_ATLASES.sources(), source));
     }
 
     public static void addAllFromModel(Key key, PackZipper zipper) {

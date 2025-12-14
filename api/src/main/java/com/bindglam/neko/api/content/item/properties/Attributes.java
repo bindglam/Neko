@@ -5,11 +5,12 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public record Attributes(@NotNull Map<Attribute, AttributeModifier> modifiers, boolean resetWhenApply) {
+public record Attributes(@NotNull @Unmodifiable Map<Attribute, AttributeModifier> modifiers, boolean resetWhenApply) {
 
     public static Builder builder() {
         return new Builder();

@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +17,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-public record ItemProperties(@NotNull ItemType type, int durability, @Nullable Component name, @Nullable List<Component> lore, @Nullable BiFunction<ItemStack, Player, List<Component>> clientsideLore,
-                             @NotNull NamespacedKey model, @Nullable Armor armor, @Nullable Attributes attributes, @Nullable Food food, @NotNull Map<Enchantment, Integer> enchantments) {
+public record ItemProperties(@NotNull ItemType type, int durability, @Nullable Component name, @Nullable @Unmodifiable List<Component> lore, @Nullable BiFunction<ItemStack, Player, List<Component>> clientsideLore,
+                             @NotNull NamespacedKey model, @Nullable Armor armor, @Nullable Attributes attributes, @Nullable Food food, @NotNull @Unmodifiable Map<Enchantment, Integer> enchantments) {
 
     public static Builder builder() {
         return new Builder();

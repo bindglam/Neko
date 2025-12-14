@@ -8,6 +8,7 @@ import com.bindglam.neko.api.pack.PackZipper;
 import com.bindglam.neko.api.pack.Packable;
 import com.bindglam.neko.api.pack.minecraft.font.FontData;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
+import com.bindglam.neko.api.utils.CollectionUtils;
 import com.bindglam.neko.api.utils.GsonUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.ShadowColor;
@@ -65,9 +66,8 @@ public class Glyph implements Keyed, Packable {
         else
             data = new FontData(new ArrayList<>());
 
-        data.providers().add(new FontData.Bitmap(properties.texture().asString() + ".png", properties.scale(), properties.offsetY(), List.of(character)));
-
-        zipper.addComponent(path, data);
+        zipper.addComponent(path,
+                new FontData(CollectionUtils.copyAndAdd(data.providers(), new FontData.Bitmap(properties.texture().asString() + ".png", properties.scale(), properties.offsetY(), List.of(character)))));
     }
 
     @NotNull

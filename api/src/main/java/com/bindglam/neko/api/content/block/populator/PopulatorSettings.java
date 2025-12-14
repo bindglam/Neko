@@ -4,11 +4,12 @@ import com.bindglam.neko.api.content.block.Block;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public record PopulatorSettings(Block block, int maxLevel, int minLevel, double chance, List<Material> replace, List<Biome> biomes, int iterations, int veinSize, double clusterChance) {
+public record PopulatorSettings(Block block, int maxLevel, int minLevel, double chance, @Unmodifiable List<Material> replace, @Unmodifiable List<Biome> biomes, int iterations, int veinSize, double clusterChance) {
 
     public static Builder builder() {
         return new Builder();
