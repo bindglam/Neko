@@ -1,13 +1,13 @@
 package com.bindglam.neko.test.items;
 
-import com.bindglam.neko.api.content.item.CustomItem;
+import com.bindglam.neko.api.content.item.Item;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 
 import java.util.List;
 
-public class RubyItem extends CustomItem {
+public class RubyItem extends Item {
     public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "ruby");
 
     public RubyItem() {

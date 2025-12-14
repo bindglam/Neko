@@ -1,7 +1,7 @@
 package com.bindglam.neko.test.items;
 
 import com.bindglam.neko.api.content.EventState;
-import com.bindglam.neko.api.content.item.CustomItem;
+import com.bindglam.neko.api.content.item.Item;
 import com.bindglam.neko.api.content.item.properties.Food;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import net.kyori.adventure.text.Component;
@@ -12,13 +12,12 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
 
-public class EnergyDrinkItem extends CustomItem {
+public class EnergyDrinkItem extends Item {
     public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "energy_drink");
 
     public EnergyDrinkItem() {

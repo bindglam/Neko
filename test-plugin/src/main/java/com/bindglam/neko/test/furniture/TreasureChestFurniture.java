@@ -1,7 +1,7 @@
 package com.bindglam.neko.test.furniture;
 
 import com.bindglam.neko.api.content.EventState;
-import com.bindglam.neko.api.content.furniture.CustomFurniture;
+import com.bindglam.neko.api.content.furniture.Furniture;
 import com.bindglam.neko.api.content.furniture.FurnitureDisplay;
 import com.bindglam.neko.api.content.furniture.properties.FurnitureProperties;
 import com.bindglam.neko.api.content.furniture.properties.Model;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class TreasureChestFurniture extends CustomFurniture {
+public class TreasureChestFurniture extends Furniture {
     public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "treasure_chest");
 
     public TreasureChestFurniture() {

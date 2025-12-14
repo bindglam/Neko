@@ -21,10 +21,7 @@ import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.attribute.Attribute
 import org.bukkit.block.Block
-import org.bukkit.block.BlockType
-import org.bukkit.block.data.type.TNT
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.ExperienceOrb
 import org.bukkit.entity.Explosive
 import org.bukkit.entity.Player
@@ -35,7 +32,6 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.entity.EntityExplodeEvent
-import org.bukkit.event.entity.FireworkExplodeEvent
 import org.bukkit.event.player.PlayerAnimationEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack

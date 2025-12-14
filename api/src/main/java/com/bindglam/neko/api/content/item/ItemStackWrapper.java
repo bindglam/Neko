@@ -54,7 +54,7 @@ public final class ItemStackWrapper implements ItemStackReference {
         return of(itemStack.getType());
     }
 
-    public static ItemStackWrapper of(CustomItem customItem) {
+    public static ItemStackWrapper of(Item customItem) {
         return of(customItem.getKey());
     }
 }

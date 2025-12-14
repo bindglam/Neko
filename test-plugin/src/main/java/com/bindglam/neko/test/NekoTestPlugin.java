@@ -1,12 +1,12 @@
 package com.bindglam.neko.test;
 
-import com.bindglam.neko.api.content.block.CustomBlock;
+import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.content.block.populator.CustomBlockPopulator;
 import com.bindglam.neko.api.content.block.populator.PopulatorSettings;
-import com.bindglam.neko.api.content.furniture.CustomFurniture;
-import com.bindglam.neko.api.content.item.furniture.CustomFurnitureItem;
+import com.bindglam.neko.api.content.furniture.Furniture;
+import com.bindglam.neko.api.content.item.furniture.FurnitureItem;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
-import com.bindglam.neko.api.content.item.block.CustomBlockItem;
+import com.bindglam.neko.api.content.item.block.BlockItem;
 import com.bindglam.neko.api.event.AsyncContentsLoadEvent;
 import com.bindglam.neko.api.event.AsyncGenerateResourcePackEvent;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
@@ -75,13 +75,13 @@ public class NekoTestPlugin extends JavaPlugin implements Listener {
         event.addPluginPack(this);
     }
 
-    private static void registerBlock(NamespacedKey key, CustomBlock block) {
-        BuiltInRegistries.ITEMS.register(key, new CustomBlockItem(block.getKey(), ItemProperties.builder().model(block.properties().model()).build(), block));
+    private static void registerBlock(NamespacedKey key, Block block) {
+        BuiltInRegistries.ITEMS.register(key, new BlockItem(block.getKey(), ItemProperties.builder().model(block.properties().model()).build(), block));
         BuiltInRegistries.BLOCKS.register(key, block);
     }
 
-    private static void registerFurniture(NamespacedKey key, CustomFurniture furniture) {
-        BuiltInRegistries.ITEMS.register(key, new CustomFurnitureItem(furniture.getKey(), ItemProperties.builder().model(furniture.properties().model().model()).build(), furniture));
+    private static void registerFurniture(NamespacedKey key, Furniture furniture) {
+        BuiltInRegistries.ITEMS.register(key, new FurnitureItem(furniture.getKey(), ItemProperties.builder().model(furniture.properties().model().model()).build(), furniture));
         BuiltInRegistries.FURNITURE.register(key, furniture);
     }
 }

@@ -1,14 +1,14 @@
 package com.bindglam.neko.test.blocks;
 
 import com.bindglam.neko.api.content.block.properties.CorrectTools;
-import com.bindglam.neko.api.content.block.CustomBlock;
+import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.content.block.properties.BlockProperties;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
 import com.bindglam.neko.api.registry.BuiltInRegistries;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 
-public class RubyBlock extends CustomBlock {
+public class RubyBlock extends Block {
     public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "ruby_block");
 
     public RubyBlock() {

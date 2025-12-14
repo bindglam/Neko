@@ -1,6 +1,6 @@
 package com.bindglam.neko.test.items;
 
-import com.bindglam.neko.api.content.item.CustomItem;
+import com.bindglam.neko.api.content.item.Item;
 import com.bindglam.neko.api.content.item.properties.Armor;
 import com.bindglam.neko.api.content.item.properties.Attributes;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
@@ -10,7 +10,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemType;
 
-public class RubyHelmetItem extends CustomItem {
+public class RubyHelmetItem extends Item {
     public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "ruby_helmet");
 
     public RubyHelmetItem() {

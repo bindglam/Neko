@@ -1,12 +1,12 @@
 package com.bindglam.neko.api.registry;
 
+import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.content.furniture.Furniture;
+import com.bindglam.neko.api.content.item.Item;
 import com.bindglam.neko.api.content.sound.SoundEvent;
 import com.bindglam.neko.api.utils.Factory;
-import com.bindglam.neko.api.content.block.Block;
 import com.bindglam.neko.api.content.glyph.Glyph;
 import com.bindglam.neko.api.content.block.renderer.BlockRenderer;
-import com.bindglam.neko.api.content.item.Item;
 import it.unimi.dsi.fastutil.Pair;
 import net.kyori.adventure.key.Key;
 

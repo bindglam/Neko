@@ -1,13 +1,13 @@
 package com.bindglam.neko.test.items;
 
-import com.bindglam.neko.api.content.item.CustomItem;
+import com.bindglam.neko.api.content.item.Item;
 import com.bindglam.neko.api.content.item.properties.Armor;
 import com.bindglam.neko.api.content.item.properties.ItemProperties;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemType;
 
-public class RubyLeggingsItem extends CustomItem {
+public class RubyLeggingsItem extends Item {
     public static final NamespacedKey KEY = new NamespacedKey("defaultassets", "ruby_leggings");
 
     public RubyLeggingsItem() {
