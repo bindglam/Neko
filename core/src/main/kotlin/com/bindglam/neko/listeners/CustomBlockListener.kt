@@ -172,6 +172,7 @@ object CustomBlockListener : Listener {
         BlockHelper.updateBreakProgress(player, blockBreakSpeedData.speed)
         player.sendBlockDamage(block.location, BlockHelper.breakProgress(player).coerceAtMost(1f))
 
+
         if(BlockHelper.breakProgress(player) >= 1f) {
             BlockHelper.removeBreakProgress(player)
 

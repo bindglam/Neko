@@ -4,14 +4,10 @@ import com.bindglam.neko.api.Neko
 import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.manager.*
 import com.bindglam.neko.api.nms.NMSHook
-import com.bindglam.neko.listeners.CustomBlockListener
-import com.bindglam.neko.listeners.CustomFurnitureListener
-import com.bindglam.neko.listeners.InventoryListener
-import com.bindglam.neko.listeners.CustomItemListener
-import com.bindglam.neko.listeners.NekoListener
-import com.bindglam.neko.listeners.PlayerListener
-import com.bindglam.neko.listeners.ServerListener
+import com.bindglam.neko.api.scheduler.Scheduler
+import com.bindglam.neko.listeners.*
 import com.bindglam.neko.manager.*
+import com.bindglam.neko.scheduler.PaperScheduler
 import com.bindglam.neko.utils.MCVersion
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
@@ -35,6 +31,7 @@ class NekoPlugin : Neko, LifecycleContext, JavaPlugin() {
     }
 
     private lateinit var nmsHook: NMSHook
+    private lateinit var scheduler: Scheduler
 
     override fun onEnable() {
         NekoProvider.register(this)
@@ -64,6 +61,8 @@ class NekoPlugin : Neko, LifecycleContext, JavaPlugin() {
                 com.bindglam.neko.nms.v1_21_R3.NMSHookImpl
             }
         }
+
+        scheduler = PaperScheduler(this)
 
         YamlConfiguration.loadConfiguration(File("config/paper-global.yml")).also { paperConfig ->
             if(!paperConfig.getBoolean("block-updates.disable-noteblock-updates")) {
@@ -99,11 +98,21 @@ class NekoPlugin : Neko, LifecycleContext, JavaPlugin() {
         }.start()
     }
 
+    private fun isFolia(): Boolean {
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer")
+            return true
+        } catch (_: ClassNotFoundException) {
+            return false
+        }
+    }
+
     override fun cacheManager(): CacheManager = CacheManagerImpl
     override fun contentManager(): ContentManager = ContentManagerImpl
     override fun packManager(): PackManager = PackManagerImpl
     override fun playerNetworkManager(): PlayerNetworkManager = PlayerNetworkManagerImpl
     override fun nms(): NMSHook = nmsHook
+    override fun scheduler(): Scheduler = scheduler
 
     override fun plugin(): JavaPlugin = this
     override fun config(): FileConfiguration = config

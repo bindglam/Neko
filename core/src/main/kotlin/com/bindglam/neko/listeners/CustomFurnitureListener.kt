@@ -6,14 +6,8 @@ import com.bindglam.neko.api.content.item.furniture.FurnitureItem
 import com.bindglam.neko.api.event.FurnitureBreakEvent
 import com.bindglam.neko.api.event.FurniturePlaceEvent
 import com.bindglam.neko.content.furniture.FurnitureHelper
-import com.bindglam.neko.utils.CURRENT_TICK
-import com.bindglam.neko.utils.canPlaceBlock
-import com.bindglam.neko.utils.isInteractable
-import com.bindglam.neko.utils.isReplaceable
-import com.bindglam.neko.utils.placeBlock
-import com.bindglam.neko.utils.plugin
+import com.bindglam.neko.utils.*
 import net.kyori.adventure.sound.Sound
-import org.bukkit.Bukkit
 import org.bukkit.GameEvent
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
@@ -82,8 +76,7 @@ object CustomFurnitureListener : Listener {
             Vector3f(-0.1f),
             Quaternionf()
         ))
-        Bukkit.getScheduler().runTaskLater(NekoProvider.neko().plugin(), { _ ->
-            val display = furniture.display(clickedBlock!!.location) ?: return@runTaskLater
+        NekoProvider.neko().scheduler().runLater(display.display(), {
             display.applyTransformationModifier(Transformation(
                 Vector3f(),
                 Quaternionf(),
