@@ -79,7 +79,6 @@ public record BlockProperties(@NotNull NamespacedKey model, @NotNull Factory<Blo
             return this;
         }
 
-
         @Override
         public @NotNull BlockProperties build() {
             return new BlockProperties(model, renderer, hardness, blastResistance, correctTools, blacklistEnchantments, drops, sounds);
