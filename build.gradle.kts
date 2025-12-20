@@ -17,7 +17,7 @@ runPaper.folia.registerTask()
 tasks {
     runServer {
         //version(mcVersionString)
-        version("1.21.4")
+        version("1.21.11")
 
         downloadPlugins {
             pluginJars(project("test-plugin").tasks.jar.flatMap {
