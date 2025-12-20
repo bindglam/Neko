@@ -1,6 +1,7 @@
 package com.bindglam.neko.nms.v1_21_R7
 
 import com.bindglam.neko.api.NekoProvider
+import com.bindglam.neko.api.event.BlockBreakStateEvent
 import com.bindglam.neko.api.nms.PlayerChannelHandler
 import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
@@ -13,7 +14,6 @@ import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.*
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.component.ItemLore
-import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import java.util.function.BiFunction
 
@@ -88,12 +88,22 @@ class PlayerChannelHandlerImpl(private val player: Player) : PlayerChannelHandle
     private fun <T : ServerGamePacketListener> Packet<in T>.handleServerbound(): Packet<in T> {
         when (this) {
             is ServerboundPlayerActionPacket -> {
-                if(action == ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK || action == ServerboundPlayerActionPacket.Action.STOP_DESTROY_BLOCK) {
-                    if (player.gameMode != GameMode.SURVIVAL) return this
+                val blockLoc = pos.toLocation(player.world)
 
-                    //NekoProvider.neko().contentManager().customBlock(CraftLocation.toBukkit(pos, player.world).block) ?: return this
+                when(action) {
+                    ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK -> {
+                        NekoProvider.neko().scheduler().run(blockLoc) {
+                            BlockBreakStateEvent(blockLoc.block, player, BlockBreakStateEvent.State.START).callEvent()
+                        }
+                    }
 
-                    return this
+                    ServerboundPlayerActionPacket.Action.STOP_DESTROY_BLOCK, ServerboundPlayerActionPacket.Action.ABORT_DESTROY_BLOCK -> {
+                        NekoProvider.neko().scheduler().run(blockLoc) {
+                            BlockBreakStateEvent(blockLoc.block, player, BlockBreakStateEvent.State.END).callEvent()
+                        }
+                    }
+
+                    else -> {}
                 }
             }
         }

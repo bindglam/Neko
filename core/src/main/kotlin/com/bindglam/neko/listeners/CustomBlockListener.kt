@@ -4,6 +4,7 @@ import com.bindglam.neko.api.NekoProvider
 import com.bindglam.neko.api.content.EventState
 import com.bindglam.neko.api.content.block.properties.Drops
 import com.bindglam.neko.api.content.item.block.BlockItem
+import com.bindglam.neko.api.event.BlockBreakStateEvent
 import com.bindglam.neko.content.block.BlockHelper
 import com.bindglam.neko.utils.CURRENT_TICK
 import com.bindglam.neko.utils.canPlaceBlock
@@ -32,7 +33,6 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.entity.EntityExplodeEvent
-import org.bukkit.event.player.PlayerAnimationEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
@@ -59,7 +59,7 @@ object CustomBlockListener : Listener {
 
             player.placeBlock(location, { it.block.type = item!!.type }, clickedBlock!!, hand!!, Sound.sound(item!!.type.createBlockData().soundGroup.placeSound, Sound.Source.BLOCK, 1f, 1f))
 
-            BlockHelper.updateLastPlaceBlock(player)
+            //BlockHelper.updateLastPlaceBlock(player)
         }
     }
 
@@ -88,7 +88,7 @@ object CustomBlockListener : Listener {
 
             player.placeBlock(location, { customBlock.blockState().copy(it).update(true, true) }, clickedBlock!!, hand!!, placeSound)
 
-            BlockHelper.updateLastPlaceBlock(player)
+            //BlockHelper.updateLastPlaceBlock(player)
         }
     }
 
@@ -97,7 +97,7 @@ object CustomBlockListener : Listener {
         clickedBlock ?: return
 
         if (action != Action.RIGHT_CLICK_BLOCK || player.isSneaking) return
-        if(CURRENT_TICK - BlockHelper.lastPlaceBlock(player) < 3) return
+        //if(CURRENT_TICK - BlockHelper.lastPlaceBlock(player) < 3) return
 
         val customBlock = NekoProvider.neko().contentManager().customBlock(clickedBlock) ?: return
 
@@ -155,59 +155,72 @@ object CustomBlockListener : Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    fun PlayerAnimationEvent.tryBreakCustomBlock() {
+    fun BlockBreakStateEvent.tryBreakCustomBlock() {
         if (player.gameMode != GameMode.SURVIVAL) return
-        if (CURRENT_TICK - BlockHelper.lastPlaceBlock(player) < 3) return
 
         val item = player.inventory.itemInMainHand
-
-        val result = player.rayTraceBlocks(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)?.value ?: 3.0, FluidCollisionMode.NEVER) ?: return
-        val block = result.hitBlock ?: return
         val customBlock = NekoProvider.neko().contentManager().customBlock(block) ?: return
 
         val blockBreakSpeedData = blockBreakSpeed(player, customBlock)
 
-        player.addPotionEffect(PotionEffect(PotionEffectType.MINING_FATIGUE, 5, Int.MAX_VALUE, false, false, false))
+        when(state) {
+            BlockBreakStateEvent.State.START -> {
+                BlockHelper.breakTasks[player.uniqueId] = NekoProvider.neko().scheduler().runTimer(block.location, {
+                    BlockHelper.breakProgress[player.uniqueId] = (BlockHelper.breakProgress[player.uniqueId] ?: 0f) + blockBreakSpeedData.speed
 
-        BlockHelper.updateBreakProgress(player, blockBreakSpeedData.speed)
-        player.sendBlockDamage(block.location, BlockHelper.breakProgress(player).coerceAtMost(1f))
+                    player.sendBlockDamage(block.location, BlockHelper.breakProgress[player.uniqueId]!!.coerceAtMost(1f))
 
-        if(BlockHelper.breakProgress(player) >= 1f) {
-            BlockHelper.removeBreakProgress(player)
+                    player.addPotionEffect(PotionEffect(PotionEffectType.MINING_FATIGUE, 5, Int.MAX_VALUE, false, false, false))
 
-            val event = BlockBreakEvent(block, player)
+                    if(BlockHelper.breakProgress[player.uniqueId]!! >= 1f) {
+                        BlockHelper.breakTasks[player.uniqueId]?.cancel()
 
-            if(event.callEvent()) {
-                item.editMeta {
-                    if(it !is Damageable) return@editMeta
+                        BlockHelper.breakTasks.remove(player.uniqueId)
+                        BlockHelper.breakProgress.remove(player.uniqueId)
 
-                    val unbreakingLevel = it.getEnchantLevel(Enchantment.UNBREAKING)
+                        val event = BlockBreakEvent(block, player)
 
-                    if(Math.random() <= 1.0/(unbreakingLevel+1))
-                        it.damage += 1
-                }
+                        if(event.callEvent()) {
+                            item.editMeta {
+                                if(it !is Damageable) return@editMeta
 
-                Particle.BLOCK.builder()
-                    .location(block.location.toCenterLocation())
-                    .offset(0.0, 0.2, 0.0)
-                    .count(80)
-                    .extra(10.0)
-                    .receivers(32, true)
-                    .data(block.blockData.clone())
-                    .spawn()
-                block.type = Material.AIR
+                                val unbreakingLevel = it.getEnchantLevel(Enchantment.UNBREAKING)
 
-                val breakSound = if(customBlock.properties().sounds() != null)
-                    Sound.sound(customBlock.properties().sounds()!!.breakSound(), Sound.Source.BLOCK, 1f, 1f)
-                else
-                    Sound.sound(org.bukkit.Sound.BLOCK_METAL_BREAK, Sound.Source.BLOCK, 1f, 1f)
-                block.world.playSound(breakSound, Sound.Emitter.self())
+                                if(Math.random() <= 1.0/(unbreakingLevel+1))
+                                    it.damage += 1
+                            }
 
-                if(blockBreakSpeedData.isCorrectTool) {
-                    dropItems(player, block, customBlock)
-                }
+                            Particle.BLOCK.builder()
+                                .location(block.location.toCenterLocation())
+                                .offset(0.0, 0.2, 0.0)
+                                .count(80)
+                                .extra(10.0)
+                                .receivers(32, true)
+                                .data(block.blockData.clone())
+                                .spawn()
+                            block.type = Material.AIR
 
-                block.world.sendGameEvent(player, GameEvent.BLOCK_DESTROY, block.location.toVector())
+                            val breakSound = if(customBlock.properties().sounds() != null)
+                                Sound.sound(customBlock.properties().sounds()!!.breakSound(), Sound.Source.BLOCK, 1f, 1f)
+                            else
+                                Sound.sound(org.bukkit.Sound.BLOCK_METAL_BREAK, Sound.Source.BLOCK, 1f, 1f)
+                            block.world.playSound(breakSound, Sound.Emitter.self())
+
+                            if(blockBreakSpeedData.isCorrectTool) {
+                                dropItems(player, block, customBlock)
+                            }
+
+                            block.world.sendGameEvent(player, GameEvent.BLOCK_DESTROY, block.location.toVector())
+                        }
+                    }
+                }, 1L, 1L)
+            }
+
+            BlockBreakStateEvent.State.END -> {
+                BlockHelper.breakTasks[player.uniqueId]?.cancel()
+
+                BlockHelper.breakTasks.remove(player.uniqueId)
+                BlockHelper.breakProgress.remove(player.uniqueId)
             }
         }
     }
