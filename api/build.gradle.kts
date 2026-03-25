@@ -1,0 +1,3 @@
+plugins {
+    id("paper-conventions")
+}

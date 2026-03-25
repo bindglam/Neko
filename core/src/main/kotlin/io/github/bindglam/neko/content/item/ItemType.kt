@@ -1,0 +1,38 @@
+package io.github.bindglam.neko.content.item
+
+import io.github.bindglam.neko.content.ContentType
+import io.github.bindglam.neko.content.item.properties.ItemProperties
+import io.github.bindglam.neko.registry.Registries
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.minimessage.MiniMessage
+import org.bukkit.Material
+import org.bukkit.configuration.ConfigurationSection
+
+object ItemType : ContentType<Item, ItemRegistryEntry> {
+    override val name = "item"
+
+    override fun load(registries: Registries, config: ConfigurationSection): ContentType.LoadResult {
+        try {
+            val key = Key.key(config.name)
+            val properties = loadProperties(config.getConfigurationSection("properties")
+                ?: return ContentType.LoadResult.failure("Missing properties section"))
+
+            registries.item().register(key) { entry -> entry
+                .key(key)
+                .properties(properties)
+            }
+
+            return ContentType.LoadResult.success()
+        } catch (e: Exception) {
+            return ContentType.LoadResult.failure(e.message ?: "Unknown error")
+        }
+    }
+
+    private fun loadProperties(config: ConfigurationSection): ItemProperties {
+        return ItemProperties.builder()
+            .type(Material.valueOf(config.getString("type") ?: "PAPER"))
+            .name(config.getString("name")?.let { MiniMessage.miniMessage().deserialize(it) })
+            .lore(config.getStringList("lore").map { MiniMessage.miniMessage().deserialize(it) })
+            .build()
+    }
+}
