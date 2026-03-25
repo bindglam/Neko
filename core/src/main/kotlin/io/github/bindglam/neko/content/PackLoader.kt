@@ -48,10 +48,15 @@ object PackLoader {
 
                 val features = arrayListOf<Feature>()
                 contentConfig.getConfigurationSection("features")?.let { it.getKeys(false).map { key -> it.getConfigurationSection(key)!! }.forEach { featureConfig ->
-                    val feature = RegistryManager.GlobalRegistries.registries().features()[Key.key(featureConfig.name)]
+                    val featureKey = featureConfig.getString("id")?.let { str -> Key.key(str) }
+                    if(featureKey == null) {
+                        logger().warning("Unknown feature ( null )")
+                        return@forEach
+                    }
+                    val feature = RegistryManager.GlobalRegistries.registries().features()[featureKey]
                         .orElse(null)
                     if(feature == null) {
-                        logger().warning("Unknown feature ( in ${contentConfig.name} )")
+                        logger().warning("Unknown feature ( in ${featureKey.asString()} )")
                         return@forEach
                     }
 
