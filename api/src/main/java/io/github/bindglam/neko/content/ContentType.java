@@ -15,7 +15,7 @@ public interface ContentType<T extends Content> {
 
     @NotNull Class<T> clazz();
 
-    @NotNull LoadResult load(@NotNull Registries registries, @NotNull ConfigurationSection config, @NotNull List<Feature> features);
+    @NotNull LoadResult load(@NotNull Registries registries, @NotNull ConfigurationSection config);
 
     @Getter
     @Accessors(fluent = true)

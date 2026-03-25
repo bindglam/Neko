@@ -46,24 +46,7 @@ object PackLoader {
                     return@forEach
                 }
 
-                val features = arrayListOf<Feature>()
-                contentConfig.getConfigurationSection("features")?.let { it.getKeys(false).map { key -> it.getConfigurationSection(key)!! }.forEach { featureConfig ->
-                    val featureKey = featureConfig.getString("id")?.let { str -> Key.key(str) }
-                    if(featureKey == null) {
-                        logger().warning("Unknown feature ( null )")
-                        return@forEach
-                    }
-                    val feature = RegistryManager.GlobalRegistries.registries().features()[featureKey]
-                        .orElse(null)
-                    if(feature == null) {
-                        logger().warning("Unknown feature ( in ${featureKey.asString()} )")
-                        return@forEach
-                    }
-
-                    features.add(feature)
-                } }
-
-                val result = type.load(registries, contentConfig, features)
+                val result = type.load(registries, contentConfig)
                 if(result.isFailure) {
                     logger().warning("Failed to load ${contentConfig.name}. ( ${result.errorMessage()} )")
                     return@forEach

@@ -5,6 +5,7 @@ import io.github.bindglam.neko.content.ContentsPack
 import io.github.bindglam.neko.content.ContentsPackRegistryEntry
 import io.github.bindglam.neko.content.ContentsPackRegistryEntryImpl
 import io.github.bindglam.neko.content.feature.Feature
+import io.github.bindglam.neko.content.feature.FeatureFactory
 import io.github.bindglam.neko.content.feature.builtin.HelloWorldFeature
 import io.github.bindglam.neko.content.item.ItemType
 import io.github.bindglam.neko.event.RegistryInitializeEvent
@@ -21,7 +22,7 @@ object RegistryManagerImpl : RegistryManager, Managerial {
 
         GlobalRegistriesImpl.unlockAll()
 
-        GlobalRegistriesImpl.features().register(HelloWorldFeature.KEY, HelloWorldFeature)
+        GlobalRegistriesImpl.features().register(HelloWorldFeature.KEY, HelloWorldFeature.Factory)
 
         RegistryInitializeEvent(GlobalRegistriesImpl).callEvent()
     }
@@ -41,7 +42,7 @@ object RegistryManagerImpl : RegistryManager, Managerial {
         private val types = MappedRegistry<ContentType<*>>(mapOf(
             ItemType.KEY to ItemType
         ))
-        private val features = DirectScalableRegistry<Feature>()
+        private val features = DirectScalableRegistry<FeatureFactory<*>>()
         private val contentsPacks = EntryScalableRegistry<ContentsPack, ContentsPackRegistryEntry> { ContentsPackRegistryEntryImpl() }
 
         override fun types() = types
