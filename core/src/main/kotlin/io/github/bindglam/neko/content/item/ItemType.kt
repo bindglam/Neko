@@ -3,13 +3,17 @@ package io.github.bindglam.neko.content.item
 import io.github.bindglam.neko.content.ContentType
 import io.github.bindglam.neko.content.item.properties.ItemProperties
 import io.github.bindglam.neko.registry.Registries
+import io.github.bindglam.neko.utils.PLUGIN_ID
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 
-object ItemType : ContentType<Item, ItemRegistryEntry> {
-    override val name = "item"
+object ItemType : ContentType<Item> {
+    val KEY = Key.key(PLUGIN_ID, "item")
+
+    override fun id() = "item"
+    override fun clazz() = Item::class.java
 
     override fun load(registries: Registries, config: ConfigurationSection): ContentType.LoadResult {
         try {

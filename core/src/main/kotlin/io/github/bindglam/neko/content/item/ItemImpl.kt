@@ -1,11 +1,13 @@
 package io.github.bindglam.neko.content.item
 
+import io.github.bindglam.neko.content.feature.Feature
 import io.github.bindglam.neko.content.item.properties.ItemProperties
 import net.kyori.adventure.key.Key
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
+import org.jetbrains.annotations.Unmodifiable
 
-class ItemImpl(private val key: Key, private val properties: ItemProperties) : Item {
+class ItemImpl(private val key: Key, private val properties: ItemProperties, private val features: List<Feature<Item>>) : Item {
     private val itemStack = ImmutableItemStack.of(ItemBuilder.create(this))
 
     override fun isSimilar(itemStack: ItemStack): Boolean {
@@ -18,4 +20,5 @@ class ItemImpl(private val key: Key, private val properties: ItemProperties) : I
     override fun key() = key
     override fun translationKey() = "item.${key.namespace()}.${key.value()}"
     override fun asItem() = this
+    override fun features(): @Unmodifiable Collection<Feature<Item>> = features
 }

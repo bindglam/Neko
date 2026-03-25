@@ -28,6 +28,14 @@ class ScalableRegistry<T, E : WritableRegistry.RegistryEntry<T>>(private val ent
         return entrySupplier().apply { entry.accept(this) }.toValue().also { map[key.asString()] = it }
     }
 
+    override fun register(key: Key, value: T & Any): T & Any {
+        if(isLocked)
+            error("The registry is locked")
+        if(map.contains(key.asString()))
+            error("The registry already contains the key")
+        return value.also { map[key.asString()] = it }
+    }
+
     override fun merge(registry: Registry<T>) {
         if(isLocked)
             error("The registry is locked")

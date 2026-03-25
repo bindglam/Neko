@@ -1,10 +1,13 @@
 package io.github.bindglam.neko.content
 
 import io.github.bindglam.neko.manager.ContentManagerImpl
+import io.github.bindglam.neko.manager.RegistryManager
 import io.github.bindglam.neko.registry.Registries
 import io.github.bindglam.neko.registry.RegistriesImpl
+import io.github.bindglam.neko.utils.PLUGIN_ID
 import io.github.bindglam.neko.utils.listFilesRecursively
 import io.github.bindglam.neko.utils.logger
+import net.kyori.adventure.key.Key
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 
@@ -36,7 +39,8 @@ object PackLoader {
     private fun loadConfigs(folder: File, registries: Registries) {
         folder.listFilesRecursively().map { YamlConfiguration.loadConfiguration(it) }.forEach { config ->
             config.getKeys(false).map { config.getConfigurationSection(it)!! }.forEach { contentConfig ->
-                val type = contentConfig.getString("type")?.let { ContentManagerImpl.types[it] }
+                val type = contentConfig.getString("type")?.let { RegistryManager.GlobalRegistries.registries().types()[Key.key(PLUGIN_ID, it)] }
+                    ?.orElse(null)
                 if(type == null) {
                     logger().warning("Failed to load ${contentConfig.name}. ( Unknown type )")
                     return@forEach
@@ -44,7 +48,7 @@ object PackLoader {
 
                 val result = type.load(registries, contentConfig)
                 if(result.isFailure) {
-                    logger().warning("Failed to load ${contentConfig.name}. ( ${result.errorMsg} )")
+                    logger().warning("Failed to load ${contentConfig.name}. ( ${result.errorMessage()} )")
                     return@forEach
                 }
             }

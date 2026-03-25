@@ -1,10 +1,8 @@
 package io.github.bindglam.neko.manager
 
 import io.github.bindglam.neko.Neko
-import io.github.bindglam.neko.content.ContentType
 import io.github.bindglam.neko.content.ContentsPackImpl
 import io.github.bindglam.neko.content.PackLoader
-import io.github.bindglam.neko.content.item.ItemType
 import io.github.bindglam.neko.utils.DATA_FOLDER
 import io.github.bindglam.neko.utils.logger
 import org.bukkit.event.Listener
@@ -14,9 +12,6 @@ import java.util.*
 
 object ContentManagerImpl : ContentManager, Managerial, Listener {
     private val packsFolder = File(DATA_FOLDER, "packs")
-
-    val types: HashMap<String, ContentType<*, *>> = listOf(ItemType)
-        .stream().collect({ hashMapOf() }, { map, type -> map[type.name] = type }, { map1, map2 -> map1.putAll(map2) })
 
     override fun preload(context: Context) {
     }
