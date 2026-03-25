@@ -5,6 +5,8 @@ import io.github.bindglam.neko.manager.ContentManager
 import io.github.bindglam.neko.manager.ContentManagerImpl
 import io.github.bindglam.neko.manager.Context
 import io.github.bindglam.neko.manager.RegistryManagerImpl
+import io.github.bindglam.neko.manager.ResourcePackManager
+import io.github.bindglam.neko.manager.ResourcePackManagerImpl
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.server.ServerLoadEvent
@@ -14,6 +16,7 @@ class NekoPluginImpl : JavaPlugin(), NekoPlugin {
     private val managers = listOf(
         ContentManagerImpl,
         RegistryManagerImpl,
+        ResourcePackManagerImpl,
         CommandManager
     )
 
@@ -40,4 +43,5 @@ class NekoPluginImpl : JavaPlugin(), NekoPlugin {
 
     override fun registryManager() = RegistryManagerImpl
     override fun contentManager() = ContentManagerImpl
+    override fun resourcePackManager() = ResourcePackManagerImpl
 }

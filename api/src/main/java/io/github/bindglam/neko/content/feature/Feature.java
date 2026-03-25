@@ -6,4 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public interface Feature extends Keyed {
     default void init(@NotNull FeatureContext.Init context) {
     }
+
+    default void pack(@NotNull FeatureContext.Pack context) {
+    }
 }
