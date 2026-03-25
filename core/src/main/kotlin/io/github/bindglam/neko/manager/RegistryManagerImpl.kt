@@ -5,6 +5,7 @@ import io.github.bindglam.neko.content.ContentsPack
 import io.github.bindglam.neko.content.ContentsPackRegistryEntry
 import io.github.bindglam.neko.content.ContentsPackRegistryEntryImpl
 import io.github.bindglam.neko.content.feature.Feature
+import io.github.bindglam.neko.content.feature.builtin.HelloWorldFeature
 import io.github.bindglam.neko.content.item.ItemType
 import io.github.bindglam.neko.event.RegistryInitializeEvent
 import io.github.bindglam.neko.registry.DirectScalableRegistry
@@ -19,11 +20,13 @@ object RegistryManagerImpl : RegistryManager, Managerial {
         logger().info("Initializing registries...")
 
         GlobalRegistriesImpl.unlockAll()
+
+        GlobalRegistriesImpl.features().register(HelloWorldFeature.KEY, HelloWorldFeature)
+
+        RegistryInitializeEvent(GlobalRegistriesImpl).callEvent()
     }
 
     override fun start(context: Context) {
-        RegistryInitializeEvent(GlobalRegistriesImpl).callEvent()
-
         GlobalRegistriesImpl.lockAll()
 
         logger().info("Successfully initialized registries!")
