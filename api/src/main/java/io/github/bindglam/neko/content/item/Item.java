@@ -7,7 +7,7 @@ import net.kyori.adventure.translation.Translatable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public interface Item extends Content<Item>, Translatable, ItemLike {
+public interface Item extends Content, Translatable, ItemLike {
     @NotNull ItemProperties properties();
 
     @NotNull ImmutableItemStack itemStack();

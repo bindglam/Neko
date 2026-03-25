@@ -7,13 +7,13 @@ import net.kyori.adventure.key.Key
 class ItemRegistryEntryImpl : ItemRegistryEntry {
     private var key: Key? = null
     private var properties: ItemProperties? = null
-    private var features: List<Feature<Item>>? = null
+    private var features: List<Feature>? = null
 
     override fun key(key: Key) = this.apply {
         this.key = key
     }
 
-    override fun features(features: List<Feature<Item>>) = this.apply {
+    override fun features(features: List<Feature>) = this.apply {
         this.features = features
     }
 

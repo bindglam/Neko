@@ -1,5 +1,6 @@
 package io.github.bindglam.neko.content;
 
+import io.github.bindglam.neko.content.feature.Feature;
 import io.github.bindglam.neko.registry.Registries;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -7,12 +8,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface ContentType<T extends Content<T>> {
+import java.util.List;
+
+public interface ContentType<T extends Content> {
     @NotNull String id();
 
     @NotNull Class<T> clazz();
 
-    @NotNull LoadResult load(@NotNull Registries registries, @NotNull ConfigurationSection config);
+    @NotNull LoadResult load(@NotNull Registries registries, @NotNull ConfigurationSection config, @NotNull List<Feature> features);
 
     @Getter
     @Accessors(fluent = true)

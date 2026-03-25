@@ -1,6 +1,7 @@
 package io.github.bindglam.neko.content.item
 
 import io.github.bindglam.neko.content.ContentType
+import io.github.bindglam.neko.content.feature.Feature
 import io.github.bindglam.neko.content.item.properties.ItemProperties
 import io.github.bindglam.neko.registry.Registries
 import io.github.bindglam.neko.utils.PLUGIN_ID
@@ -15,7 +16,7 @@ object ItemType : ContentType<Item> {
     override fun id() = "item"
     override fun clazz() = Item::class.java
 
-    override fun load(registries: Registries, config: ConfigurationSection): ContentType.LoadResult {
+    override fun load(registries: Registries, config: ConfigurationSection, features: List<Feature>): ContentType.LoadResult {
         try {
             val key = Key.key(config.name)
             val properties = loadProperties(config.getConfigurationSection("properties")
@@ -24,6 +25,7 @@ object ItemType : ContentType<Item> {
             registries.item().register(key) { entry -> entry
                 .key(key)
                 .properties(properties)
+                .features(features)
             }
 
             return ContentType.LoadResult.success()

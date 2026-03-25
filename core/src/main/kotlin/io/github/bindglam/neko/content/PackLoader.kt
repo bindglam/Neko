@@ -1,6 +1,6 @@
 package io.github.bindglam.neko.content
 
-import io.github.bindglam.neko.manager.ContentManagerImpl
+import io.github.bindglam.neko.content.feature.Feature
 import io.github.bindglam.neko.manager.RegistryManager
 import io.github.bindglam.neko.registry.Registries
 import io.github.bindglam.neko.registry.RegistriesImpl
@@ -46,7 +46,19 @@ object PackLoader {
                     return@forEach
                 }
 
-                val result = type.load(registries, contentConfig)
+                val features = arrayListOf<Feature>()
+                contentConfig.getConfigurationSection("features")?.let { it.getKeys(false).map { key -> it.getConfigurationSection(key)!! }.forEach { featureConfig ->
+                    val feature = RegistryManager.GlobalRegistries.registries().features()[Key.key(featureConfig.name)]
+                        .orElse(null)
+                    if(feature == null) {
+                        logger().warning("Unknown feature ( in ${contentConfig.name} )")
+                        return@forEach
+                    }
+
+                    features.add(feature)
+                } }
+
+                val result = type.load(registries, contentConfig, features)
                 if(result.isFailure) {
                     logger().warning("Failed to load ${contentConfig.name}. ( ${result.errorMessage()} )")
                     return@forEach

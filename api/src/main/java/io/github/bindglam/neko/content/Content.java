@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Collection;
 
-public interface Content<SELF extends Content<SELF>> extends Keyed {
+public interface Content extends Keyed {
     @Unmodifiable
-    @NotNull Collection<Feature<SELF>> features();
+    @NotNull Collection<Feature> features();
 }

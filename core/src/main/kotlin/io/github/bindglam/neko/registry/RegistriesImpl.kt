@@ -5,7 +5,7 @@ import io.github.bindglam.neko.content.item.ItemRegistryEntry
 import io.github.bindglam.neko.content.item.ItemRegistryEntryImpl
 
 open class RegistriesImpl : Registries {
-    private val item = ScalableRegistry<Item, ItemRegistryEntry> { ItemRegistryEntryImpl() }
+    private val item = EntryScalableRegistry<Item, ItemRegistryEntry> { ItemRegistryEntryImpl() }
 
     override fun item() = item
 
