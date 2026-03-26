@@ -31,7 +31,7 @@ object ContentManagerImpl : ContentManager, Managerial, Reloadable {
                 return@forEach
             }
 
-            val pack = RegistryManagerImpl.registries().contentsPacks().register(ContentsPackImpl.createKey(registrar.id!!), registrar.registrar!!)
+            val pack = RegistryManagerImpl.registries().contentsPacks().register(ContentsPackImpl.createKey(registrar.id!!), registrar.pack!!)
             RegistryManager.GlobalRegistries.registries().mergeAll(pack.registries())
 
             loadedPacksCnt++

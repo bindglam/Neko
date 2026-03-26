@@ -2,9 +2,6 @@ package io.github.bindglam.neko.manager
 
 import io.github.bindglam.neko.content.ContentType
 import io.github.bindglam.neko.content.ContentsPack
-import io.github.bindglam.neko.content.ContentsPackRegistryEntry
-import io.github.bindglam.neko.content.ContentsPackRegistryEntryImpl
-import io.github.bindglam.neko.content.feature.Feature
 import io.github.bindglam.neko.content.feature.FeatureFactory
 import io.github.bindglam.neko.content.feature.builtin.HelloWorldFeature
 import io.github.bindglam.neko.content.item.ItemType
@@ -13,7 +10,6 @@ import io.github.bindglam.neko.registry.DirectScalableRegistry
 import io.github.bindglam.neko.registry.MappedRegistry
 import io.github.bindglam.neko.registry.Registries
 import io.github.bindglam.neko.registry.RegistriesImpl
-import io.github.bindglam.neko.registry.EntryScalableRegistry
 import io.github.bindglam.neko.utils.logger
 
 object RegistryManagerImpl : RegistryManager, Managerial, Reloadable {
@@ -44,7 +40,7 @@ object RegistryManagerImpl : RegistryManager, Managerial, Reloadable {
             ItemType.KEY to ItemType
         ))
         private val features = DirectScalableRegistry<FeatureFactory<*>>()
-        private val contentsPacks = EntryScalableRegistry<ContentsPack, ContentsPackRegistryEntry> { ContentsPackRegistryEntryImpl() }
+        private val contentsPacks = DirectScalableRegistry<ContentsPack>()
 
         override fun types() = types
         override fun features() = features

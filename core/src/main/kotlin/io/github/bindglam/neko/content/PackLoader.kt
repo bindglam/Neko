@@ -27,13 +27,7 @@ object PackLoader {
         if(configsFolder.exists())
             loadConfigs(configsFolder, registries)
 
-        return LoadResult.success(id) { entry ->
-            entry.id(id)
-                .version(version)
-                .author(author)
-                .packFolder(folder)
-                .registries(registries)
-        }
+        return LoadResult.success(id, ContentsPackImpl(id, version, author, folder, registries))
     }
 
     private fun loadConfigs(folder: File, registries: Registries) {
@@ -55,14 +49,14 @@ object PackLoader {
         }
     }
 
-    class LoadResult private constructor(val id: String?, val registrar: ((ContentsPackRegistryEntry) -> Unit)?, val errorMsg: String?) {
+    class LoadResult private constructor(val id: String?, val pack: ContentsPack?, val errorMsg: String?) {
         companion object {
-            fun success(id: String, registrar: (ContentsPackRegistryEntry) -> Unit) = LoadResult(id, registrar, null)
+            fun success(id: String, pack: ContentsPack) = LoadResult(id, pack, null)
             fun failure(errorMsg: String) = LoadResult(null, null, errorMsg)
         }
 
         val isSuccess: Boolean
-            get() = id != null && registrar != null
+            get() = id != null && pack != null
         val isFailure: Boolean
             get() = errorMsg != null
     }
