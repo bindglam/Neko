@@ -11,6 +11,7 @@ import io.github.bindglam.neko.utils.logger
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
+import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import java.io.File
@@ -59,6 +60,7 @@ object ContentManagerImpl : ContentManager, Managerial, Reloadable, Listener {
     }
 
     override fun end(context: Context) {
+        HandlerList.unregisterAll(this)
     }
 
     override fun getNekoItemByStack(itemStack: ItemStack) =
