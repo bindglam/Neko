@@ -16,11 +16,12 @@ import io.github.bindglam.neko.registry.RegistriesImpl
 import io.github.bindglam.neko.registry.EntryScalableRegistry
 import io.github.bindglam.neko.utils.logger
 
-object RegistryManagerImpl : RegistryManager, Managerial {
+object RegistryManagerImpl : RegistryManager, Managerial, Reloadable {
     override fun preload(context: Context) {
         logger().info("Initializing registries...")
 
         GlobalRegistriesImpl.unlockAll()
+        GlobalRegistriesImpl.clearAll()
 
         GlobalRegistriesImpl.features().register(HelloWorldFeature.KEY, HelloWorldFeature.Factory)
 
@@ -48,6 +49,13 @@ object RegistryManagerImpl : RegistryManager, Managerial {
         override fun types() = types
         override fun features() = features
         override fun contentsPacks() = contentsPacks
+
+        override fun clearAll() {
+            super.clearAll()
+
+            features.clear()
+            contentsPacks.clear()
+        }
 
         override fun mergeAll(registries: Registries) {
             item().merge(registries.item())

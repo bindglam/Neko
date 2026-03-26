@@ -5,6 +5,7 @@ import io.github.bindglam.neko.manager.ContentManager
 import io.github.bindglam.neko.manager.ContentManagerImpl
 import io.github.bindglam.neko.manager.Context
 import io.github.bindglam.neko.manager.RegistryManagerImpl
+import io.github.bindglam.neko.manager.Reloadable
 import io.github.bindglam.neko.manager.ResourcePackManager
 import io.github.bindglam.neko.manager.ResourcePackManagerImpl
 import org.bukkit.event.EventHandler
@@ -39,6 +40,16 @@ class NekoPluginImpl : JavaPlugin(), NekoPlugin {
         managers.forEach { it.end(Context(this)) }
 
         Neko.unregisterPlugin()
+    }
+
+    override fun reload() {
+        val reloadableList = managers.filterIsInstance<Reloadable>()
+
+        Context(this).also { ctx ->
+            reloadableList.forEach { it.end(ctx) }
+            reloadableList.forEach { it.preload(ctx) }
+            reloadableList.forEach { it.start(ctx) }
+        }
     }
 
     override fun registryManager() = RegistryManagerImpl

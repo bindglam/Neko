@@ -10,7 +10,7 @@ import team.unnamed.creative.metadata.pack.PackMeta
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter
 import java.io.File
 
-object ResourcePackManagerImpl : ResourcePackManager, Managerial {
+object ResourcePackManagerImpl : ResourcePackManager, Managerial, Reloadable {
     private val generatedPackFile = File(DATA_FOLDER, "generated.zip")
 
     override fun preload(context: Context) {

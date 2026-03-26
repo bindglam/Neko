@@ -1,5 +1,6 @@
 package io.github.bindglam.neko.manager
 
+import io.github.bindglam.neko.Neko
 import io.github.bindglam.neko.registry.RegistriesImpl
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -26,6 +27,17 @@ object CommandManager : Managerial {
         } else if (manager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             manager.registerAsynchronousCompletions()
         }
+
+        manager.command(manager.commandBuilder("neko")
+            .literal("reload")
+            .permission(Permission.of("mint.command.reload"))
+            .handler { ctx ->
+                ctx.sender().sendMessage(Component.text("Reloading...").color(NamedTextColor.YELLOW))
+
+                Neko.plugin().reload()
+
+                ctx.sender().sendMessage(Component.text("Successfully reloaded!").color(NamedTextColor.GREEN))
+            })
 
         manager.command(manager.commandBuilder("neko")
             .literal("give")

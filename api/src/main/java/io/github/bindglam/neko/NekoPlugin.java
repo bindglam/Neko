@@ -11,4 +11,6 @@ public interface NekoPlugin {
     @NotNull ContentManager contentManager();
 
     @NotNull ResourcePackManager resourcePackManager();
+
+    void reload();
 }

@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack
 import java.io.File
 import java.util.*
 
-object ContentManagerImpl : ContentManager, Managerial {
+object ContentManagerImpl : ContentManager, Managerial, Reloadable {
     private val packsFolder = File(DATA_FOLDER, "packs")
 
     override fun preload(context: Context) {

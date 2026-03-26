@@ -33,6 +33,12 @@ abstract class ScalableRegistry<T> : WritableRegistry<T> {
         map.putAll(newMap)
     }
 
+    override fun clear() {
+        if(isLocked)
+            error("The registry is locked")
+        map.clear()
+    }
+
     override fun get(key: Key) = Optional.ofNullable(map[key.asString()])
 
     override fun entries() = map.entries.map { entry -> Pair.of(Key.key(entry.key), entry.value) }

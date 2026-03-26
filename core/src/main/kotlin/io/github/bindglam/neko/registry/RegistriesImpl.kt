@@ -16,4 +16,8 @@ open class RegistriesImpl : Registries {
     override fun unlockAll() {
         item.unlock()
     }
+
+    override fun clearAll() {
+        item.clear()
+    }
 }
