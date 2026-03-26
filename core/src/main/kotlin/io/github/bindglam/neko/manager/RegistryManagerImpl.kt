@@ -3,7 +3,6 @@ package io.github.bindglam.neko.manager
 import io.github.bindglam.neko.content.ContentType
 import io.github.bindglam.neko.content.ContentsPack
 import io.github.bindglam.neko.content.feature.FeatureFactory
-import io.github.bindglam.neko.content.feature.builtin.HelloWorldFeature
 import io.github.bindglam.neko.content.item.ItemType
 import io.github.bindglam.neko.event.RegistryInitializeEvent
 import io.github.bindglam.neko.registry.DirectScalableRegistry
@@ -34,22 +33,15 @@ object RegistryManagerImpl : RegistryManager, Managerial, Reloadable {
     override fun registries() = GlobalRegistriesImpl
 
     object GlobalRegistriesImpl : RegistryManager.GlobalRegistries, RegistriesImpl() {
-        private val types = MappedRegistry<ContentType<*>>(mapOf(
+        private val types = create(MappedRegistry<ContentType<*>>(mapOf(
             ItemType.KEY to ItemType
-        ))
-        private val features = DirectScalableRegistry<FeatureFactory<*>>()
-        private val contentsPacks = DirectScalableRegistry<ContentsPack>()
+        )))
+        private val features = create(DirectScalableRegistry<FeatureFactory<*>>())
+        private val contentsPacks = create(DirectScalableRegistry<ContentsPack>())
 
         override fun types() = types
         override fun features() = features
         override fun contentsPacks() = contentsPacks
-
-        override fun clearAll() {
-            super.clearAll()
-
-            features.clear()
-            contentsPacks.clear()
-        }
 
         override fun mergeAll(registries: Registries) {
             item().merge(registries.item())
