@@ -1,5 +1,6 @@
 package io.github.bindglam.neko.event;
 
+import io.github.bindglam.neko.manager.RegistryManager;
 import io.github.bindglam.neko.registry.Registries;
 import lombok.Getter;
 import org.bukkit.event.Event;
@@ -11,10 +12,10 @@ import org.jetbrains.annotations.NotNull;
 public class RegistryInitializeEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    private final Registries registries;
+    private final RegistryManager.GlobalRegistries registries;
 
     @ApiStatus.Internal
-    public RegistryInitializeEvent(Registries registries) {
+    public RegistryInitializeEvent(RegistryManager.GlobalRegistries registries) {
         this.registries = registries;
     }
 

@@ -15,8 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class NekoPluginImpl : JavaPlugin(), NekoPlugin {
     private val managers = listOf(
-        ContentManagerImpl,
         RegistryManagerImpl,
+        ContentManagerImpl,
         ResourcePackManagerImpl,
         CommandManager
     )

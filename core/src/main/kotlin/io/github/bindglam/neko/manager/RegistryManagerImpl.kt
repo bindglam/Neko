@@ -18,13 +18,11 @@ object RegistryManagerImpl : RegistryManager, Managerial, Reloadable {
 
         GlobalRegistriesImpl.unlockAll()
         GlobalRegistriesImpl.clearAll()
-
-        GlobalRegistriesImpl.features().register(HelloWorldFeature.KEY, HelloWorldFeature.Factory)
-
-        RegistryInitializeEvent(GlobalRegistriesImpl).callEvent()
     }
 
     override fun start(context: Context) {
+        RegistryInitializeEvent(GlobalRegistriesImpl).callEvent()
+
         GlobalRegistriesImpl.lockAll()
 
         logger().info("Successfully initialized registries!")
