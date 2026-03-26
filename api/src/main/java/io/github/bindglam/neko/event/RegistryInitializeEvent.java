@@ -1,23 +1,18 @@
 package io.github.bindglam.neko.event;
 
 import io.github.bindglam.neko.manager.RegistryManager;
-import io.github.bindglam.neko.registry.Registries;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
+@RequiredArgsConstructor
 public class RegistryInitializeEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private final RegistryManager.GlobalRegistries registries;
-
-    @ApiStatus.Internal
-    public RegistryInitializeEvent(RegistryManager.GlobalRegistries registries) {
-        this.registries = registries;
-    }
 
     @Override
     public @NotNull HandlerList getHandlers() {
