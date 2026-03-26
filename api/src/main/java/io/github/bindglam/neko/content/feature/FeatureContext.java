@@ -8,7 +8,8 @@ public sealed interface FeatureContext {
     @NotNull Content content();
 
     record Init(
-            @NotNull Content content
+            @NotNull Content content,
+            @NotNull FeatureArguments arguments
     ) implements FeatureContext {
     }
 

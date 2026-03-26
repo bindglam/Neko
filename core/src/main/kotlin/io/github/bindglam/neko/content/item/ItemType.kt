@@ -2,6 +2,8 @@ package io.github.bindglam.neko.content.item
 
 import io.github.bindglam.neko.content.ContentType
 import io.github.bindglam.neko.content.feature.Feature
+import io.github.bindglam.neko.content.feature.FeatureArguments
+import io.github.bindglam.neko.content.feature.FeatureBuilder
 import io.github.bindglam.neko.content.item.properties.ItemProperties
 import io.github.bindglam.neko.manager.RegistryManager
 import io.github.bindglam.neko.registry.Registries
@@ -23,8 +25,11 @@ object ItemType : ContentType<Item> {
             val properties = loadProperties(config.getConfigurationSection("properties")
                 ?: return ContentType.LoadResult.failure("Missing properties section"))
             val features = config.getConfigurationSection("features")?.let { it.getKeys(false).map { key -> it.getConfigurationSection(key)!! } }?.map { featureConfig ->
-                return@map RegistryManager.GlobalRegistries.registries().features()[Key.key(featureConfig.getString("id") ?: error("No feature id in ${key.asString()}"))]
+                val factory = RegistryManager.GlobalRegistries.registries().features()[Key.key(featureConfig.getString("id") ?: error("No feature id in ${key.asString()}"))]
                     .orElseThrow { IllegalStateException("Unknown feature in ${key.asString()}") }
+                val arguments = FeatureArguments(featureConfig.getConfigurationSection("arguments"))
+
+                return@map FeatureBuilder(factory, arguments)
             } ?: listOf()
 
             registries.item().register(key) { entry -> entry

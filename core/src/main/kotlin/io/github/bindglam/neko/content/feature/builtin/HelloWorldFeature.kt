@@ -14,6 +14,7 @@ class HelloWorldFeature : Feature {
 
     override fun init(context: FeatureContext.Init) {
         logger().info("Hello ${context.content().key().asString()}!")
+        logger().info("Argument 'msg' : ${context.arguments()["msg"]}")
     }
 
     override fun key() = KEY
