@@ -48,19 +48,15 @@ public final class ContentManagerImpl implements ContentManager, Managerial, Rel
         if (packFolders != null) {
             int loadedPacksCnt = 0;
             for (File packFolder : packFolders) {
-                PackLoader.LoadResult result = PackLoader.loadPack(packFolder);
-                if (result.isFailure()) {
-                    LOGGER.warning("Failed to load " + packFolder.getName() + ". ( " + result.errorMsg() + " )");
+                ContentsPack pack = PackLoader.loadPack(packFolder);
+                if (pack == null) {
+                    LOGGER.warning("Failed to load " + packFolder.getName());
                     continue;
                 }
 
-                String packId = result.id();
-                ContentsPack pack = result.pack();
-                if (packId != null && pack != null) {
-                    registries.contentsPacks().register(ContentsPackImpl.createKey(packId), pack);
-                    registries.mergeAll(pack.registries());
-                    loadedPacksCnt++;
-                }
+                registries.contentsPacks().register(ContentsPackImpl.createKey(pack.id()), pack);
+                registries.mergeAll(pack.registries());
+                loadedPacksCnt++;
             }
             LOGGER.info("Loaded " + loadedPacksCnt + " packs!");
         }
