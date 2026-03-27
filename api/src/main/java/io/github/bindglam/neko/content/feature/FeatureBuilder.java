@@ -7,11 +7,7 @@ public record FeatureBuilder(
         @NotNull FeatureFactory<?> factory,
         @NotNull FeatureArguments arguments
 ) {
-    public @NotNull Feature build(@NotNull Content content) {
-        Feature feature = factory.create();
-
-        feature.init(new FeatureContext.Init(content, arguments));
-
-        return feature;
+    public @NotNull Feature build(@NotNull Content content, @NotNull FeatureEventBus eventBus) {
+        return factory.create(new FeatureFactory.Context(content, arguments, eventBus));
     }
 }

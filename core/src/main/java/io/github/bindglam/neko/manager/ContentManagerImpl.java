@@ -7,9 +7,7 @@ import io.github.bindglam.neko.content.PackLoader;
 import io.github.bindglam.neko.content.feature.builtin.HelloWorldFeature;
 import io.github.bindglam.neko.content.item.Item;
 import io.github.bindglam.neko.event.RegistryInitializeEvent;
-import io.github.bindglam.neko.registry.Registry;
 import io.github.bindglam.neko.utils.Constants;
-import io.github.bindglam.neko.utils.Plugins;
 import it.unimi.dsi.fastutil.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -18,10 +16,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -36,8 +32,7 @@ public final class ContentManagerImpl implements ContentManager, Managerial, Rel
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRegistryInitialize(RegistryInitializeEvent event) {
-        RegistryManager.GlobalRegistries.registries().features()
-                .register(HelloWorldFeature.KEY, HelloWorldFeature.FACTORY);
+        RegistryManager.GlobalRegistries.registries().features().register(HelloWorldFeature.KEY, new HelloWorldFeature.Factory());
 
         loadPacks(event.getRegistries());
     }
