@@ -1,6 +1,6 @@
 package io.github.bindglam.neko.manager;
 
-import io.github.bindglam.neko.content.feature.FeatureContext;
+import io.github.bindglam.neko.content.feature.event.ResourcePackGenerationEvent;
 import io.github.bindglam.neko.event.AsyncResourcePackGenerationEvent;
 import io.github.bindglam.neko.utils.Constants;
 import net.kyori.adventure.text.Component;
@@ -43,11 +43,8 @@ public final class ResourcePackManagerImpl implements ResourcePackManager, Manag
                     Component.text("Created by Neko")
             ));
 
-            RegistryManager.GlobalRegistries.registries().item().forEach(content -> {
-                for (var feature : content.features()) {
-                    feature.pack(new FeatureContext.Pack(content, resourcePack));
-                }
-            });
+            RegistryManager.GlobalRegistries.registries().item().forEach(content ->
+                    content.featureEventBus().call(new ResourcePackGenerationEvent(resourcePack)));
 
             Bukkit.getPluginManager().callEvent(new AsyncResourcePackGenerationEvent(resourcePack));
 

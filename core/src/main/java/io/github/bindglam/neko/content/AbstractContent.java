@@ -1,7 +1,6 @@
 package io.github.bindglam.neko.content;
 
-import io.github.bindglam.neko.content.feature.Feature;
-import io.github.bindglam.neko.content.feature.FeatureBuilder;
+import io.github.bindglam.neko.content.feature.*;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.kyori.adventure.key.Key;
@@ -14,11 +13,13 @@ public abstract class AbstractContent implements Content {
     protected final Key key;
     @Getter @Accessors(fluent = true)
     protected final List<Feature> features;
+    @Getter @Accessors(fluent = true)
+    protected final FeatureEventBus featureEventBus = new FeatureEventBusImpl();
 
     protected AbstractContent(@NotNull Key key, @NotNull List<FeatureBuilder> features) {
         this.key = key;
         this.features = features.stream()
-                .map(builder -> builder.build(this))
+                .map(builder -> builder.build(this, featureEventBus))
                 .toList();
     }
 }

@@ -1,15 +1,14 @@
 package io.github.bindglam.neko.content.item;
 
+import io.github.bindglam.neko.content.feature.event.ItemStackGenerationEvent;
 import io.github.bindglam.neko.utils.Constants;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class ItemBuilder {
     public static final NamespacedKey NEKO_ITEM_KEY = new NamespacedKey(Constants.PLUGIN_ID, "item");
@@ -32,6 +31,8 @@ public final class ItemBuilder {
 
             meta.getPersistentDataContainer().set(NEKO_ITEM_KEY, PersistentDataType.STRING, item.key().asString());
         });
+
+        item.featureEventBus().call(new ItemStackGenerationEvent(itemStack));
 
         return itemStack;
     }
