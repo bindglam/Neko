@@ -7,15 +7,19 @@ import io.github.bindglam.neko.content.feature.event.FeatureEventSubscriber;
 import org.jetbrains.annotations.NotNull;
 
 public final class FeatureEventBusImpl implements FeatureEventBus {
-    private final Multimap<String, FeatureEventSubscriber<?>> subscribers = HashMultimap.create();
+    private final Multimap<Class<? extends FeatureEvent>, FeatureEventSubscriber<?>> subscribers = HashMultimap.create();
 
     @Override
     public <T extends FeatureEvent> void subscribe(@NotNull Class<T> clazz, @NotNull FeatureEventSubscriber<T> subscriber) {
-        subscribers.put(clazz.getName(), subscriber);
+        subscribers.put(clazz, subscriber);
     }
 
     @Override
     public void call(@NotNull FeatureEvent event) {
-        subscribers.get(event.getClass().getName()).forEach(sub -> sub.onCalled(event));
+        subscribers.get(event.getClass()).forEach(sub -> {
+            @SuppressWarnings("unchecked")
+            FeatureEventSubscriber<FeatureEvent> typedSub = (FeatureEventSubscriber<FeatureEvent>) sub;
+            typedSub.onCalled(event);
+        });
     }
 }
