@@ -1,12 +1,13 @@
 package io.github.bindglam.neko.content;
 
-import io.github.bindglam.neko.content.feature.FeatureFactory;
 import io.github.bindglam.neko.manager.RegistryManager;
 import io.github.bindglam.neko.registry.Registries;
 import io.github.bindglam.neko.registry.RegistriesImpl;
 import io.github.bindglam.neko.utils.Constants;
 import io.github.bindglam.neko.utils.Files;
 import io.github.bindglam.neko.utils.Plugins;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.kyori.adventure.key.Key;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public final class PackLoader {
@@ -23,23 +23,22 @@ public final class PackLoader {
 
     public static LoadResult loadPack(@NotNull File folder) {
         File settingsFile = new File(folder, "pack.yml");
-        if (!settingsFile.exists()) {
+        if (!settingsFile.exists())
             return LoadResult.failure("Missing pack.yml");
-        }
+
         YamlConfiguration settingsConfig = YamlConfiguration.loadConfiguration(settingsFile);
 
         String id = settingsConfig.getString("id");
-        if (id == null) {
+        if (id == null)
             return LoadResult.failure("Missing id in pack.yml");
-        }
+
         String version = settingsConfig.getString("version");
-        if (version == null) {
+        if (version == null)
             return LoadResult.failure("Missing version in pack.yml");
-        }
+
         String author = settingsConfig.getString("author");
-        if (author == null) {
+        if (author == null)
             return LoadResult.failure("Missing author in pack.yml");
-        }
 
         Registries registries = new RegistriesImpl();
 
@@ -86,10 +85,11 @@ public final class PackLoader {
                 });
     }
 
+    @Getter @Accessors(fluent = true)
     public static final class LoadResult {
-        private final String id;
-        private final ContentsPack pack;
-        private final String errorMsg;
+        private final @Nullable String id;
+        private final @Nullable ContentsPack pack;
+        private final @Nullable String errorMsg;
 
         private LoadResult(@Nullable String id, @Nullable ContentsPack pack, @Nullable String errorMsg) {
             this.id = id;
@@ -111,21 +111,6 @@ public final class PackLoader {
 
         public boolean isFailure() {
             return errorMsg != null;
-        }
-
-        @Nullable
-        public String id() {
-            return id;
-        }
-
-        @Nullable
-        public ContentsPack pack() {
-            return pack;
-        }
-
-        @Nullable
-        public String errorMsg() {
-            return errorMsg;
         }
     }
 }
