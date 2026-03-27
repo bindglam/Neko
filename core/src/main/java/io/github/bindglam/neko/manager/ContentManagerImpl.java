@@ -10,6 +10,7 @@ import io.github.bindglam.neko.event.RegistryInitializeEvent;
 import io.github.bindglam.neko.registry.Registry;
 import io.github.bindglam.neko.utils.Constants;
 import io.github.bindglam.neko.utils.Plugins;
+import it.unimi.dsi.fastutil.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -88,10 +89,9 @@ public final class ContentManagerImpl implements ContentManager, Managerial, Rel
 
     @Override
     public @NotNull Optional<Item> getNekoItemByStack(@NotNull ItemStack itemStack) {
-        List<Item> items = Neko.plugin().registryManager().registries().item().entries().stream()
-                .map(registryEntry -> registryEntry.value())
+        return Neko.plugin().registryManager().registries().item().entries().stream()
+                .map(Pair::value)
                 .filter(item -> item.isSimilar(itemStack))
-                .toList();
-        return items.isEmpty() ? Optional.empty() : Optional.of(items.get(0));
+                .findAny();
     }
 }
