@@ -21,7 +21,7 @@ public abstract class ScalableRegistry<T> implements WritableRegistry<T> {
     }
 
     @Override
-    public void merge(@NotNull Registry<T> registry) {
+    public synchronized void merge(@NotNull Registry<T> registry) {
         if (isLocked) {
             throw new IllegalStateException("The registry is locked");
         }
