@@ -23,23 +23,22 @@ import java.util.logging.Logger;
 public final class RegistryManagerImpl implements RegistryManager, Managerial, Reloadable {
     private static final Logger LOGGER = Logger.getLogger(RegistryManagerImpl.class.getName());
 
-    private RegistryManagerImpl() {
-    }
-
-    public static final RegistryManagerImpl INSTANCE = new RegistryManagerImpl();
-    public static final GlobalRegistriesImpl GlobalRegistriesImpl = new GlobalRegistriesImpl();
+    private final GlobalRegistries globalRegistries = new GlobalRegistriesImpl();
 
     @Override
     public void preload(@NotNull Context context) {
         LOGGER.info("Initializing registries...");
-        GlobalRegistriesImpl.unlockAll();
-        GlobalRegistriesImpl.clearAll();
+
+        globalRegistries.unlockAll();
+        globalRegistries.clearAll();
     }
 
     @Override
     public void start(@NotNull Context context) {
-        Bukkit.getPluginManager().callEvent(new RegistryInitializeEvent(GlobalRegistriesImpl));
-        GlobalRegistriesImpl.lockAll();
+        Bukkit.getPluginManager().callEvent(new RegistryInitializeEvent(globalRegistries));
+
+        globalRegistries.lockAll();
+
         LOGGER.info("Successfully initialized registries!");
     }
 
@@ -49,7 +48,7 @@ public final class RegistryManagerImpl implements RegistryManager, Managerial, R
 
     @Override
     public @NotNull GlobalRegistries registries() {
-        return GlobalRegistriesImpl;
+        return globalRegistries;
     }
 
     public static final class GlobalRegistriesImpl extends RegistriesImpl implements GlobalRegistries {
@@ -60,7 +59,7 @@ public final class RegistryManagerImpl implements RegistryManager, Managerial, R
         @Getter @Accessors(fluent = true)
         private final DirectWritableRegistry<ContentsPack> contentsPacks;
 
-        public GlobalRegistriesImpl() {
+        private GlobalRegistriesImpl() {
             Map<Key, ContentType<?>> typeMap = Map.of(ItemType.KEY, new ItemType());
             this.types = create(new MappedRegistry<>(typeMap));
             this.features = create(new DirectScalableRegistry<>());

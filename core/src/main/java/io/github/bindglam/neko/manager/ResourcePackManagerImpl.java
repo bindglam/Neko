@@ -19,11 +19,6 @@ public final class ResourcePackManagerImpl implements ResourcePackManager, Manag
     private static final Logger LOGGER = Logger.getLogger(ResourcePackManagerImpl.class.getName());
     private static final File GENERATED_PACK_FILE = new File(Constants.DATA_FOLDER, "generated.zip");
 
-    private ResourcePackManagerImpl() {
-    }
-
-    public static final ResourcePackManagerImpl INSTANCE = new ResourcePackManagerImpl();
-
     @Override
     public void preload(@NotNull Context context) {
     }

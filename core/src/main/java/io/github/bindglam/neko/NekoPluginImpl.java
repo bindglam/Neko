@@ -1,24 +1,30 @@
 package io.github.bindglam.neko;
 
 import io.github.bindglam.neko.manager.*;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.entity.Player;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public final class NekoPluginImpl extends JavaPlugin implements NekoPlugin {
+    @Getter @Accessors(fluent = true)
+    private final RegistryManagerImpl registryManager = new RegistryManagerImpl();
+    @Getter @Accessors(fluent = true)
+    private final ContentManagerImpl contentManager = new ContentManagerImpl();
+    @Getter @Accessors(fluent = true)
+    private final ResourcePackManagerImpl resourcePackManager = new ResourcePackManagerImpl();
+
+    private final CommandManager commandManager = new CommandManager();
+
     private final List<Managerial> managers = List.of(
-            RegistryManagerImpl.INSTANCE,
-            ContentManagerImpl.INSTANCE,
-            ResourcePackManagerImpl.INSTANCE,
-            CommandManager.INSTANCE
+            registryManager,
+            contentManager,
+            resourcePackManager,
+            commandManager
     );
 
     @Override
@@ -50,21 +56,6 @@ public final class NekoPluginImpl extends JavaPlugin implements NekoPlugin {
         reloadableList.forEach(reloadable -> reloadable.end(context));
         reloadableList.forEach(reloadable -> reloadable.preload(context));
         reloadableList.forEach(reloadable -> reloadable.start(context));
-    }
-
-    @Override
-    public @NotNull RegistryManager registryManager() {
-        return RegistryManagerImpl.INSTANCE;
-    }
-
-    @Override
-    public @NotNull ContentManager contentManager() {
-        return ContentManagerImpl.INSTANCE;
-    }
-
-    @Override
-    public @NotNull ResourcePackManager resourcePackManager() {
-        return ResourcePackManagerImpl.INSTANCE;
     }
 
     private final class ServerLoadListener implements Listener {

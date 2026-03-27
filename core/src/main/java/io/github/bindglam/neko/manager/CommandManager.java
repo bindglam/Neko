@@ -19,11 +19,6 @@ import java.util.logging.Logger;
 public final class CommandManager implements Managerial {
     private static final Logger LOGGER = Logger.getLogger(CommandManager.class.getName());
 
-    private CommandManager() {
-    }
-
-    public static final CommandManager INSTANCE = new CommandManager();
-
     @Override
     public void preload(@NotNull Context context) {
         LegacyPaperCommandManager<org.bukkit.command.CommandSender> manager = new LegacyPaperCommandManager<>(

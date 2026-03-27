@@ -29,11 +29,6 @@ public final class ContentManagerImpl implements ContentManager, Managerial, Rel
     private static final Logger LOGGER = Logger.getLogger(ContentManagerImpl.class.getName());
     private static final File PACKS_FOLDER = new File(Constants.DATA_FOLDER, "packs");
 
-    private ContentManagerImpl() {
-    }
-
-    public static final ContentManagerImpl INSTANCE = new ContentManagerImpl();
-
     @Override
     public void preload(@NotNull Context context) {
         Bukkit.getPluginManager().registerEvents(this, context.plugin());
@@ -41,7 +36,7 @@ public final class ContentManagerImpl implements ContentManager, Managerial, Rel
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRegistryInitialize(RegistryInitializeEvent event) {
-        RegistryManagerImpl.GlobalRegistriesImpl.features()
+        RegistryManager.GlobalRegistries.registries().features()
                 .register(HelloWorldFeature.KEY, HelloWorldFeature.FACTORY);
 
         loadPacks(event.getRegistries());
