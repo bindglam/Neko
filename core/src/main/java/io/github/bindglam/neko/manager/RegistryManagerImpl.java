@@ -11,7 +11,8 @@ import io.github.bindglam.neko.registry.MappedRegistry;
 import io.github.bindglam.neko.registry.Registry;
 import io.github.bindglam.neko.registry.Registries;
 import io.github.bindglam.neko.registry.RegistriesImpl;
-import io.github.bindglam.neko.utils.Plugins;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -52,8 +53,11 @@ public final class RegistryManagerImpl implements RegistryManager, Managerial, R
     }
 
     public static final class GlobalRegistriesImpl extends RegistriesImpl implements GlobalRegistries {
+        @Getter @Accessors(fluent = true)
         private final Registry<ContentType<?>> types;
+        @Getter @Accessors(fluent = true)
         private final DirectWritableRegistry<FeatureFactory<?>> features;
+        @Getter @Accessors(fluent = true)
         private final DirectWritableRegistry<ContentsPack> contentsPacks;
 
         public GlobalRegistriesImpl() {
@@ -61,21 +65,6 @@ public final class RegistryManagerImpl implements RegistryManager, Managerial, R
             this.types = create(new MappedRegistry<>(typeMap));
             this.features = create(new DirectScalableRegistry<>());
             this.contentsPacks = create(new DirectScalableRegistry<>());
-        }
-
-        @Override
-        public @NotNull Registry<ContentType<?>> types() {
-            return types;
-        }
-
-        @Override
-        public @NotNull DirectWritableRegistry<FeatureFactory<?>> features() {
-            return features;
-        }
-
-        @Override
-        public @NotNull DirectWritableRegistry<ContentsPack> contentsPacks() {
-            return contentsPacks;
         }
 
         @Override
