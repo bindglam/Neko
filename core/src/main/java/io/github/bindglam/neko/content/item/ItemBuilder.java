@@ -19,23 +19,20 @@ public final class ItemBuilder {
 
     public static ItemStack create(@NotNull Item item) {
         ItemStack itemStack = new ItemStack(item.properties().type());
-        ItemMeta meta = itemStack.getItemMeta();
 
-        Component displayName = item.properties().name();
-        if (displayName == null) {
-            displayName = Component.translatable(item).color(NamedTextColor.WHITE);
-        }
+        itemStack.editMeta(meta -> {
+            Component displayName = item.properties().name();
+            if (displayName == null)
+                displayName = Component.translatable(item).color(NamedTextColor.WHITE);
+            if (displayName.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET)
+                displayName = displayName.decoration(TextDecoration.ITALIC, false);
+            meta.displayName(displayName);
 
-        if (displayName.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET) {
-            displayName = displayName.decoration(TextDecoration.ITALIC, false);
-        }
+            meta.lore(item.properties().lore());
 
-        meta.displayName(displayName);
-        meta.lore(item.properties().lore());
+            meta.getPersistentDataContainer().set(NEKO_ITEM_KEY, PersistentDataType.STRING, item.key().asString());
+        });
 
-        meta.getPersistentDataContainer().set(NEKO_ITEM_KEY, PersistentDataType.STRING, item.key().asString());
-
-        itemStack.setItemMeta(meta);
         return itemStack;
     }
 }
