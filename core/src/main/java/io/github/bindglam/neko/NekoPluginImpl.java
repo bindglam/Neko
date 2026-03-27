@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public final class NekoPluginImpl extends JavaPlugin implements NekoPlugin {
-    private static final Logger LOGGER = Logger.getLogger(NekoPluginImpl.class.getName());
     private final List<Managerial> managers = List.of(
             RegistryManagerImpl.INSTANCE,
             ContentManagerImpl.INSTANCE,
