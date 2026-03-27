@@ -3,16 +3,20 @@ package io.github.bindglam.neko.content.item;
 import io.github.bindglam.neko.content.AbstractContent;
 import io.github.bindglam.neko.content.feature.FeatureBuilder;
 import io.github.bindglam.neko.content.item.properties.ItemProperties;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.kyori.adventure.key.Key;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class ItemImpl extends AbstractContent implements Item {
+    @Getter @Accessors(fluent = true)
     private final ItemProperties properties;
+    @Getter @Accessors(fluent = true)
     private final ImmutableItemStack itemStack;
 
     public ItemImpl(@NotNull Key key,
@@ -25,22 +29,9 @@ public final class ItemImpl extends AbstractContent implements Item {
 
     @Override
     public boolean isSimilar(@NotNull ItemStack itemStack) {
-        if (!itemStack.hasItemMeta()) {
+        if (!itemStack.hasItemMeta())
             return false;
-        }
-        ItemMeta meta = itemStack.getItemMeta();
-        String itemKey = meta.getPersistentDataContainer().get(ItemBuilder.NEKO_ITEM_KEY, PersistentDataType.STRING);
-        return key().asString().equals(itemKey);
-    }
-
-    @Override
-    public @NotNull ItemProperties properties() {
-        return properties;
-    }
-
-    @Override
-    public @NotNull ImmutableItemStack itemStack() {
-        return itemStack;
+        return Objects.equals(key().asString(), itemStack.getItemMeta().getPersistentDataContainer().get(ItemBuilder.NEKO_ITEM_KEY, PersistentDataType.STRING));
     }
 
     @Override
