@@ -2,11 +2,15 @@ package io.github.bindglam.neko.content;
 
 import io.github.bindglam.neko.registry.Registries;
 import io.github.bindglam.neko.utils.Constants;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.key.KeyPattern;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
+@Getter @Accessors(fluent = true)
 public final class ContentsPackImpl implements ContentsPack {
     private final String id;
     private final String version;
@@ -15,7 +19,7 @@ public final class ContentsPackImpl implements ContentsPack {
     private final Registries registries;
     private final Key key;
 
-    public ContentsPackImpl(@NotNull String id,
+    public ContentsPackImpl(@NotNull @KeyPattern.Value String id,
                             @NotNull String version,
                             @NotNull String author,
                             @NotNull File packFolder,
@@ -25,40 +29,10 @@ public final class ContentsPackImpl implements ContentsPack {
         this.author = author;
         this.packFolder = packFolder;
         this.registries = registries;
-        this.key = Key.key(Constants.PLUGIN_ID, id);
+        this.key = createKey(id);
     }
 
-    public static Key createKey(@NotNull String id) {
+    public static Key createKey(@NotNull @KeyPattern.Value String id) {
         return Key.key(Constants.PLUGIN_ID, id);
-    }
-
-    @Override
-    public @NotNull Key key() {
-        return key;
-    }
-
-    @Override
-    public @NotNull String id() {
-        return id;
-    }
-
-    @Override
-    public @NotNull String version() {
-        return version;
-    }
-
-    @Override
-    public @NotNull String author() {
-        return author;
-    }
-
-    @Override
-    public @NotNull File packFolder() {
-        return packFolder;
-    }
-
-    @Override
-    public @NotNull Registries registries() {
-        return registries;
     }
 }
