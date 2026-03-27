@@ -1,7 +1,6 @@
 package io.github.bindglam.neko.content.item;
 
 import io.github.bindglam.neko.content.ContentType;
-import io.github.bindglam.neko.content.feature.Feature;
 import io.github.bindglam.neko.content.feature.FeatureArguments;
 import io.github.bindglam.neko.content.feature.FeatureBuilder;
 import io.github.bindglam.neko.content.feature.FeatureFactory;
@@ -17,31 +16,27 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public final class ItemType implements ContentType<Item> {
     public static final Key KEY = Key.key(Constants.PLUGIN_ID, "item");
     private static final Material DEFAULT_MATERIAL = Material.PAPER;
-
-    public ItemType() {
-    }
 
     public static Key key() {
         return KEY;
     }
 
     @Override
-    public String id() {
+    public @NotNull String id() {
         return "item";
     }
 
     @Override
-    public Class<Item> clazz() {
+    public @NotNull Class<Item> clazz() {
         return Item.class;
     }
 
     @Override
-    public LoadResult load(@NotNull Registries registries, @NotNull ConfigurationSection config) {
+    public @NotNull LoadResult load(@NotNull Registries registries, @NotNull ConfigurationSection config) {
         try {
             Key key = Key.key(config.getName());
 
