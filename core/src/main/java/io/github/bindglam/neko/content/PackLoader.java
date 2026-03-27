@@ -1,13 +1,12 @@
 package io.github.bindglam.neko.content;
 
+import io.github.bindglam.neko.config.ConfigSchema;
 import io.github.bindglam.neko.manager.RegistryManager;
 import io.github.bindglam.neko.registry.Registries;
 import io.github.bindglam.neko.registry.RegistriesImpl;
 import io.github.bindglam.neko.utils.Constants;
 import io.github.bindglam.neko.utils.Files;
 import io.github.bindglam.neko.utils.Plugins;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 import net.kyori.adventure.key.Key;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,102 +14,73 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class PackLoader {
+    private static final ConfigSchema CONTENTS_PACK_CONFIG_SCHEMA = new ContentsPackConfigSchema();
+    private static final ConfigSchema CONTENT_CONFIG_SCHEMA = new ContentConfigSchema();
+
     private PackLoader() {
     }
 
-    public static LoadResult loadPack(@NotNull File folder) {
+    public static @Nullable ContentsPack loadPack(@NotNull File folder) {
+        Logger logger = Plugins.logger();
+
         File settingsFile = new File(folder, "pack.yml");
-        if (!settingsFile.exists())
-            return LoadResult.failure("Missing pack.yml");
+        if (!settingsFile.exists()) {
+            logger.warning("Failed to load '" + folder.getName() + "' pack ( Missing pack.yml )");
+            return null;
+        }
 
         YamlConfiguration settingsConfig = YamlConfiguration.loadConfiguration(settingsFile);
 
-        String id = settingsConfig.getString("id");
-        if (id == null)
-            return LoadResult.failure("Missing id in pack.yml");
+        ConfigSchema.Result validationResult = CONTENTS_PACK_CONFIG_SCHEMA.validate(settingsConfig);
+        if(validationResult.isSuccess()) {
+            String id = Objects.requireNonNull(settingsConfig.getString("id"));
+            String version = Objects.requireNonNull(settingsConfig.getString("version"));
+            String author = Objects.requireNonNull(settingsConfig.getString("author"));
 
-        String version = settingsConfig.getString("version");
-        if (version == null)
-            return LoadResult.failure("Missing version in pack.yml");
+            Registries registries = new RegistriesImpl();
 
-        String author = settingsConfig.getString("author");
-        if (author == null)
-            return LoadResult.failure("Missing author in pack.yml");
+            File configsFolder = new File(folder, "configs");
+            if (configsFolder.exists()) {
+                loadConfigs(configsFolder, registries);
+            }
 
-        Registries registries = new RegistriesImpl();
-
-        File configsFolder = new File(folder, "configs");
-        if (configsFolder.exists()) {
-            loadConfigs(configsFolder, registries);
+            return new ContentsPackImpl(id, version, author, folder, registries);
+        } else {
+            logger.warning("Failed to load '" + folder.getName() + "' pack");
+            validationResult.getErrors().forEach(error -> logger.warning("  " + error));
+            return null;
         }
-
-        ContentsPack pack = new ContentsPackImpl(id, version, author, folder, registries);
-        return LoadResult.success(id, pack);
     }
 
     private static void loadConfigs(@NotNull File folder, @NotNull Registries registries) {
         Logger logger = Plugins.logger();
+
         Files.listFilesRecursively(folder)
                 .map(YamlConfiguration::loadConfiguration)
                 .forEach(config -> {
                     for (String key : config.getKeys(false)) {
                         ConfigurationSection contentConfig = config.getConfigurationSection(key);
-                        if (contentConfig == null) {
+                        if (contentConfig == null)
                             continue;
-                        }
 
-                        String typeId = contentConfig.getString("type");
-                        if (typeId == null) {
-                            logger.warning("Failed to load " + contentConfig.getName() + ". ( Missing type )");
-                            continue;
-                        }
+                        ConfigSchema.Result validationResult = CONTENT_CONFIG_SCHEMA.validate(contentConfig);
+                        if(validationResult.isSuccess()) {
+                            ContentType<?> type = RegistryManager.GlobalRegistries.registries().types()
+                                    .get(Key.key(Constants.PLUGIN_ID, contentConfig.getString("type")))
+                                    .orElseThrow(() -> new IllegalStateException("그 사이에 인젝션은 말이 안됨!!!!"));
 
-                        ContentType<?> type = RegistryManager.GlobalRegistries.registries().types()
-                                .get(Key.key(Constants.PLUGIN_ID, typeId))
-                                .orElse(null);
-
-                        if (type == null) {
-                            logger.warning("Failed to load " + contentConfig.getName() + ". ( Unknown type )");
-                            continue;
-                        }
-
-                        ContentType.LoadResult result = type.load(registries, contentConfig);
-                        if (result.isFailure()) {
-                            logger.warning("Failed to load " + contentConfig.getName() + ". ( " + result.errorMessage() + " )");
+                            if (!type.load(registries, contentConfig)) {
+                                logger.warning("Failed to load " + contentConfig.getName());
+                            }
+                        } else {
+                            logger.warning("Failed to load '" + key + "'");
+                            validationResult.getErrors().forEach(error -> logger.warning("  " + error));
                         }
                     }
                 });
-    }
-
-    @Getter @Accessors(fluent = true)
-    public static final class LoadResult {
-        private final @Nullable String id;
-        private final @Nullable ContentsPack pack;
-        private final @Nullable String errorMsg;
-
-        private LoadResult(@Nullable String id, @Nullable ContentsPack pack, @Nullable String errorMsg) {
-            this.id = id;
-            this.pack = pack;
-            this.errorMsg = errorMsg;
-        }
-
-        public static LoadResult success(@NotNull String id, @NotNull ContentsPack pack) {
-            return new LoadResult(id, pack, null);
-        }
-
-        public static LoadResult failure(@NotNull String errorMsg) {
-            return new LoadResult(null, null, errorMsg);
-        }
-
-        public boolean isSuccess() {
-            return id != null && pack != null;
-        }
-
-        public boolean isFailure() {
-            return errorMsg != null;
-        }
     }
 }

@@ -1,5 +1,6 @@
 package io.github.bindglam.neko.content.item;
 
+import io.github.bindglam.neko.config.ConfigSchema;
 import io.github.bindglam.neko.content.ContentType;
 import io.github.bindglam.neko.content.feature.FeatureArguments;
 import io.github.bindglam.neko.content.feature.FeatureBuilder;
@@ -8,6 +9,7 @@ import io.github.bindglam.neko.content.item.properties.ItemProperties;
 import io.github.bindglam.neko.manager.RegistryManager;
 import io.github.bindglam.neko.registry.Registries;
 import io.github.bindglam.neko.utils.Constants;
+import io.github.bindglam.neko.utils.Plugins;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -16,9 +18,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Logger;
 
 public final class ItemType implements ContentType<Item> {
     public static final Key KEY = Key.key(Constants.PLUGIN_ID, "item");
+
+    private static final ConfigSchema ITEM_CONFIG_SCHEMA = new ItemConfigSchema();
+
     private static final Material DEFAULT_MATERIAL = Material.PAPER;
 
     public static Key key() {
@@ -36,50 +43,44 @@ public final class ItemType implements ContentType<Item> {
     }
 
     @Override
-    public @NotNull LoadResult load(@NotNull Registries registries, @NotNull ConfigurationSection config) {
+    public boolean load(@NotNull Registries registries, @NotNull ConfigurationSection config) {
+        Logger logger = Plugins.logger();
+
         try {
-            Key key = Key.key(config.getName());
+            ConfigSchema.Result validationResult = ITEM_CONFIG_SCHEMA.validate(config);
+            if(validationResult.isSuccess()) {
+                Key key = Key.key(config.getName());
 
-            ConfigurationSection propertiesSection = config.getConfigurationSection("properties");
-            if (propertiesSection == null) {
-                return LoadResult.failure("Missing properties section");
-            }
-            ItemProperties properties = loadProperties(propertiesSection);
+                ItemProperties properties = loadProperties(Objects.requireNonNull(config.getConfigurationSection("properties")));
 
-            List<FeatureBuilder> features = new ArrayList<>();
-            ConfigurationSection featuresSection = config.getConfigurationSection("features");
-            if (featuresSection != null) {
-                for (String featureKey : featuresSection.getKeys(false)) {
-                    ConfigurationSection featureConfig = featuresSection.getConfigurationSection(featureKey);
-                    if (featureConfig == null) {
-                        continue;
-                    }
+                List<FeatureBuilder> features = new ArrayList<>();
+                ConfigurationSection featuresSection = config.getConfigurationSection("features");
+                if (featuresSection != null) {
+                    featuresSection.getKeys(false).stream().map(it -> Objects.requireNonNull(featuresSection.getConfigurationSection(it))).forEach(featureConfig -> {
+                        FeatureFactory<?> factory = RegistryManager.GlobalRegistries.registries().features()
+                                .get(Key.key(Objects.requireNonNull(featureConfig.getString("id"))))
+                                .orElseThrow(() -> new IllegalStateException("Unknown feature in " + key.asString()));
 
-                    String featureId = featureConfig.getString("id");
-                    if (featureId == null) {
-                        throw new IllegalArgumentException("No feature id in " + key.asString());
-                    }
+                        FeatureArguments arguments = new FeatureArguments(featureConfig.getConfigurationSection("arguments"));
 
-                    FeatureFactory<?> factory = RegistryManager.GlobalRegistries.registries().features()
-                            .get(Key.key(featureId))
-                            .orElseThrow(() -> new IllegalStateException("Unknown feature in " + key.asString()));
-
-                    ConfigurationSection argsSection = featureConfig.getConfigurationSection("arguments");
-                    FeatureArguments arguments = new FeatureArguments(argsSection);
-
-                    features.add(new FeatureBuilder(factory, arguments));
+                        features.add(new FeatureBuilder(factory, arguments));
+                    });
                 }
+
+                registries.item().register(key, entry -> {
+                    entry.key(key);
+                    entry.properties(properties);
+                    entry.features(features);
+                });
+
+                return true;
+            } else {
+                logger.warning("Failed to load '" + config.getName() + "'");
+                validationResult.getErrors().forEach(error -> logger.warning("  " + error));
+                return false;
             }
-
-            registries.item().register(key, entry -> {
-                entry.key(key);
-                entry.properties(properties);
-                entry.features(features);
-            });
-
-            return LoadResult.success();
         } catch (Exception e) {
-            return LoadResult.failure(e.getMessage() != null ? e.getMessage() : "Unknown error");
+            return false;
         }
     }
 
