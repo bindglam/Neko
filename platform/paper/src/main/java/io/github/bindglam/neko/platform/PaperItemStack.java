@@ -7,17 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public final class PaperItemStack implements PlatformItemStack {
     private final ItemStack itemStack;
-    private final @Nullable PaperPersistentDataContainer persistentDataContainer;
 
     PaperItemStack(ItemStack itemStack) {
         this.itemStack = itemStack;
-        if(this.itemStack.hasItemMeta())
-            this.persistentDataContainer = new PaperPersistentDataContainer(itemStack.getItemMeta().getPersistentDataContainer());
-        else
-            this.persistentDataContainer = null;
     }
 
     @Override
@@ -41,8 +37,9 @@ public final class PaperItemStack implements PlatformItemStack {
     }
 
     @Override
-    public @Nullable PlatformPersistentDataContainer persistentDataContainer() {
-        return persistentDataContainer;
+    public void persistentDataContainer(Consumer<PlatformPersistentDataContainer> consumer) {
+        if(this.itemStack.getItemMeta() != null)
+            itemStack.editMeta(meta -> consumer.accept(new PaperPersistentDataContainer(meta.getPersistentDataContainer())));
     }
 
     @Override

@@ -18,7 +18,6 @@ public final class ItemBuilder {
 
     public static PlatformItemStack create(@NotNull Item item) {
         var itemStack = item.properties().type().createItemStack();
-        var persistentDataContainer = itemStack.persistentDataContainer();
 
         Component displayName = item.properties().name();
         if (displayName == null)
@@ -29,8 +28,8 @@ public final class ItemBuilder {
 
         itemStack.lore(item.properties().lore());
 
-        if(persistentDataContainer != null)
-            persistentDataContainer.set(NEKO_ITEM_KEY, PlatformAdapter.adapter().persistentDataType(String.class).orElseThrow(), item.key().asString());
+        itemStack.persistentDataContainer(persistentDataContainer ->
+                persistentDataContainer.set(NEKO_ITEM_KEY, PlatformAdapter.adapter().persistentDataType(String.class).orElseThrow(), item.key().asString()));
 
         item.featureEventBus().call(new ItemStackGenerationEvent(itemStack));
 

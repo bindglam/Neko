@@ -3,6 +3,7 @@ package io.github.bindglam.neko.platform;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
@@ -27,6 +28,9 @@ public final class PaperAdapter implements PlatformAdapter {
 
     @Override
     public @NotNull <P, C> Optional<PlatformPersistentDataContainer.Type<P, C>> persistentDataType(@NotNull Class<P> clazz) {
+        if(clazz.getName().equals(String.class.getName())) {
+            return Optional.of(() -> PersistentDataType.STRING);
+        }
         return Optional.empty();
     }
 }

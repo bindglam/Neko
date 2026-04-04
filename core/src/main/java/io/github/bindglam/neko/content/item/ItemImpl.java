@@ -31,10 +31,10 @@ public final class ItemImpl extends AbstractContent implements Item {
 
     @Override
     public boolean isSimilar(@NotNull PlatformItemStack itemStack) {
-        PlatformPersistentDataContainer persistentDataContainer = itemStack.persistentDataContainer();
-        if (persistentDataContainer == null)
-            return false;
-        return Objects.equals(key().asString(), persistentDataContainer.get(ItemBuilder.NEKO_ITEM_KEY, PlatformAdapter.adapter().persistentDataType(String.class).orElseThrow()));
+        boolean[] result = new boolean[] { false };
+        itemStack.persistentDataContainer(persistentDataContainer ->
+                result[0] = Objects.equals(key().asString(), persistentDataContainer.get(ItemBuilder.NEKO_ITEM_KEY, PlatformAdapter.adapter().persistentDataType(String.class).orElseThrow())));
+        return result[0];
     }
 
     @Override

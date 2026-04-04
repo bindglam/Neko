@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public interface PlatformItemStack extends Translatable {
     @NotNull PlatformItemType type();
@@ -16,7 +17,7 @@ public interface PlatformItemStack extends Translatable {
 
     void lore(@Nullable List<Component> components);
 
-    @Nullable PlatformPersistentDataContainer persistentDataContainer();
+    void persistentDataContainer(Consumer<PlatformPersistentDataContainer> consumer);
 
     @NotNull PlatformItemStack clone();
 

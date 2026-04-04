@@ -2,6 +2,7 @@ package io.github.bindglam.neko.platform;
 
 import net.kyori.adventure.key.Key;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
