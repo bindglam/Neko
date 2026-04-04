@@ -83,6 +83,7 @@ public final class ItemType implements ContentType<Item> {
                 return false;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
