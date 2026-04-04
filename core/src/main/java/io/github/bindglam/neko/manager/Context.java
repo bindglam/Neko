@@ -1,9 +1,9 @@
 package io.github.bindglam.neko.manager;
 
-import io.github.bindglam.neko.NekoPluginImpl;
+import io.github.bindglam.neko.NekoPlatform;
 import org.jetbrains.annotations.NotNull;
 
-public record Context(
-        @NotNull NekoPluginImpl plugin
+public record Context<PLATFORM extends NekoPlatform>(
+        @NotNull PLATFORM plugin
 ) {
 }

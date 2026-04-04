@@ -1,5 +1,6 @@
 package io.github.bindglam.neko.manager;
 
+import io.github.bindglam.neko.NekoPaperPlugin;
 import io.github.bindglam.neko.content.ContentType;
 import io.github.bindglam.neko.content.ContentsPack;
 import io.github.bindglam.neko.content.item.ItemType;
@@ -20,13 +21,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public final class RegistryManagerImpl implements RegistryManager, Managerial, Reloadable {
+public final class RegistryManagerImpl implements RegistryManager, Managerial<NekoPaperPlugin>, Reloadable<NekoPaperPlugin> {
     private static final Logger LOGGER = Logger.getLogger(RegistryManagerImpl.class.getName());
 
     private final GlobalRegistries globalRegistries = new GlobalRegistriesImpl();
 
     @Override
-    public void preload(@NotNull Context context) {
+    public void preload(@NotNull Context<NekoPaperPlugin> context) {
         LOGGER.info("Initializing registries...");
 
         globalRegistries.unlockAll();
@@ -34,7 +35,7 @@ public final class RegistryManagerImpl implements RegistryManager, Managerial, R
     }
 
     @Override
-    public void start(@NotNull Context context) {
+    public void start(@NotNull Context<NekoPaperPlugin> context) {
         Bukkit.getPluginManager().callEvent(new RegistryInitializeEvent(globalRegistries));
 
         globalRegistries.lockAll();
@@ -43,7 +44,7 @@ public final class RegistryManagerImpl implements RegistryManager, Managerial, R
     }
 
     @Override
-    public void end(@NotNull Context context) {
+    public void end(@NotNull Context<NekoPaperPlugin> context) {
     }
 
     @Override

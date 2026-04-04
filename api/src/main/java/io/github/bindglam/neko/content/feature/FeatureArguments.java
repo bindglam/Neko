@@ -1,22 +1,14 @@
 package io.github.bindglam.neko.content.feature;
 
 import it.unimi.dsi.fastutil.Pair;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public record FeatureArguments(@NotNull Map<String, String> map) {
-    public FeatureArguments(@Nullable ConfigurationSection config) {
-        this(config != null
-                ? config.getKeys(false).stream().collect(HashMap::new, (map, key) -> map.put(key, Objects.requireNonNull(config.get(key)).toString()), HashMap::putAll)
-                : Map.of());
-    }
-
     public @Nullable String get(@NotNull String name) {
         return map.get(name);
     }

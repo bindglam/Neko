@@ -6,24 +6,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public final class Neko {
-    private static NekoPlugin plugin;
+    private static NekoPlatform platform;
 
     private Neko() {
     }
 
-    public static @NotNull NekoPlugin plugin() {
-        return Objects.requireNonNull(plugin, "Plugin not initialized");
+    public static @NotNull NekoPlatform platform() {
+        return Objects.requireNonNull(platform, "Platform not initialized");
     }
 
     @ApiStatus.Internal
-    static void registerPlugin(NekoPlugin plugin) {
-        if (Neko.plugin != null)
+    static void registerPlugin(NekoPlatform plugin) {
+        if (Neko.platform != null)
             throw new UnsupportedOperationException("Cannot redefine singleton plugin");
-        Neko.plugin = plugin;
+        Neko.platform = plugin;
     }
 
     @ApiStatus.Internal
     static void unregisterPlugin() {
-        Neko.plugin = null;
+        Neko.platform = null;
     }
 }

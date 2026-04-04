@@ -1,11 +1,11 @@
 package io.github.bindglam.neko.content.feature.event;
 
-import org.bukkit.inventory.ItemStack;
+import io.github.bindglam.neko.platform.PlatformItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 public record ItemStackGenerationEvent(
-        @NotNull ItemStack itemStack
+        @NotNull PlatformItemStack itemStack
 ) implements FeatureEvent {
     @ApiStatus.Internal
     public ItemStackGenerationEvent {

@@ -1,16 +1,22 @@
 package io.github.bindglam.neko;
 
 import io.github.bindglam.neko.manager.*;
+import io.github.bindglam.neko.platform.PaperAdapter;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 
-public final class NekoPluginImpl extends JavaPlugin implements NekoPlugin {
+public final class NekoPaperPlugin extends JavaPlugin implements NekoPlatform {
+    @Getter @Accessors(fluent = true)
+    private final PaperAdapter platformAdapter = new PaperAdapter();
+
     @Getter @Accessors(fluent = true)
     private final RegistryManagerImpl registryManager = new RegistryManagerImpl();
     @Getter @Accessors(fluent = true)
@@ -20,7 +26,7 @@ public final class NekoPluginImpl extends JavaPlugin implements NekoPlugin {
 
     private final CommandManager commandManager = new CommandManager();
 
-    private final List<Managerial> managers = List.of(
+    private final List<Managerial<NekoPaperPlugin>> managers = List.of(
             registryManager,
             contentManager,
             resourcePackManager,
@@ -31,7 +37,7 @@ public final class NekoPluginImpl extends JavaPlugin implements NekoPlugin {
     public void onEnable() {
         Neko.registerPlugin(this);
 
-        Context context = new Context(this);
+        Context<NekoPaperPlugin> context = new Context<>(this);
         managers.forEach(manager -> manager.preload(context));
 
         getServer().getPluginManager().registerEvents(new ServerLoadListener(), this);
@@ -39,7 +45,7 @@ public final class NekoPluginImpl extends JavaPlugin implements NekoPlugin {
 
     @Override
     public void onDisable() {
-        Context context = new Context(this);
+        Context<NekoPaperPlugin> context = new Context<>(this);
         managers.forEach(manager -> manager.end(context));
 
         Neko.unregisterPlugin();
@@ -47,15 +53,20 @@ public final class NekoPluginImpl extends JavaPlugin implements NekoPlugin {
 
     @Override
     public void reload() {
-        List<Reloadable> reloadableList = managers.stream()
+        List<Reloadable<NekoPaperPlugin>> reloadableList = managers.stream()
                 .filter(manager -> manager instanceof Reloadable)
-                .map(manager -> (Reloadable) manager)
+                .map(manager -> (Reloadable<NekoPaperPlugin>) manager)
                 .toList();
 
-        Context context = new Context(this);
+        Context<NekoPaperPlugin> context = new Context<>(this);
         reloadableList.forEach(reloadable -> reloadable.end(context));
         reloadableList.forEach(reloadable -> reloadable.preload(context));
         reloadableList.forEach(reloadable -> reloadable.start(context));
+    }
+
+    @Override
+    public @NotNull Logger logger() {
+        return getLogger();
     }
 
     private final class ServerLoadListener implements Listener {
@@ -65,7 +76,7 @@ public final class NekoPluginImpl extends JavaPlugin implements NekoPlugin {
                 return;
             }
 
-            Context context = new Context(NekoPluginImpl.this);
+            Context<NekoPaperPlugin> context = new Context<>(NekoPaperPlugin.this);
             managers.forEach(manager -> manager.start(context));
         }
     }

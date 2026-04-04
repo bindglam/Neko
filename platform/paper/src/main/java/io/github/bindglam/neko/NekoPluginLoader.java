@@ -24,9 +24,7 @@ public final class NekoPluginLoader implements PluginLoader {
         resolver.addRepository(centralRepo);
 
         resolver.addDependency(new Dependency(new DefaultArtifact("org.incendo:cloud-paper:2.0.0-beta.14"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("team.unnamed:creative-api:1.7.3"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("team.unnamed:creative-serializer-minecraft:1.7.3"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("team.unnamed:creative-server:1.7.3"), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("org.incendo:cloud-minecraft-extras:2.0.0-beta.14"), null));
 
         return resolver;
     }

@@ -1,20 +1,16 @@
 package io.github.bindglam.neko.content;
 
 import io.github.bindglam.neko.config.ConfigSchema;
-import io.github.bindglam.neko.content.feature.FeatureFactory;
-import io.github.bindglam.neko.manager.RegistryManager;
-import io.github.bindglam.neko.utils.Constants;
 import net.kyori.adventure.key.Key;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.ConfigurationNode;
 
 public final class ContentsPackConfigSchema implements ConfigSchema {
     @Override
-    public Result validate(ConfigurationSection config) {
+    public @NotNull Result validate(@NotNull ConfigurationNode config) {
         Result result = new Result();
 
-        String id = config.getString("id");
+        String id = config.node("id").getString();
         if (id == null) {
             result.failed("Missing id");
         } else {
@@ -22,11 +18,11 @@ public final class ContentsPackConfigSchema implements ConfigSchema {
                 result.failed("Invalid id");
         }
 
-        String version = config.getString("version");
+        String version = config.node("version").getString();
         if (version == null)
             result.failed("Missing version");
 
-        String author = config.getString("author");
+        String author = config.node("author").getString();
         if (author == null)
             result.failed("Missing author");
 

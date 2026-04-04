@@ -3,9 +3,16 @@ package io.github.bindglam.neko;
 import io.github.bindglam.neko.manager.ContentManager;
 import io.github.bindglam.neko.manager.RegistryManager;
 import io.github.bindglam.neko.manager.ResourcePackManager;
+import io.github.bindglam.neko.platform.PlatformAdapter;
 import org.jetbrains.annotations.NotNull;
 
-public interface NekoPlugin {
+import java.util.logging.Logger;
+
+public interface NekoPlatform {
+    @NotNull Logger logger();
+
+    @NotNull PlatformAdapter platformAdapter();
+
     @NotNull RegistryManager registryManager();
 
     @NotNull ContentManager contentManager();

@@ -1,4 +1,6 @@
 package io.github.bindglam.neko.manager;
 
-public interface Reloadable extends Managerial {
+import io.github.bindglam.neko.NekoPlatform;
+
+public interface Reloadable<PLATFORM extends NekoPlatform> extends Managerial<PLATFORM> {
 }

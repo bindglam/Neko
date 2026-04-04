@@ -1,5 +1,6 @@
 package io.github.bindglam.neko.manager;
 
+import io.github.bindglam.neko.NekoPaperPlugin;
 import io.github.bindglam.neko.content.feature.event.ResourcePackGenerationEvent;
 import io.github.bindglam.neko.event.AsyncResourcePackGenerationEvent;
 import io.github.bindglam.neko.utils.Constants;
@@ -15,21 +16,21 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
-public final class ResourcePackManagerImpl implements ResourcePackManager, Managerial, Reloadable {
+public final class ResourcePackManagerImpl implements ResourcePackManager, Managerial<NekoPaperPlugin>, Reloadable<NekoPaperPlugin> {
     private static final Logger LOGGER = Logger.getLogger(ResourcePackManagerImpl.class.getName());
     private static final File GENERATED_PACK_FILE = new File(Constants.DATA_FOLDER, "generated.zip");
 
     @Override
-    public void preload(@NotNull Context context) {
+    public void preload(@NotNull Context<NekoPaperPlugin> context) {
     }
 
     @Override
-    public void start(@NotNull Context context) {
+    public void start(@NotNull Context<NekoPaperPlugin> context) {
         generateResourcePack();
     }
 
     @Override
-    public void end(@NotNull Context context) {
+    public void end(@NotNull Context<NekoPaperPlugin> context) {
     }
 
     @Override
