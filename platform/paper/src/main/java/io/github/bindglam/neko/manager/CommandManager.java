@@ -18,13 +18,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Logger;
 
-public final class CommandManager implements Managerial<NekoPaperPlugin> {
+public final class CommandManager implements Managerial {
     private static final Logger LOGGER = Logger.getLogger(CommandManager.class.getName());
 
     @Override
-    public void preload(@NotNull Context<NekoPaperPlugin> context) {
+    public void preload(@NotNull Context context) {
         LegacyPaperCommandManager<org.bukkit.command.CommandSender> manager = new LegacyPaperCommandManager<>(
-                context.plugin(),
+                (NekoPaperPlugin) context.platform(),
                 ExecutionCoordinator.simpleCoordinator(),
                 SenderMapper.identity()
         );
@@ -66,10 +66,10 @@ public final class CommandManager implements Managerial<NekoPaperPlugin> {
     }
 
     @Override
-    public void start(@NotNull Context<NekoPaperPlugin> context) {
+    public void start(@NotNull Context context) {
     }
 
     @Override
-    public void end(@NotNull Context<NekoPaperPlugin> context) {
+    public void end(@NotNull Context context) {
     }
 }

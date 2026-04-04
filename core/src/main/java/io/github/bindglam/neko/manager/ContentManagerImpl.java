@@ -1,7 +1,6 @@
 package io.github.bindglam.neko.manager;
 
 import io.github.bindglam.neko.Neko;
-import io.github.bindglam.neko.NekoPaperPlugin;
 import io.github.bindglam.neko.content.ContentsPack;
 import io.github.bindglam.neko.content.ContentsPackImpl;
 import io.github.bindglam.neko.content.PackLoader;
@@ -11,31 +10,23 @@ import io.github.bindglam.neko.event.RegistryInitializeEvent;
 import io.github.bindglam.neko.platform.PlatformItemStack;
 import io.github.bindglam.neko.utils.Constants;
 import it.unimi.dsi.fastutil.Pair;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-public final class ContentManagerImpl implements ContentManager, Managerial<NekoPaperPlugin>, Reloadable<NekoPaperPlugin>, Listener {
+public final class ContentManagerImpl implements ContentManager, Managerial, Reloadable {
     private static final Logger LOGGER = Logger.getLogger(ContentManagerImpl.class.getName());
     private static final File PACKS_FOLDER = new File(Constants.DATA_FOLDER, "packs");
 
     @Override
-    public void preload(@NotNull Context<NekoPaperPlugin> context) {
-        Bukkit.getPluginManager().registerEvents(this, context.plugin());
-    }
+    public void preload(@NotNull Context context) {
+        context.eventBus().subscribe(RegistryInitializeEvent.class, event -> {
+            RegistryManager.GlobalRegistries.registries().features().register(HelloWorldFeature.KEY, new HelloWorldFeature.Factory());
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onRegistryInitialize(RegistryInitializeEvent event) {
-        RegistryManager.GlobalRegistries.registries().features().register(HelloWorldFeature.KEY, new HelloWorldFeature.Factory());
-
-        loadPacks(event.getRegistries());
+            loadPacks(event.registries());
+        });
     }
 
     private void loadPacks(@NotNull RegistryManager.GlobalRegistries registries) {
@@ -66,12 +57,11 @@ public final class ContentManagerImpl implements ContentManager, Managerial<Neko
     }
 
     @Override
-    public void start(@NotNull Context<NekoPaperPlugin> context) {
+    public void start(@NotNull Context context) {
     }
 
     @Override
-    public void end(@NotNull Context<NekoPaperPlugin> context) {
-        HandlerList.unregisterAll(this);
+    public void end(@NotNull Context context) {
     }
 
     @Override

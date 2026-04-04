@@ -1,14 +1,13 @@
-package io.github.bindglam.neko.content.feature.event;
+package io.github.bindglam.neko.event;
 
-import io.github.bindglam.neko.event.Event;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.creative.ResourcePack;
 
-public record ResourcePackGenerationEvent(
+public record AsyncResourcePackGenerationEvent(
         @NotNull ResourcePack resourcePack
 ) implements Event {
     @ApiStatus.Internal
-    public ResourcePackGenerationEvent {
+    public AsyncResourcePackGenerationEvent {
     }
 }

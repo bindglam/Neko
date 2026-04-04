@@ -1,11 +1,10 @@
 package io.github.bindglam.neko.manager;
 
-import io.github.bindglam.neko.NekoPaperPlugin;
+import io.github.bindglam.neko.Neko;
 import io.github.bindglam.neko.content.feature.event.ResourcePackGenerationEvent;
 import io.github.bindglam.neko.event.AsyncResourcePackGenerationEvent;
 import io.github.bindglam.neko.utils.Constants;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.metadata.pack.PackFormat;
@@ -16,21 +15,21 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
-public final class ResourcePackManagerImpl implements ResourcePackManager, Managerial<NekoPaperPlugin>, Reloadable<NekoPaperPlugin> {
+public final class ResourcePackManagerImpl implements ResourcePackManager, Managerial, Reloadable {
     private static final Logger LOGGER = Logger.getLogger(ResourcePackManagerImpl.class.getName());
     private static final File GENERATED_PACK_FILE = new File(Constants.DATA_FOLDER, "generated.zip");
 
     @Override
-    public void preload(@NotNull Context<NekoPaperPlugin> context) {
+    public void preload(@NotNull Context context) {
     }
 
     @Override
-    public void start(@NotNull Context<NekoPaperPlugin> context) {
+    public void start(@NotNull Context context) {
         generateResourcePack();
     }
 
     @Override
-    public void end(@NotNull Context<NekoPaperPlugin> context) {
+    public void end(@NotNull Context context) {
     }
 
     @Override
@@ -47,7 +46,7 @@ public final class ResourcePackManagerImpl implements ResourcePackManager, Manag
             RegistryManager.GlobalRegistries.registries().item().forEach(content ->
                     content.featureEventBus().call(new ResourcePackGenerationEvent(resourcePack)));
 
-            Bukkit.getPluginManager().callEvent(new AsyncResourcePackGenerationEvent(resourcePack));
+            Neko.platform().eventBus().call(new AsyncResourcePackGenerationEvent(resourcePack));
 
             MinecraftResourcePackWriter.minecraft().writeToZipFile(GENERATED_PACK_FILE, resourcePack);
 

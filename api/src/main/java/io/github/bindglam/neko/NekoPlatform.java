@@ -1,5 +1,6 @@
 package io.github.bindglam.neko;
 
+import io.github.bindglam.neko.event.EventBus;
 import io.github.bindglam.neko.manager.ContentManager;
 import io.github.bindglam.neko.manager.RegistryManager;
 import io.github.bindglam.neko.manager.ResourcePackManager;
@@ -12,6 +13,8 @@ public interface NekoPlatform {
     @NotNull Logger logger();
 
     @NotNull PlatformAdapter platformAdapter();
+
+    @NotNull EventBus eventBus();
 
     @NotNull RegistryManager registryManager();
 
