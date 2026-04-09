@@ -24,9 +24,11 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/platform" />
+            <option value="$PROJECT_DIR$/platform/fabric" />
             <option value="$PROJECT_DIR$/platform/paper" />
           </set>
         </option>
+        <option name="resolveExternalAnnotations" value="true" />
       </GradleProjectSettings>
     </option>
   </component>

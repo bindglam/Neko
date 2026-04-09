@@ -13,7 +13,7 @@ val mcVersionString = property("minecraft_version").toString()
 
 dependencies {
     implementation(project(":core"))
-    compileOnly("io.papermc.paper:paper-api:$mcVersionString-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:$mcVersionString.build.+")
     compileOnly("org.incendo:cloud-paper:2.0.0-beta.14")
     compileOnly("org.incendo:cloud-minecraft-extras:2.0.0-beta.14")
 }
@@ -23,7 +23,7 @@ paperPluginYaml {
     version = rootProject.version.toString()
     main = "$group.NekoPaperPlugin"
     loader = "$group.NekoPluginLoader"
-    apiVersion = "1.20"
+    apiVersion = "26.1"
     author = "Bindglam"
     foliaSupported = true
     dependencies {
