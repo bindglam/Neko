@@ -1,5 +1,5 @@
 plugins {
-    id("paper-conventions")
+    id("standard-conventions")
 }
 
 dependencies {

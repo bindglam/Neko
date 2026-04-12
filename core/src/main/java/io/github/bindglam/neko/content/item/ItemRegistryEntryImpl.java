@@ -3,11 +3,10 @@ package io.github.bindglam.neko.content.item;
 import io.github.bindglam.neko.content.feature.FeatureBuilder;
 import io.github.bindglam.neko.content.item.properties.ItemProperties;
 import net.kyori.adventure.key.Key;
-import org.apache.commons.lang3.Validate;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class ItemRegistryEntryImpl implements ItemRegistryEntry {
     private Key key;
@@ -38,8 +37,8 @@ public final class ItemRegistryEntryImpl implements ItemRegistryEntry {
 
     @Override
     public @NotNull Item toValue() {
-        Validate.notNull(key, "Key is null");
-        Validate.notNull(properties, "Properties is null");
+        Objects.requireNonNull(key, "Key is null");
+        Objects.requireNonNull(properties, "Properties is null");
 
         return new ItemImpl(key, properties, features != null ? features : List.of());
     }

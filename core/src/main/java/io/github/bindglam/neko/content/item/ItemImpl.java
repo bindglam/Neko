@@ -1,13 +1,15 @@
 package io.github.bindglam.neko.content.item;
 
+import io.github.bindglam.neko.Neko;
 import io.github.bindglam.neko.content.AbstractContent;
 import io.github.bindglam.neko.content.feature.FeatureBuilder;
 import io.github.bindglam.neko.content.item.properties.ItemProperties;
+import io.github.bindglam.neko.platform.PlatformAdapter;
+import io.github.bindglam.neko.platform.PlatformItemStack;
+import io.github.bindglam.neko.platform.PlatformPersistentDataContainer;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.kyori.adventure.key.Key;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -28,10 +30,11 @@ public final class ItemImpl extends AbstractContent implements Item {
     }
 
     @Override
-    public boolean isSimilar(@NotNull ItemStack itemStack) {
-        if (!itemStack.hasItemMeta())
-            return false;
-        return Objects.equals(key().asString(), itemStack.getItemMeta().getPersistentDataContainer().get(ItemBuilder.NEKO_ITEM_KEY, PersistentDataType.STRING));
+    public boolean isSimilar(@NotNull PlatformItemStack itemStack) {
+        boolean[] result = new boolean[] { false };
+        itemStack.persistentDataContainer(persistentDataContainer ->
+                result[0] = Objects.equals(key().asString(), persistentDataContainer.get(ItemBuilder.NEKO_ITEM_KEY, PlatformAdapter.adapter().persistentDataType(String.class).orElseThrow())));
+        return result[0];
     }
 
     @Override

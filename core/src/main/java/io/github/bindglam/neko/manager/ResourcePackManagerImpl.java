@@ -1,10 +1,10 @@
 package io.github.bindglam.neko.manager;
 
+import io.github.bindglam.neko.Neko;
 import io.github.bindglam.neko.content.feature.event.ResourcePackGenerationEvent;
 import io.github.bindglam.neko.event.AsyncResourcePackGenerationEvent;
 import io.github.bindglam.neko.utils.Constants;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.metadata.pack.PackFormat;
@@ -46,7 +46,7 @@ public final class ResourcePackManagerImpl implements ResourcePackManager, Manag
             RegistryManager.GlobalRegistries.registries().item().forEach(content ->
                     content.featureEventBus().call(new ResourcePackGenerationEvent(resourcePack)));
 
-            Bukkit.getPluginManager().callEvent(new AsyncResourcePackGenerationEvent(resourcePack));
+            Neko.platform().eventBus().call(new AsyncResourcePackGenerationEvent(resourcePack));
 
             MinecraftResourcePackWriter.minecraft().writeToZipFile(GENERATED_PACK_FILE, resourcePack);
 

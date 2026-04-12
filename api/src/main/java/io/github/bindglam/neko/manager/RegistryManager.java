@@ -23,7 +23,7 @@ public interface RegistryManager {
 
 
         static @NotNull GlobalRegistries registries() {
-            return Neko.plugin().registryManager().registries();
+            return Neko.platform().registryManager().registries();
         }
     }
 }
