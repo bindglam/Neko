@@ -1,10 +1,9 @@
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
-    id("standard-conventions")
-    id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
+    id("platform-conventions")
+    alias(libs.plugins.resourceFactory.paper)
     id("xyz.jpenilla.run-paper") version "2.3.1"
-    id("com.gradleup.shadow") version "9.4.0"
 }
 
 val groupString = group.toString()
@@ -12,10 +11,8 @@ val versionString = version.toString()
 val mcVersionString = property("minecraft_version").toString()
 
 dependencies {
-    implementation(project(":core"))
     compileOnly("io.papermc.paper:paper-api:$mcVersionString.build.+")
-    compileOnly("org.incendo:cloud-paper:2.0.0-beta.14")
-    compileOnly("org.incendo:cloud-minecraft-extras:2.0.0-beta.14")
+    compileOnly(libs.cloud.paper)
 }
 
 paperPluginYaml {

@@ -4,12 +4,13 @@ plugins {
 }
 
 group = "io.github.bindglam.neko"
-version = property("plugin_version").toString()
+version = property("mod_version").toString()
 
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://jitpack.io")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {

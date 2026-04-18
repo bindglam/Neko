@@ -9,7 +9,7 @@ import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 
 public final class HelloWorldFeature extends Feature {
-    public static final Key KEY = Key.key(Constants.PLUGIN_ID, "hello_world");
+    public static final Key KEY = Key.key(Constants.MOD_ID, "hello_world");
 
     private HelloWorldFeature(@NotNull FeatureFactory.Context context) {
         super(context);

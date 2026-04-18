@@ -77,7 +77,7 @@ public final class PackLoader {
                         ConfigSchema.Result validationResult = CONTENT_CONFIG_SCHEMA.validate(contentConfig);
                         if(validationResult.isSuccess()) {
                             ContentType<?> type = RegistryManager.GlobalRegistries.registries().types()
-                                    .get(Key.key(Constants.PLUGIN_ID, Objects.requireNonNull(contentConfig.node("type").getString())))
+                                    .get(Key.key(Constants.MOD_ID, Objects.requireNonNull(contentConfig.node("type").getString())))
                                     .orElseThrow(() -> new IllegalStateException("그 사이에 인젝션은 말이 안됨!!!!"));
 
                             if (!type.load(registries, contentConfig)) {

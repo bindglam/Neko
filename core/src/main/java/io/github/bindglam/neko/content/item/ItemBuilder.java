@@ -11,7 +11,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.jetbrains.annotations.NotNull;
 
 public final class ItemBuilder {
-    public static final Key NEKO_ITEM_KEY = Key.key(Constants.PLUGIN_ID, "item");
+    public static final Key NEKO_ITEM_KEY = Key.key(Constants.MOD_ID, "item");
 
     private ItemBuilder() {
     }

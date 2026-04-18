@@ -5,13 +5,14 @@ import io.github.bindglam.neko.content.feature.FeatureFactory;
 import io.github.bindglam.neko.manager.RegistryManager;
 import io.github.bindglam.neko.utils.Constants;
 import net.kyori.adventure.key.Key;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.Objects;
 
 public final class ContentConfigSchema implements ConfigSchema {
     @Override
-    public Result validate(ConfigurationNode config) {
+    public @NonNull Result validate(@NonNull ConfigurationNode config) {
         Result result = new Result();
 
         if(!Key.parseable(Objects.requireNonNull(config.key()).toString()))
@@ -25,7 +26,7 @@ public final class ContentConfigSchema implements ConfigSchema {
                 result.failed("Invalid type id");
             } else {
                 ContentType<?> type = RegistryManager.GlobalRegistries.registries().types()
-                        .get(Key.key(Constants.PLUGIN_ID, typeId))
+                        .get(Key.key(Constants.MOD_ID, typeId))
                         .orElse(null);
                 if(type == null)
                     result.failed("Unknown type");

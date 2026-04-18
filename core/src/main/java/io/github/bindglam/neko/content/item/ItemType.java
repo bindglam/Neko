@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class ItemType implements ContentType<Item> {
-    public static final Key KEY = Key.key(Constants.PLUGIN_ID, "item");
+    public static final Key KEY = Key.key(Constants.MOD_ID, "item");
 
     private static final ConfigSchema ITEM_CONFIG_SCHEMA = new ItemConfigSchema();
 
