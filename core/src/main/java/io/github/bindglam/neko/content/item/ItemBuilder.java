@@ -1,36 +1,35 @@
 package io.github.bindglam.neko.content.item;
 
 import io.github.bindglam.neko.content.feature.event.ItemStackGenerationEvent;
+import io.github.bindglam.neko.platform.PlatformAdapter;
+import io.github.bindglam.neko.platform.PlatformItemStack;
 import io.github.bindglam.neko.utils.Constants;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 public final class ItemBuilder {
-    public static final NamespacedKey NEKO_ITEM_KEY = new NamespacedKey(Constants.PLUGIN_ID, "item");
+    public static final Key NEKO_ITEM_KEY = Key.key(Constants.MOD_ID, "item");
 
     private ItemBuilder() {
     }
 
-    public static ItemStack create(@NotNull Item item) {
-        ItemStack itemStack = new ItemStack(item.properties().type());
+    public static PlatformItemStack create(@NotNull Item item) {
+        var itemStack = item.properties().type().createItemStack();
 
-        itemStack.editMeta(meta -> {
-            Component displayName = item.properties().name();
-            if (displayName == null)
-                displayName = Component.translatable(item).color(NamedTextColor.WHITE);
-            if (displayName.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET)
-                displayName = displayName.decoration(TextDecoration.ITALIC, false);
-            meta.displayName(displayName);
+        Component displayName = item.properties().name();
+        if (displayName == null)
+            displayName = Component.translatable(item).color(NamedTextColor.WHITE);
+        if (displayName.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET)
+            displayName = displayName.decoration(TextDecoration.ITALIC, false);
+        itemStack.name(displayName);
 
-            meta.lore(item.properties().lore());
+        itemStack.lore(item.properties().lore());
 
-            meta.getPersistentDataContainer().set(NEKO_ITEM_KEY, PersistentDataType.STRING, item.key().asString());
-        });
+        itemStack.persistentDataContainer(persistentDataContainer ->
+                persistentDataContainer.set(NEKO_ITEM_KEY, PlatformAdapter.adapter().persistentDataType(String.class).orElseThrow(), item.key().asString()));
 
         item.featureEventBus().call(new ItemStackGenerationEvent(itemStack));
 

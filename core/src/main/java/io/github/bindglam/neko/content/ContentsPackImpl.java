@@ -33,6 +33,6 @@ public final class ContentsPackImpl implements ContentsPack {
     }
 
     public static Key createKey(@NotNull @KeyPattern.Value String id) {
-        return Key.key(Constants.PLUGIN_ID, id);
+        return Key.key(Constants.MOD_ID, id);
     }
 }

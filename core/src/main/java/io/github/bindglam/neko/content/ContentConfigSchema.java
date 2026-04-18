@@ -5,19 +5,20 @@ import io.github.bindglam.neko.content.feature.FeatureFactory;
 import io.github.bindglam.neko.manager.RegistryManager;
 import io.github.bindglam.neko.utils.Constants;
 import net.kyori.adventure.key.Key;
-import org.bukkit.configuration.ConfigurationSection;
+import org.jspecify.annotations.NonNull;
+import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.Objects;
 
 public final class ContentConfigSchema implements ConfigSchema {
     @Override
-    public Result validate(ConfigurationSection config) {
+    public @NonNull Result validate(@NonNull ConfigurationNode config) {
         Result result = new Result();
 
-        if(!Key.parseable(config.getName()))
+        if(!Key.parseable(Objects.requireNonNull(config.key()).toString()))
             result.failed("Invalid content key");
 
-        String typeId = config.getString("type");
+        String typeId = config.node("type").getString();
         if (typeId == null) {
             result.failed("Missing type");
         } else {
@@ -25,36 +26,34 @@ public final class ContentConfigSchema implements ConfigSchema {
                 result.failed("Invalid type id");
             } else {
                 ContentType<?> type = RegistryManager.GlobalRegistries.registries().types()
-                        .get(Key.key(Constants.PLUGIN_ID, typeId))
+                        .get(Key.key(Constants.MOD_ID, typeId))
                         .orElse(null);
                 if(type == null)
                     result.failed("Unknown type");
             }
         }
 
-        ConfigurationSection featuresSection = config.getConfigurationSection("features");
+        var featuresSection = config.node("features");
         if (featuresSection != null) {
-            for (String featureKey : featuresSection.getKeys(false)) {
-                ConfigurationSection featureConfig = Objects.requireNonNull(featuresSection.getConfigurationSection(featureKey));
-
-                String featureId = featureConfig.getString("id");
+            featuresSection.childrenMap().forEach((featureKey, featureConfig) -> {
+                String featureId = featureConfig.node("id").getString();
                 if (featureId == null) {
-                    result.failed("Invalid feature configuration schema in " + config.getName());
-                    continue;
+                    result.failed("Invalid feature configuration schema in " + config.key());
+                    return;
                 }
                 if(!Key.parseable(featureId)) {
-                    result.failed("Invalid feature id in " + config.getName());
-                    continue;
+                    result.failed("Invalid feature id in " + config.key());
+                    return;
                 }
 
                 FeatureFactory<?> factory = RegistryManager.GlobalRegistries.registries().features()
                         .get(Key.key(featureId))
                         .orElse(null);
                 if(factory == null) {
-                    result.failed("Unknown feature '" + featureId + "' in " + config.getName());
-                    continue;
+                    result.failed("Unknown feature '" + featureId + "' in " + config.key());
+                    return;
                 }
-            }
+            });
         }
 
         return result;

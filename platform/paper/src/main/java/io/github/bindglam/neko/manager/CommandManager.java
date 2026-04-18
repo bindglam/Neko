@@ -1,10 +1,12 @@
 package io.github.bindglam.neko.manager;
 
 import io.github.bindglam.neko.Neko;
+import io.github.bindglam.neko.NekoPaperPlugin;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
 import org.incendo.cloud.bukkit.parser.NamespacedKeyParser;
@@ -22,7 +24,7 @@ public final class CommandManager implements Managerial {
     @Override
     public void preload(@NotNull Context context) {
         LegacyPaperCommandManager<org.bukkit.command.CommandSender> manager = new LegacyPaperCommandManager<>(
-                context.plugin(),
+                (NekoPaperPlugin) context.platform(),
                 ExecutionCoordinator.simpleCoordinator(),
                 SenderMapper.identity()
         );
@@ -38,7 +40,7 @@ public final class CommandManager implements Managerial {
                 .permission(Permission.of("mint.command.reload"))
                 .handler(ctx -> {
                     ctx.sender().sendMessage(Component.text("Reloading...").color(NamedTextColor.YELLOW));
-                    Neko.plugin().reload();
+                    Neko.platform().reload();
                     ctx.sender().sendMessage(Component.text("Successfully reloaded!").color(NamedTextColor.GREEN));
                 }));
 
@@ -59,7 +61,7 @@ public final class CommandManager implements Managerial {
                         return;
                     }
 
-                    player.getInventory().addItem(item.itemStack().get());
+                    player.getInventory().addItem((ItemStack) item.itemStack().get().unwrap());
                 }));
     }
 

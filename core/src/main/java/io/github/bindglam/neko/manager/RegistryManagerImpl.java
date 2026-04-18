@@ -14,7 +14,6 @@ import io.github.bindglam.neko.registry.RegistriesImpl;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.kyori.adventure.key.Key;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -35,7 +34,7 @@ public final class RegistryManagerImpl implements RegistryManager, Managerial, R
 
     @Override
     public void start(@NotNull Context context) {
-        Bukkit.getPluginManager().callEvent(new RegistryInitializeEvent(globalRegistries));
+        context.eventBus().call(new RegistryInitializeEvent(globalRegistries));
 
         globalRegistries.lockAll();
 

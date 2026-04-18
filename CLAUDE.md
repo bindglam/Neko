@@ -40,7 +40,7 @@ The project is split into two main modules:
 ### `api` Module
 Public API for content creators and plugin developers. Contains interfaces and abstractions:
 - `io.github.bindglam.neko.Neko` - Static singleton accessor to the plugin instance
-- `io.github.bindglam.neko.NekoPlugin` - Main plugin interface providing access to managers
+- `io.github.bindglam.neko.AbstractNekoPlatform` - Main plugin interface providing access to managers
 - `io.github.bindglam.neko.content` - Content system interfaces (Content, Feature, ContentsPack)
 - `io.github.bindglam.neko.content.item` - Item-related interfaces (Item, ItemProperties, ImmutableItemStack)
 - `io.github.bindglam.neko.content.feature` - Feature system (Feature, FeatureBuilder, FeatureFactory, FeatureEventBus)

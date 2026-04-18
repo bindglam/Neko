@@ -1,6 +1,7 @@
 package io.github.bindglam.neko.content.feature;
 
 import io.github.bindglam.neko.content.Content;
+import io.github.bindglam.neko.event.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 public interface FeatureFactory<T extends Feature> {
@@ -9,7 +10,7 @@ public interface FeatureFactory<T extends Feature> {
     record Context(
             @NotNull Content content,
             @NotNull FeatureArguments arguments,
-            @NotNull FeatureEventBus eventBus
+            @NotNull EventBus eventBus
     ) {
     }
 }
